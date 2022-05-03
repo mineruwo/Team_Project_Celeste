@@ -13,26 +13,39 @@ void InputMgr::Init()
 {
 	mapAxis.clear();
 
-	HorInit();
+	HorRightInit();
+	HorLeftInit();
 	VerInit();
+	Jump();
+	Dash();
 }
 
-void InputMgr::HorInit()
+void InputMgr::HorRightInit()
 {
 	AxisInfo info;
-	// Horizontal
-	info.axis = Axis::Horizontal;
+	info.axis = Axis::HorizontalRight;
 	info.sensi = 2.f;
 	info.value = 0.f;
 	info.limit = 0.05f;
 	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::D);
 	info.positiveKeys.push_back(Keyboard::Right);
 	info.negativeKeys.clear();
-	info.negativeKeys.push_back(Keyboard::A);
 	info.negativeKeys.push_back(Keyboard::Left);
 	mapAxis[info.axis] = info;
 }
+
+void InputMgr::HorLeftInit()
+{
+	AxisInfo info;
+	info.axis = Axis::HorizontalLeft;
+	info.sensi = 2.f;
+	info.value = 0.f;
+	info.limit = 0.05f;
+	info.positiveKeys.clear();
+	info.negativeKeys.push_back(Keyboard::Left);;
+	mapAxis[info.axis] = info;
+}
+
 
 void InputMgr::VerInit()
 {
@@ -44,11 +57,31 @@ void InputMgr::VerInit()
 	info.value = 0.f;
 	info.limit = 0.05f;
 	info.positiveKeys.clear();
-	//info.positiveKeys.push_back(Keyboard::S);
 	info.positiveKeys.push_back(Keyboard::Down);
 	info.negativeKeys.clear();
-	//info.negativeKeys.push_back(Keyboard::W);
 	info.negativeKeys.push_back(Keyboard::Up);
+	mapAxis[info.axis] = info;
+}
+void InputMgr::Jump()
+{
+	AxisInfo info;
+	info.axis = Axis::Jump;
+	info.sensi = 2.f;
+	info.value = 0.f;
+	info.limit = 0.05f;
+	info.positiveKeys.clear();
+	info.positiveKeys.push_back(Keyboard::C);
+	mapAxis[info.axis] = info;
+}
+void InputMgr::Dash()
+{
+	AxisInfo info;
+	info.axis = Axis::Dash;
+	info.sensi = 2.f;
+	info.value = 0.f;
+	info.limit = 0.05f;
+	info.positiveKeys.clear();
+	info.positiveKeys.push_back(Keyboard::X);
 	mapAxis[info.axis] = info;
 }
 
@@ -79,7 +112,7 @@ void InputMgr::ProcessInput(const Event& event)
 	}
 }
 
-void InputMgr::Update(float dt,RenderWindow& window ,View& view)
+void InputMgr::Update(float dt)
 {
 	for (auto it = mapAxis.begin(); it != mapAxis.end(); ++it)
 	{
@@ -131,7 +164,6 @@ int InputMgr::GetAxisRaw(const list<Keyboard::Key>& positive, const list<Keyboar
 			break;
 		}
 	}
-
 	for (auto it = negaive.cbegin(); it != negaive.cend(); ++it)
 	{
 		Keyboard::Key key = (*it);
@@ -141,7 +173,6 @@ int InputMgr::GetAxisRaw(const list<Keyboard::Key>& positive, const list<Keyboar
 			break;
 		}
 	}
-
 	if (isPositive && isNegative)
 	{
 		axis = 0;

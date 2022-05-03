@@ -9,8 +9,11 @@ using namespace std;
 
 enum class Axis
 {
-	Horizontal,
+	HorizontalRight,
+	HorizontalLeft,
 	Vertical,
+	Jump,
+	Dash
 };
 
 struct AxisInfo
@@ -35,12 +38,15 @@ private:
 
 public:
 	static void Init();
-	static void HorInit();
+	static void HorRightInit();
+	static void HorLeftInit();
 	static void VerInit();
+	static void Jump();
+	static void Dash();
 
 	static void ClearInput();
 	static void ProcessInput(const Event& event);
-	static void Update(float dt, RenderWindow& window, View& view);
+	static void Update(float dt);
 
 	static float GetAxis(Axis axis);
 
