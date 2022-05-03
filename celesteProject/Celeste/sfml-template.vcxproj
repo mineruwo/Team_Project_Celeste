@@ -148,7 +148,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="SceneMgr\SceneMgr.cpp" />
+    <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\TItle.cpp" />
+    <ClCompile Include="Utils\InputMgr.cpp" />
+    <ClCompile Include="Utils\TextureHolder.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\Framework.h" />
+    <ClInclude Include="SceneMgr\SceneMgr.h" />
+    <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\TItle.h" />
+    <ClInclude Include="Utils\InputMgr.h" />
+    <ClInclude Include="Utils\TextureHolder.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
