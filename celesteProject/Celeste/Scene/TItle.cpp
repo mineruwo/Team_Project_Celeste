@@ -14,8 +14,8 @@ void TItle::Init(Vector2i resolution)
 	Vector2f titleCenter = Vector2f(
 		VideoMode::getDesktopMode().width - titleRect.width, VideoMode::getDesktopMode().height - titleRect.height);
 
-	backGrnd.setScale(VideoMode::getDesktopMode().width, VideoMode::getDesktopMode().height);
-
+	backGrnd.setScale(2.f, 2.f);
+	
 	backGrnd.setPosition(0, 0);
 	logoSprite.setPosition(titleCenter);
 	cSprite.setPosition(1700, 900);

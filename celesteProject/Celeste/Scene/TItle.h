@@ -9,7 +9,6 @@ using namespace std;
 class TItle : public Scene
 {
 private:
-	Texture temp;
 
 	String backGrndName;
 	String logoName;

@@ -151,6 +151,7 @@
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="SceneMgr\SceneMgr.cpp" />
+    <ClCompile Include="Scene\MainMenu.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\TItle.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp" />
@@ -159,6 +160,7 @@
   <ItemGroup>
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="SceneMgr\SceneMgr.h" />
+    <ClInclude Include="Scene\MainMenu.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\TItle.h" />
     <ClInclude Include="Utils\InputMgr.h" />

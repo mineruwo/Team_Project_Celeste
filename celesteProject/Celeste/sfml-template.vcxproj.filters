@@ -48,6 +48,9 @@
     <ClCompile Include="Scene\TItle.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\MainMenu.cpp">
+      <Filter>소스 파일\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Framework.h">
@@ -66,6 +69,9 @@
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Scene\TItle.h">
+      <Filter>소스 파일\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\MainMenu.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
