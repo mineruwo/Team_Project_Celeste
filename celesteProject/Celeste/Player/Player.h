@@ -2,6 +2,7 @@
 #include "../Utils/AnimationController.h"
 #include <vector>
 #include <list>
+#include "../Bat.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -11,8 +12,6 @@ class Player
 private:
 	const float START_SPEED = 200;
 	const float GRAVITY = 9.8;
-
-
 
 	Sprite sprite;
 	Vector2f position;
@@ -25,6 +24,11 @@ private:
 	float speed;
 	float timer;
 
+	float gravity;
+	float gravityV;
+
+	bool isJump;
+
 	Texture texture;
 
 	std::map<std::string, Texture> texMap;
@@ -34,14 +38,14 @@ public:
 
 	void Init();
 
-	void Spawn(IntRect arena, Vector2i res);
+	void Spawn(IntRect arena, Vector2i res, std::vector<Bat*> bats);
 
 	FloatRect GetGobalBound() const;
 	Vector2f GetPosition() const;
 	float GetRotation() const;
 	Sprite GetSprite() const;
 
-	void UpdateInput(Event event);
+	//void UpdateInput(Event event);
 	void Update(float dt);
 
 	void Draw(RenderWindow &window);

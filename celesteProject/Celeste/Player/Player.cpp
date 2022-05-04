@@ -1,11 +1,11 @@
 #include "Player.h"
 #include "../Utils/InputMgr.h"
+#include "../Utils/Utils.h"
 #include <iostream>
 
 Player::Player()
-	:speed(START_SPEED)
+	:speed(START_SPEED), gravity(GRAVITY), isJump(false)
 {	
-
 }
 
 void Player::Init()
@@ -69,10 +69,27 @@ void Player::Init()
 	animation.AddClip(clip);
 	clip.frames.clear();
 
+	texture.loadFromFile("graphics/player_JumpCarry_JumpFast_JumpSlow_sitDown.png");
+
+	animation.SetTarget(&sprite);
+	AnimationClip clipJump;
+
+	clipJump.id = "Jump";
+	clipJump.fps = 10;
+	clipJump.loopType = AnimationLoopTypes::Single;
+
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32)));
+	
+	animation.AddClip(clipJump);
+	clipJump.frames.clear();
+
 	animation.Play("Idle");
 }
 
-void Player::Spawn(IntRect arena, Vector2i res)
+void Player::Spawn(IntRect arena, Vector2i res, std::vector<Bat*> bats)
 {
 	this->arena = arena;
 	resolution = res;
@@ -80,6 +97,38 @@ void Player::Spawn(IntRect arena, Vector2i res)
 	position.x = arena.width * 0.5;
 	position.y = arena.height * 0.5;
 	sprite.setPosition(position.x, position.y);
+
+	//충돌 처리
+	for (auto v : bats)
+	{
+		if (sprite.getGlobalBounds().intersects(v->GetBatRect()))
+		{
+			Pivots pivot = Utils::CollisionDir(v->GetBatRect(), sprite.getGlobalBounds());
+
+			switch (pivot)
+			{
+			case Pivots::LC:
+				position.x += (v->GetBatRect().left + v->GetBatRect().width) - (sprite.getGlobalBounds().left);
+				break;
+
+			case Pivots::RC:
+				position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetBatRect().left);
+				break;
+
+			case Pivots::CT:
+				position.y += (v->GetBatRect().top + v->GetBatRect().height) - (sprite.getGlobalBounds().top);
+				break;
+
+			case Pivots::CB:
+				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetBatRect().top);
+				break;
+
+			defalut:
+				break;
+			}
+			sprite.setPosition(position);
+		}
+	}
 }
 
 FloatRect Player::GetGobalBound() const
@@ -104,37 +153,53 @@ Sprite Player::GetSprite() const
 
 void Player::Update(float dt)
 {
-	animation.Update(dt);	
-
-
-	float v = 0;
+	
 	float h = InputMgr::GetAxis(Axis::HorizontalRight);
-
+	
 	if (h > 0)
 	{
 		animation.Play("Walk");
+		animation.PlayQueue("Idle");
 	}
-	else if(h < 0)
+	if (h < 0)
 	{
 		sprite.setScale(-1.f, 1.f);
 		animation.Play("Walk");
+		animation.PlayQueue("Idle");
 	}
-	else if( h == 0)
+	// 점프
+	if (InputMgr::GetKeyDown(Keyboard::C))
 	{
-		animation.Play("Idle");
-	}
+		isJump = true;
+		animation.Play("Jump");
+		animation.PlayQueue("Idle");
 
+		position.y += 1;
+		
+	}
+	/*
+	if (InputMgr::GetKeyDown(Keyboard::X))
+	{
+
+	}*/
+	// 붙잡기
+	if (InputMgr::GetKeyDown(Keyboard::Z))
+	{
+
+	}
+	gravityV = gravity * dt;
+	float v = gravityV * dt;
 
 	Vector2f dir(h, v);
 	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
 	if (length > 0)
 	{
 		dir /= length;
-	}
-	
+	}	
 	position += dir * speed * dt;
 	sprite.setPosition(position);
 
+	animation.Update(dt);
 }
 
 void Player::Draw(RenderWindow &window)

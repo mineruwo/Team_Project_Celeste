@@ -59,9 +59,9 @@ void AnimationController::Update(float dt)
 		}
 		else
 		{
-			std::string nextClipId = playQueue.front(); //q 제일 앞에 있는 걸 이용
+			std::string nextClipId = playQueue.front();
 			playQueue.pop();
-			Play(nextClipId, false); //새로운 애니메이션을 넣음 , false : q를 날리지 않기 위해
+			Play(nextClipId, false);
 		}
 	}
 	sprite->setTexture(currentClip->frames[currentFrame].texture);
@@ -108,7 +108,7 @@ void AnimationController::SetSpeed(float speed)
 
 void AnimationController::ClearPlayQueue()
 {
-	while (!playQueue.empty()) //플레이 큐를 비워야 할때
+	while (!playQueue.empty())
 		playQueue.pop();
 }
 

@@ -26,6 +26,10 @@
     <ClCompile Include="Utils\AnimationController.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Utils\Utils.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -40,5 +44,9 @@
     <ClInclude Include="Utils\AnimationController.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h" />
   </ItemGroup>
 </Project>
