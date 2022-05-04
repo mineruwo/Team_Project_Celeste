@@ -163,6 +163,7 @@
     <ClInclude Include="Scene\MainMenu.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\TItle.h" />
+    <ClInclude Include="Singleton.h" />
     <ClInclude Include="Utils\InputMgr.h" />
     <ClInclude Include="Utils\TextureHolder.h" />
   </ItemGroup>

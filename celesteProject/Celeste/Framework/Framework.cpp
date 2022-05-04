@@ -6,7 +6,7 @@ Framework::Framework()
 	resolution.y = VideoMode::getDesktopMode().height;
 
 	window.create(VideoMode(resolution.x, resolution.y), "Celeste", Style::Default);
-	
+	//mainView = new RenderWindow(FloatRect(0, 0, resolution.x, resolution.y));
 	//window.setMouseCursorVisible(false);
 
 	icon.loadFromFile("Graphics/icon/icon.PNG");
@@ -22,6 +22,7 @@ void Framework::init()
 void Framework::Update()
 {
 	Event event;
+	InputMgr::ClearInput();
 	Time dt = clock.restart();
 	while (window.pollEvent(event))
 	{
@@ -29,8 +30,10 @@ void Framework::Update()
 		{
 			window.close();
 		}
-	
+		InputMgr::ProcessInput(event);
 	}
+	//float dt, RenderWindow& window, View& view
+	//InputMgr::Update(dt, window, 
 	sceneMgr.SceneUpdate(dt, window);
 
 }

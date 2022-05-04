@@ -14,18 +14,20 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::ChangeScene(SceneID Id)
 {
-	delete scene;
+//	delete scene;
 
 	switch (Id)
 	{
 	case SceneID::Title:
 		scene = new TItle;
 		currScene = SceneID::Title;
+		SceneMgr::SceneInit(resolution);
 		break;
-	//case SceneID::MainMenu:
-	//	scene = new ;
-	//	currScene = SceneID::MainMenu;
-	//	break;
+	case SceneID::MainMenu:
+		scene = new MainMenu;
+		currScene = SceneID::MainMenu;
+		SceneMgr::SceneInit(resolution);
+		break;
 	//case SceneID::Option:
 	//	scene = new ;
 	//	currScene = SceneID::Option;
@@ -66,13 +68,11 @@ void SceneMgr::SceneInit(Vector2i resolution)
 void SceneMgr::SceneUpdate(Time dt, RenderWindow& window)
 {
 	scene->Update(dt, window);
+	if (scene->GetCurrScene() != currScene)
+	{
+		ChangeScene(scene->GetCurrScene());
 
-	//if (currScene != scene->GetCurrScene())
-	//{
-	//	SceneRelease();
-	//	ChangeScene(scene->GetCurrScene());
-	//}
-
+	}
 }
 
 void SceneMgr::SceneDraw(RenderWindow& window)

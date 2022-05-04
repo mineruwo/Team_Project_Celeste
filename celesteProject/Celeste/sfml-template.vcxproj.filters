@@ -74,5 +74,8 @@
     <ClInclude Include="Scene\MainMenu.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

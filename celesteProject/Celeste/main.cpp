@@ -4,7 +4,6 @@
 int main()
 {
     Framework mainLoop;
-
     mainLoop.init();
 
     while (true)

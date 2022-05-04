@@ -1,14 +1,19 @@
 #include "TItle.h"
+#include "../SceneMgr/SceneMgr.h"
+
+TItle::TItle():currScene(SceneID::Title)
+{
+}
 
 void TItle::Init(Vector2i resolution)
 {
-	backGrndName = "Graphics/Atlases/Core/01.png";
-	logoName = "Graphics/Atlases/Gui/logo.png";
-	cName = "Graphics/Atlases/Gui/controls/keyboard/c.png";
+	backGrndTexture = "Graphics/Atlases/Core/01.png";
+	logoTexture = "Graphics/Atlases/Gui/logo.png";
+	cTexture = "Graphics/Atlases/Gui/controls/keyboard/c.png";
 
-	backGrnd.setTexture(TextureHolder::GetTexture(backGrndName));
-	logoSprite.setTexture(TextureHolder::GetTexture(logoName));
-	cSprite.setTexture(TextureHolder::GetTexture(cName));
+	backGrnd.setTexture(TextureHolder::GetTexture(backGrndTexture));
+	logoSprite.setTexture(TextureHolder::GetTexture(logoTexture));
+	cSprite.setTexture(TextureHolder::GetTexture(cTexture));
 
 	titleRect = logoSprite.getGlobalBounds();
 	Vector2f titleCenter = Vector2f(
@@ -23,12 +28,18 @@ void TItle::Init(Vector2i resolution)
 	currScene = SceneID::Title;
 }
 
-void TItle::Update()
+void TItle::Update(Time dt, RenderWindow& window)
 {
 	if (InputMgr::GetKeyDown(Keyboard::C))
 	{
+		// sceneID ¹Ù²ñ
 		Scene::NextScene(SceneID::MainMenu);
+		//change/;
+		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
+		
+		
 	}
+	
 
 }
 

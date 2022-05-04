@@ -2,16 +2,18 @@
 #include <SFML/Graphics.hpp>
 #include "../Scene/TItle.h"
 #include"../Scene/Scene.h"
+#include"../Scene/MainMenu.h"
+#include"../Singleton.h"
 
 using namespace sf;
 
-class SceneMgr
+class SceneMgr : public Singleton<SceneMgr>
 {
 
 private:
 	Scene* scene;
 	SceneID currScene;
-
+	Vector2i resolution;
 
 public:
 	SceneMgr();

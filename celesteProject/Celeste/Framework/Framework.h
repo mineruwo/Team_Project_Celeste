@@ -10,6 +10,7 @@ private:
 	Vector2i resolution;
 	SceneMgr sceneMgr;
 	RenderWindow window;
+	View* mainView;
 	Image icon;
 	Clock clock;
 	TextureHolder textureHolder;
