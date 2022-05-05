@@ -66,7 +66,7 @@ void AnimationController::Update(float dt)
 	}
 	sprite->setTexture(currentClip->frames[currentFrame].texture);
 	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);
-
+	sprite->setOrigin(currentClip->frames[currentFrame].origin);
 }
 
 void AnimationController::Play(std::string clipId, bool clear)

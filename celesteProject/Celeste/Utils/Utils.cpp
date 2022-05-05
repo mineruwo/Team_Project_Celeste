@@ -5,21 +5,30 @@
 std::random_device Utils::rd;
 std::mt19937 Utils::gen(rd());
 
+/*==============================
+	텍스트 좌표 preset지정
+================================*/
 void Utils::SetOrigin(sf::Text &text, Pivots preset)
 {
 	SetOrigin(text, text.getLocalBounds(), preset);
 }
-
+/*==============================
+      도형 좌표 preset지정
+================================*/
 void Utils::SetOrigin(sf::Shape &shape, Pivots preset)
 {
 	SetOrigin(shape, shape.getLocalBounds(), preset);
 }
-
+/*==============================
+	  그림 좌표 preset지정
+================================*/
 void Utils::SetOrigin(sf::Sprite &sprite, Pivots preset)
 {
 	SetOrigin(sprite, sprite.getLocalBounds(), preset);
 }
-
+/*==============================
+		  origin 설정
+================================*/
 void Utils::SetOrigin(sf::Transformable &tr, sf::FloatRect bounds, Pivots preset)
 {
 	switch (preset)
@@ -53,18 +62,21 @@ void Utils::SetOrigin(sf::Transformable &tr, sf::FloatRect bounds, Pivots preset
 	case Pivots::RB:
 		tr.setOrigin(bounds.width, bounds.height);
 		break;
-
 	default:
 		break;
 	}
 }
-
+/*==============================
+		랜덤 범위 설정
+================================*/
 int Utils::RandomRange(int min, int excludeMax)
 {
 	int range = excludeMax - min;
 	return min + gen() % range;
 }
-
+/*==============================
+		    충돌 처리
+================================*/
 Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 {
 	if (testRect.left < standRect.left + standRect.width
@@ -91,12 +103,16 @@ Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 
 	return Pivots();
 }
-
+/*==============================
+		  길이를 가지고옴
+================================*/
 float Utils::GetLength(const Vector2f &vector)
 {
 	return sqrt(vector.x * vector.x + vector.y * vector.y);
 }
-
+/*==============================
+		  정규화 처리
+================================*/
 Vector2f Utils::Normalize(const Vector2f &vector)
 {
 	Vector2f v = vector;

@@ -15,7 +15,8 @@ struct AnimationFrame
 {
 	Texture texture;
 	IntRect texCoord;
-	AnimationFrame(const Texture &tex, const IntRect &coord);
+	Vector2f origin;
+	AnimationFrame(const Texture &tex, const IntRect &coord, const Vector2f &orig);
 };
 
 struct AnimationClip

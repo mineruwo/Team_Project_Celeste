@@ -9,7 +9,7 @@ using namespace std;
 
 enum class Axis
 {
-	HorizontalRight,
+	Horizontal,
 	HorizontalLeft,
 	Vertical,
 	Jump,
@@ -38,8 +38,7 @@ private:
 
 public:
 	static void Init();
-	static void HorRightInit();
-	static void HorLeftInit();
+	static void HorInit();
 	static void VerInit();
 	static void Jump();
 	static void Dash();

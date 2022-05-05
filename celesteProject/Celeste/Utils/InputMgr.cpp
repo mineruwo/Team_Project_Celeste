@@ -12,18 +12,16 @@ list<Keyboard::Key> InputMgr::upKeys;
 void InputMgr::Init()
 {
 	mapAxis.clear();
-
-	HorRightInit();
-	HorLeftInit();
+	HorInit();
 	VerInit();
 	Jump();
 	Dash();
 }
 
-void InputMgr::HorRightInit()
+void InputMgr::HorInit()
 {
 	AxisInfo info;
-	info.axis = Axis::HorizontalRight;
+	info.axis = Axis::Horizontal;
 	info.sensi = 2.f;
 	info.value = 0.f;
 	info.limit = 0.05f;
@@ -33,19 +31,6 @@ void InputMgr::HorRightInit()
 	info.negativeKeys.push_back(Keyboard::Left);
 	mapAxis[info.axis] = info;
 }
-
-void InputMgr::HorLeftInit()
-{
-	AxisInfo info;
-	info.axis = Axis::HorizontalLeft;
-	info.sensi = 2.f;
-	info.value = 0.f;
-	info.limit = 0.05f;
-	info.positiveKeys.clear();
-	info.negativeKeys.push_back(Keyboard::Left);;
-	mapAxis[info.axis] = info;
-}
-
 
 void InputMgr::VerInit()
 {
@@ -198,18 +183,25 @@ int InputMgr::GetAxisRaw(Axis axis)
 	return 0;
 }
 
+/*========================
+	 키보드 눌렀을때
+==========================*/
 bool InputMgr::GetKeyDown(Keyboard::Key key)
 {
 	auto it = find(downKeys.begin(), downKeys.end(), key);
 	return it != downKeys.end();
 }
-
+/*========================
+	키보드 누르는 중일때
+==========================*/
 bool InputMgr::GetKey(Keyboard::Key key)
 {
 	auto it = find(ingKeys.begin(), ingKeys.end(), key);
 	return it != ingKeys.end();
 }
-
+/*========================
+	 키보드를 뗏을때
+==========================*/
 bool InputMgr::GetKeyUp(Keyboard::Key key)
 {
 	auto it = find(upKeys.begin(), upKeys.end(), key);

@@ -3,13 +3,24 @@
 #include "../Utils/Utils.h"
 #include <iostream>
 
+/*==============================
+		플레이어 생성자
+================================*/
 Player::Player()
-	:speed(START_SPEED), gravity(GRAVITY), isJump(false)
+	:speed(START_SPEED), gravity(GRAVITY), isJump(false), isDash(false), isCatch(false)
+	, isFalling(true)
 {	
 }
 
+/*==============================
+	    플레이어 초기화
+================================*/
 void Player::Init()
 {
+	sprite.setPosition(400,1000);
+	sprite.setScale(4.f, 4.f);
+	sprite.setOrigin(50, 0);
+
 	texture.loadFromFile("graphics/player_idle A_B_C.png");
 	animation.SetTarget(&sprite);
 	AnimationClip IdleClip;
@@ -17,15 +28,15 @@ void Player::Init()
 	IdleClip.id = "Idle";
 	IdleClip.fps = 10;
 	IdleClip.loopType = AnimationLoopTypes::Loop;
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(0, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(32, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(64, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(96, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32)));
-	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(0, 32, 32, 32)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(0, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(32, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(64, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(96, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32), Vector2f(16, 16)));
+	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(0, 32, 32, 32), Vector2f(16, 16)));
 	animation.AddClip(IdleClip);
 	IdleClip.frames.clear();
 
@@ -37,15 +48,15 @@ void Player::Init()
 	clip.id = "Idle";
 	clip.fps = 10;
 	clip.loopType = AnimationLoopTypes::Loop;
-	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 32, 32, 32)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 32, 32, 32), Vector2f(16, 16)));
 	animation.AddClip(clip);
 	clip.frames.clear();
 
@@ -53,19 +64,19 @@ void Player::Init()
 	clip.fps = 10;
 	clip.loopType = AnimationLoopTypes::Loop;
 	
-	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(160, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(192, 96, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(224, 96, 32, 32)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(160, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(192, 96, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(224, 96, 32, 32), Vector2f(16, 16)));
 
-	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 128, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 128, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 128, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 128, 32, 32)));
-	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 128, 32, 32)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(0, 128, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(32, 128, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(64, 128, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(96, 128, 32, 32), Vector2f(16, 16)));
+	clip.frames.push_back(AnimationFrame(texture, IntRect(128, 128, 32, 32), Vector2f(16, 16)));
 	animation.AddClip(clip);
 	clip.frames.clear();
 
@@ -78,10 +89,10 @@ void Player::Init()
 	clipJump.fps = 10;
 	clipJump.loopType = AnimationLoopTypes::Single;
 
-	clipJump.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32)));
-	clipJump.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32)));
-	clipJump.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32)));
-	clipJump.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(128, 0, 32, 32), Vector2f(16, 16)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(160, 0, 32, 32), Vector2f(16, 16)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32), Vector2f(16, 16)));
+	clipJump.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32), Vector2f(16, 16)));
 	
 	animation.AddClip(clipJump);
 	clipJump.frames.clear();
@@ -89,7 +100,7 @@ void Player::Init()
 	animation.Play("Idle");
 }
 
-void Player::Spawn(IntRect arena, Vector2i res, std::vector<Bat*> bats)
+void Player::Spawn(IntRect arena, Vector2i res)
 {
 	this->arena = arena;
 	resolution = res;
@@ -98,64 +109,66 @@ void Player::Spawn(IntRect arena, Vector2i res, std::vector<Bat*> bats)
 	position.y = arena.height * 0.5;
 	sprite.setPosition(position.x, position.y);
 
-	//충돌 처리
-	for (auto v : bats)
+	
+}
+/*========================================
+	키 입력에 따른 플레이어의 애니메이션 
+==========================================*/
+void Player::UpdateInput()
+{
+	if (InputMgr::GetKeyDown(Keyboard::Right)) //오른쪽 이동
 	{
-		if (sprite.getGlobalBounds().intersects(v->GetBatRect()))
-		{
-			Pivots pivot = Utils::CollisionDir(v->GetBatRect(), sprite.getGlobalBounds());
-
-			switch (pivot)
-			{
-			case Pivots::LC:
-				position.x += (v->GetBatRect().left + v->GetBatRect().width) - (sprite.getGlobalBounds().left);
-				break;
-
-			case Pivots::RC:
-				position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetBatRect().left);
-				break;
-
-			case Pivots::CT:
-				position.y += (v->GetBatRect().top + v->GetBatRect().height) - (sprite.getGlobalBounds().top);
-				break;
-
-			case Pivots::CB:
-				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetBatRect().top);
-				break;
-
-			defalut:
-				break;
-			}
-			sprite.setPosition(position);
-		}
+		sprite.setScale(4.f, 4.f);
+		animation.Play("Walk");		
 	}
-}
+	if (InputMgr::GetKeyDown(Keyboard::Left)) //왼쪽 이동
+	{
+		sprite.setScale(-4.f, 4.f);
+		animation.Play("Walk");		
+	}
+	if (InputMgr::GetKeyUp(Keyboard::Right))
+	{
+		sprite.setScale(4.f, 4.f);
+		animation.Play("Idle");
+		animation.PlayQueue("Idle");
+	}
+	if (InputMgr::GetKeyUp(Keyboard::Left))
+	{
+		sprite.setScale(-4.f, 4.f);
+		animation.Play("Idle");
+		animation.PlayQueue("Idle");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::C)) //점프
+	{
+		isJump = true;
+		sprite.setScale(4.f, 4.f);
+		animation.Play("Jump");
+		isJump = false;
+		animation.PlayQueue("Idle");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::X)) //대쉬
+	{
+		sprite.setScale(4.f, 4.f);
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Z)) // 벽잡기
+	{
+		sprite.setScale(4.f, 4.f);
+	}
 
-FloatRect Player::GetGobalBound() const
-{
-	return sprite.getGlobalBounds();
 }
-
-Vector2f Player::GetPosition() const
+/*============================================
+	키 입력에 따른 플레이어의 액션 업데이트
+==============================================*/
+void Player::Update(float dt, std::vector<Wall*> walls)
 {
-	return position;
-}
+	UpdateInput();
+	if (isFalling == true)
+	{
+		gravityV += gravity * dt;
+		position.y += gravityV * dt;
+	}
+	/*float h = InputMgr::GetAxis(Axis::Horizontal);
 
-float Player::GetRotation() const
-{
-	return sprite.getRotation();
-}
-
-Sprite Player::GetSprite() const
-{
-	return sprite;
-}
-
-void Player::Update(float dt)
-{
-	
-	float h = InputMgr::GetAxis(Axis::HorizontalRight);
-	
 	if (h > 0)
 	{
 		animation.Play("Walk");
@@ -175,34 +188,121 @@ void Player::Update(float dt)
 		animation.PlayQueue("Idle");
 
 		position.y += 1;
-		
-	}
-	/*
-	if (InputMgr::GetKeyDown(Keyboard::X))
-	{
 
 	}*/
+	// 좌우 이동
+	if (InputMgr::GetKey(Keyboard::Right))
+	{
+		position.x += dt * speed;
+	}
+	if (InputMgr::GetKey(Keyboard::Left))
+	{
+		position.x -= dt * speed;
+	}
+	// 점프 이동
+	if (InputMgr::GetKeyDown(Keyboard::C))
+	{
+		if (position.y < 12.f)
+		{
+			!isFalling;
+			position.y -= dt * speed * 3.f;
+		}
+		else
+		{
+			isFalling;
+		}
+	}
+	if (InputMgr::GetKey(Keyboard::C))
+	{
+		if (position.y < 24.f)
+		{
+			!isFalling;
+			position.y -= dt * speed * 3.f;
+		}
+		else
+		{
+			!isFalling;
+		}
+	}
+	/*
+	//대쉬
+	if (InputMgr::GetKeyDown(Keyboard::X)||InputMgr::GetKey(Keyboard::X))
+	{
+
+	}
 	// 붙잡기
 	if (InputMgr::GetKeyDown(Keyboard::Z))
 	{
 
-	}
-	gravityV = gravity * dt;
-	float v = gravityV * dt;
-
-	Vector2f dir(h, v);
+	}*/
+	/*Vector2f dir(h, v);
 	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
 	if (length > 0)
 	{
 		dir /= length;
 	}	
-	position += dir * speed * dt;
-	sprite.setPosition(position);
+	position += dir * speed * dt;*/
 
+	//충돌 처리
+	for (auto v : walls)
+	{
+		if (sprite.getGlobalBounds().intersects(v->GetWallRect()))
+		{
+			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), sprite.getGlobalBounds());
+
+			switch (pivot)
+			{
+			case Pivots::LC:
+				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (sprite.getGlobalBounds().left);
+				break;
+
+			case Pivots::RC:
+				position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetWallRect().left);
+				break;
+
+			case Pivots::CT:
+				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (sprite.getGlobalBounds().top);
+				break;
+
+			case Pivots::CB:
+				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetWallRect().top);
+				break;
+
+			defalut:
+				break;
+			}
+			sprite.setPosition(position);
+		}
+	}
+	sprite.setPosition(position);
 	animation.Update(dt);
 }
 
+FloatRect Player::GetGobalBound() const
+{
+	return sprite.getGlobalBounds();
+}
+
+Vector2f Player::GetPosition() const
+{
+	return position;
+}
+
+Sprite Player::GetSprite() const
+{
+	return sprite;
+}
+
+/*==============================
+		플레이어 그리기
+================================*/
 void Player::Draw(RenderWindow &window)
 {
 	window.draw(sprite);
 }
+/*===============================
+작 성 자 : 최 윤 화
+구 현 내 용 : 플레이어 동작 구현
+작 성 일 : 2022 - 05 - 04
+수 정 일 : 2022 - 05 - 05
+=================================*/
