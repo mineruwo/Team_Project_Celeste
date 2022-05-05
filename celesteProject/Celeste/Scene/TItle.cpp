@@ -1,5 +1,5 @@
 #include "TItle.h"
-#include "../SceneMgr/SceneMgr.h"
+
 
 TItle::TItle():currScene(SceneID::Title)
 {
@@ -16,7 +16,7 @@ void TItle::Init(Vector2i resolution)
 	cSprite.setTexture(TextureHolder::GetTexture(cTexture));
 
 	titleRect = logoSprite.getGlobalBounds();
-	Vector2f titleCenter = Vector2f(
+	titleCenter = Vector2f(
 		VideoMode::getDesktopMode().width - titleRect.width, VideoMode::getDesktopMode().height - titleRect.height);
 
 	backGrnd.setScale(2.f, 2.f);
@@ -36,11 +36,7 @@ void TItle::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::MainMenu);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
-		
-		
 	}
-	
-
 }
 
 void TItle::Draw(RenderWindow& window)

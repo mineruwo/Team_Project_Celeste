@@ -1,7 +1,7 @@
 #include "MainMenu.h"
 #include "../SceneMgr/SceneMgr.h"
 
-MainMenu::MainMenu()
+MainMenu::MainMenu():currScene(SceneID::MainMenu)
 {
 }
 
@@ -49,7 +49,13 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::Title);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::Title);
-
+	}
+	else if (InputMgr::GetKeyDown(Keyboard::C))
+	{
+		// sceneID ¹Ù²ñ
+		Scene::NextScene(SceneID::SaveCheck);
+		//change/;
+		SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
 	}
 
 	

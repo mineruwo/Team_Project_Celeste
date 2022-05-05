@@ -4,6 +4,7 @@
 #include"../Scene/Scene.h"
 #include"../Scene/MainMenu.h"
 #include"../Singleton.h"
+#include"../Scene/SaveCheck.h"
 
 using namespace sf;
 

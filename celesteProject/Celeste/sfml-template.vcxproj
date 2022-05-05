@@ -153,6 +153,7 @@
     <ClCompile Include="SceneMgr\SceneMgr.cpp" />
     <ClCompile Include="Scene\MainMenu.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
+    <ClCompile Include="Scene\SaveCheck.cpp" />
     <ClCompile Include="Scene\TItle.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp" />
     <ClCompile Include="Utils\TextureHolder.cpp" />
@@ -162,6 +163,7 @@
     <ClInclude Include="SceneMgr\SceneMgr.h" />
     <ClInclude Include="Scene\MainMenu.h" />
     <ClInclude Include="Scene\Scene.h" />
+    <ClInclude Include="Scene\SaveCheck.h" />
     <ClInclude Include="Scene\TItle.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="Utils\InputMgr.h" />

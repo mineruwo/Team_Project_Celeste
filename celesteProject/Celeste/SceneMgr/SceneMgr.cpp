@@ -36,10 +36,11 @@ void SceneMgr::ChangeScene(SceneID Id)
 	//	scene = new ;
 	//	currScene = SceneID::Credits;
 	//	break;
-	//case SceneID::SaveCheck:
-	//	scene = new ;
-	//	currScene = SceneID::SaveCheck;
-	//	break;
+	case SceneID::SaveCheck:
+		scene = new SaveCheck;
+		currScene = SceneID::SaveCheck;
+		SceneMgr::SceneInit(resolution);
+		break;
 	//case SceneID::SelectMap:
 	//	scene = new ;
 	//	currScene = SceneID::SelectMap;
