@@ -17,9 +17,9 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	sprite.setPosition(400,1000);
+	sprite.setPosition(700,0);
 	sprite.setScale(4.f, 4.f);
-	sprite.setOrigin(50, 0);
+	sprite.setOrigin(0, 32 * 4.f);
 
 	texture.loadFromFile("graphics/player_idle A_B_C.png");
 	animation.SetTarget(&sprite);
@@ -98,19 +98,22 @@ void Player::Init()
 	clipJump.frames.clear();
 
 	animation.Play("Idle");
+
+	position = sprite.getPosition();
+
 }
-
-void Player::Spawn(IntRect arena, Vector2i res)
-{
-	this->arena = arena;
-	resolution = res;
-
-	position.x = arena.width * 0.5;
-	position.y = arena.height * 0.5;
-	sprite.setPosition(position.x, position.y);
-
-	
-}
+//
+//void Player::Spawn(IntRect arena, Vector2i res)
+//{
+//	this->arena = arena;
+//	resolution = res;
+//
+//	position.x = arena.width * 0.5;
+//	position.y = arena.height * 0.5;
+//	sprite.setPosition(position.x, position.y);
+//
+//	
+//}
 /*========================================
 	키 입력에 따른 플레이어의 애니메이션 
 ==========================================*/
@@ -140,10 +143,12 @@ void Player::UpdateInput()
 	}
 	if (InputMgr::GetKeyDown(Keyboard::C)) //점프
 	{
-		isJump = true;
-		sprite.setScale(4.f, 4.f);
-		animation.Play("Jump");
-		isJump = false;
+		if (isJump = true)
+		{
+			sprite.setScale(4.f, 4.f);
+			animation.Play("Jump");
+			animation.PlayQueue("Idle");
+		}		
 		animation.PlayQueue("Idle");
 	}
 	if (InputMgr::GetKeyDown(Keyboard::X)) //대쉬
@@ -156,16 +161,27 @@ void Player::UpdateInput()
 	}
 
 }
+
 /*============================================
 	키 입력에 따른 플레이어의 액션 업데이트
 ==============================================*/
 void Player::Update(float dt, std::vector<Wall*> walls)
 {
 	UpdateInput();
+	// 중 력
 	if (isFalling == true)
 	{
 		gravityV += gravity * dt;
 		position.y += gravityV * dt;
+	}
+	// 점 프
+	if (position.y == 0)
+	{
+		isJump = false;
+	}
+	else
+	{
+		isJump = true;
 	}
 	/*float h = InputMgr::GetAxis(Axis::Horizontal);
 
@@ -179,62 +195,67 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		sprite.setScale(-1.f, 1.f);
 		animation.Play("Walk");
 		animation.PlayQueue("Idle");
-	}
-	// 점프
-	if (InputMgr::GetKeyDown(Keyboard::C))
-	{
-		isJump = true;
-		animation.Play("Jump");
-		animation.PlayQueue("Idle");
-
-		position.y += 1;
-
 	}*/
+
 	// 좌우 이동
 	if (InputMgr::GetKey(Keyboard::Right))
 	{
+		//!isFalling;
 		position.x += dt * speed;
 	}
 	if (InputMgr::GetKey(Keyboard::Left))
 	{
+		//!isFalling;
 		position.x -= dt * speed;
 	}
+
 	// 점프 이동
-	if (InputMgr::GetKeyDown(Keyboard::C))
-	{
-		if (position.y < 12.f)
+	if (InputMgr::GetKey(Keyboard::C))
+	{		
+		if (dt < 10.f)
 		{
-			!isFalling;
+			if (isJump == true)
+			{
+				isFalling = true;
+				position.y -= dt * speed * 3.f;
+			}
+			isJump == false;
+		}
+		
+	}
+	/*if (InputMgr::GetKey(Keyboard::C))
+	{
+		if (position.y < 24.f)
+		{
+			isFalling = false;
 			position.y -= dt * speed * 3.f;
+		}
+		else
+		{
+			isFalling = true;
+		}
+	}*/
+	// 붙잡기
+	if (InputMgr::GetKeyDown(Keyboard::Z))
+	{
+		if (dt < 3.f)
+		{
+
+			!isFalling;			
 		}
 		else
 		{
 			isFalling;
 		}
-	}
-	if (InputMgr::GetKey(Keyboard::C))
-	{
-		if (position.y < 24.f)
-		{
-			!isFalling;
-			position.y -= dt * speed * 3.f;
-		}
-		else
-		{
-			!isFalling;
-		}
-	}
-	/*
+	}	
 	//대쉬
 	if (InputMgr::GetKeyDown(Keyboard::X)||InputMgr::GetKey(Keyboard::X))
 	{
+		isJump = false;
 
+		position.x -= dt * speed * 5.f;
 	}
-	// 붙잡기
-	if (InputMgr::GetKeyDown(Keyboard::Z))
-	{
-
-	}*/
+	
 	/*Vector2f dir(h, v);
 	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
 	if (length > 0)
@@ -266,14 +287,15 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 
 			case Pivots::CB:
 				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetWallRect().top);
+				gravityV = 0.f;
 				break;
 
 			defalut:
 				break;
 			}
-			sprite.setPosition(position);
 		}
 	}
+
 	sprite.setPosition(position);
 	animation.Update(dt);
 }
@@ -304,5 +326,7 @@ void Player::Draw(RenderWindow &window)
 작 성 자 : 최 윤 화
 구 현 내 용 : 플레이어 동작 구현
 작 성 일 : 2022 - 05 - 04
-수 정 일 : 2022 - 05 - 05
+수 정 일 : 2022 - 05 - 06
+ - 충돌처리 오류
+ - 점프키 구현
 =================================*/

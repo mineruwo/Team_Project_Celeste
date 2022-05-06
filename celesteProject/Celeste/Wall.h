@@ -10,5 +10,6 @@ private:
 
 public:
 	Wall(int top, int left, int width, int height);
+	Wall(FloatRect setwall);
 	const FloatRect GetWallRect();
 };

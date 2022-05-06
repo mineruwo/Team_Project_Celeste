@@ -8,6 +8,13 @@ Wall::Wall(int top, int left, int width, int height)
 	wallRect.height = height;
 }
 
+Wall::Wall(FloatRect setwall)
+{
+	wallRect = setwall;
+}
+
+
+
 const FloatRect Wall::GetWallRect()
 {
 	return wallRect;

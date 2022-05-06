@@ -42,7 +42,7 @@ public:
 
 	void Init();
 
-	void Spawn(IntRect arena, Vector2i res);
+	//void Spawn(IntRect arena, Vector2i res);
 	
 	void UpdateInput();
 	void Update(float dt, std::vector<Wall*> walls);

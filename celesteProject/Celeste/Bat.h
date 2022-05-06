@@ -22,10 +22,12 @@ public:
 
 	FloatRect GetGlobalBounds();
 
-	//FloatRect GetBatRect();
+	FloatRect GetBatRect();
 
 	//Sprite GetSprite();
 	const RectangleShape &GetShape();
+
 	void Update(std::vector <Wall*> walls);
 
+	void SetPosition(Vector2f pos);
 };

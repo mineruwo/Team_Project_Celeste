@@ -6,7 +6,8 @@
 
 using namespace sf;
 
-void CreateWalls(std::vector<Wall*>& walls, IntRect bat)
+
+void CreateWalls(std::vector<Wall*>& walls, FloatRect bat)
 {
 	for (auto v : walls)
 	{
@@ -15,8 +16,7 @@ void CreateWalls(std::vector<Wall*>& walls, IntRect bat)
 
 	walls.clear();
 
-	int offset = 10;
-	Wall* wallUp = new Wall(0, bat.left, bat.width, offset);
+	Wall* wallUp = new Wall(bat);
 	walls.push_back(wallUp);
 	/*Wall* wallDown = new Wall(bat.top + bat.height - offset, bat.left, bat.width, offset);
 	walls.push_back(wallDown);
@@ -32,9 +32,10 @@ int main()
     
     Bat bat;
     
-    IntRect bat;
+    FloatRect bats = bat.GetBatRect();
+    
     std::vector <Wall*> walls;
-    CreateWalls(walls, bat);
+    CreateWalls(walls, bats);
 
     InputMgr::Init();
     Player player;
@@ -55,9 +56,13 @@ int main()
         }
 
         //UPDATE
-        InputMgr::Update(time.asSeconds());
-        player.Update(time.asSeconds(), walls);
-        bat.Update(walls);
+      
+        if (time.asSeconds() <= 1.f / 200.f)
+        {
+            InputMgr::Update(time.asSeconds());
+           player.Update(time.asSeconds(), walls);
+          // bat.Update(walls);
+        }
 
         //DRAW
         window.clear();
