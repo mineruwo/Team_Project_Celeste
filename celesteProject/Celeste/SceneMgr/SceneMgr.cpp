@@ -14,7 +14,7 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::ChangeScene(SceneID Id)
 {
-//	delete scene;
+	//delete scene;
 
 	switch (Id)
 	{
@@ -59,6 +59,8 @@ void SceneMgr::ChangeScene(SceneID Id)
 	//	break;
 	
 	}
+
+	Ui.InitSceneUi(Id, scene);
 }
 
 void SceneMgr::SceneInit(Vector2i resolution)
@@ -78,9 +80,8 @@ void SceneMgr::SceneUpdate(Time dt, RenderWindow& window)
 
 void SceneMgr::SceneDraw(RenderWindow& window)
 {
-	window.clear();
 	scene->Draw(window);
-	window.display();
+	//Ui.Draw(window);
 }
 
 void SceneMgr::SceneRelease()

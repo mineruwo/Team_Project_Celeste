@@ -42,5 +42,6 @@ void Framework::Draw()
 {
 	window.clear();
 	sceneMgr.SceneDraw(window);
-	//window.display();
+	ui.Draw(window);
+	window.display();
 }

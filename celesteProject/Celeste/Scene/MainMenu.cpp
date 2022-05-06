@@ -8,18 +8,18 @@ MainMenu::MainMenu():currScene(SceneID::MainMenu)
 void MainMenu::Init(Vector2i resolution)
 {
 	menuBackGrndTexture = "Graphics/backgrnd.png";
-	ClimbTexture = "Graphics/Atlases/Gui/menu/start.png";
+	climbTexture = "Graphics/Atlases/Gui/menu/start.png";
 	optionTexture = "Graphics/Atlases/Gui/menu/options.png";
-	CreditTexture = "Graphics/Atlases/Gui/menu/credits.png";
+	creditTexture = "Graphics/Atlases/Gui/menu/credits.png";
 	exitTexture = "Graphics/Atlases/Gui/menu/exit.png";
 	cTexture = "Graphics/Atlases/Gui/controls/keyboard/c.png";
 	xTexture = "Graphics/Atlases/Gui/controls/keyboard/x.png";
 
 
 	menuBackGrnd.setTexture(TextureHolder::GetTexture(menuBackGrndTexture));
-	Climn.setTexture(TextureHolder::GetTexture(ClimbTexture));
+	climn.setTexture(TextureHolder::GetTexture(climbTexture));
 	option.setTexture(TextureHolder::GetTexture(optionTexture));
-	credit.setTexture(TextureHolder::GetTexture(CreditTexture));
+	credit.setTexture(TextureHolder::GetTexture(creditTexture));
 	exit.setTexture(TextureHolder::GetTexture(exitTexture));
 	cSprite.setTexture(TextureHolder::GetTexture(cTexture));
 	xSprite.setTexture(TextureHolder::GetTexture(xTexture));
@@ -31,7 +31,7 @@ void MainMenu::Init(Vector2i resolution)
 	xSprite.setScale(0.5f, 0.5f);
 
 	menuBackGrnd.setPosition(0,0);
-	Climn.setPosition(300, 150);
+	climn.setPosition(300, 150);
 	option.setPosition(300,500);
 	credit.setPosition(300, 600);
 	exit.setPosition(300, 700);
@@ -39,6 +39,11 @@ void MainMenu::Init(Vector2i resolution)
 	xSprite.setPosition(1700, 900);
 
 	currScene = SceneID::MainMenu;
+}
+
+void MainMenu::SelctClimn(Time dt)
+{
+
 }
 
 void MainMenu::Update(Time dt, RenderWindow& window)
@@ -50,21 +55,110 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::Title);
 	}
-	else if (InputMgr::GetKeyDown(Keyboard::C))
-	{
-		// sceneID ¹Ù²ñ
-		Scene::NextScene(SceneID::SaveCheck);
-		//change/;
-		SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
-	}
 
-	
+	if (InputMgr::GetKeyDown(Keyboard::Up))
+	{
+		if (menuNum > 0)
+		{
+			menuNum--;
+		}
+
+		switch (menuNum)
+		{
+
+		case 0:
+			climn.setPosition(300, 160);
+			option.setPosition(300, 500);
+			credit.setPosition(300, 600);
+			exit.setPosition(300, 700);
+			break;
+		case 1:
+			option.setPosition(320, 500);
+			climn.setPosition(300, 150);
+			credit.setPosition(300, 600);
+			exit.setPosition(300, 700);
+			break;
+		case 2:
+			credit.setPosition(320, 600);
+			climn.setPosition(300, 150);
+			option.setPosition(300, 500);
+			exit.setPosition(300, 700);
+		case 3:
+			exit.setPosition(320, 700);
+			climn.setPosition(300, 150);
+			option.setPosition(300, 500);
+			credit.setPosition(300, 600);
+			break;
+		default:
+			break;
+		}
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Down))
+	{
+		if (menuNum < 3)
+		{
+			menuNum++;
+		}
+		switch (menuNum)
+		{
+
+		case 0:
+			climn.setPosition(300, 160);
+			option.setPosition(300, 500);
+			credit.setPosition(300, 600);
+			exit.setPosition(300, 700);
+			break;
+		case 1:
+			option.setPosition(320, 500);
+			climn.setPosition(300, 150);
+			credit.setPosition(300, 600);
+			exit.setPosition(300, 700);
+			break;
+		case 2:
+			credit.setPosition(320, 600);
+			climn.setPosition(300, 150);
+			option.setPosition(300, 500);
+			exit.setPosition(300, 700);
+		case 3:
+			exit.setPosition(320, 700);
+			climn.setPosition(300, 150);
+			option.setPosition(300, 500);
+			credit.setPosition(300, 600);
+			break;
+		default:
+			break;
+		}
+	}
+	if (InputMgr::GetKeyDown(Keyboard::C))
+	{
+		switch (menuNum)
+		{
+
+		case 0:
+			Scene::NextScene(SceneID::SaveCheck);
+			SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
+			break;
+		case 1:
+			Scene::NextScene(SceneID::Option);
+			SceneMgr::GetInstance().ChangeScene(SceneID::Option);
+			break;
+		case 2:
+			Scene::NextScene(SceneID::Credits);
+			SceneMgr::GetInstance().ChangeScene(SceneID::Credits);
+			break;
+		case 3:
+			window.close();
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
-	window.draw(Climn);
+	window.draw(climn);
 	window.draw(option);
 	window.draw(credit);
 	window.draw(exit);

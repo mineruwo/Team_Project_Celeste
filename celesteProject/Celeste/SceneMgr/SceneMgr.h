@@ -3,8 +3,9 @@
 #include "../Scene/TItle.h"
 #include"../Scene/Scene.h"
 #include"../Scene/MainMenu.h"
-#include"../Singleton.h"
+#include"../Utils/Singleton.h"
 #include"../Scene/SaveCheck.h"
+#include"../Utils/UiMgr.h"
 
 using namespace sf;
 
@@ -13,6 +14,7 @@ class SceneMgr : public Singleton<SceneMgr>
 
 private:
 	Scene* scene;
+	UiMgr Ui;
 	SceneID currScene;
 	Vector2i resolution;
 

@@ -57,6 +57,15 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::MainMenu);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
+
+	}
+
+	if (InputMgr::GetKeyDown(Keyboard::C))
+	{
+		// sceneID ¹Ù²ñ
+		Scene::NextScene(SceneID::GamePlay);
+		//change/;
+		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
 	}
 }
 

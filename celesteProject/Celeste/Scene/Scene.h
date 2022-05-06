@@ -17,7 +17,6 @@ enum class SceneID
 };
 
 
-
 class Scene
 {
 protected:
