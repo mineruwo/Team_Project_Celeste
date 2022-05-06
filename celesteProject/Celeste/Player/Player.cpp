@@ -129,7 +129,7 @@ void Player::UpdateInput()
 		sprite.setScale(-4.f, 4.f);
 		animation.Play("Walk");		
 	}
-	if (InputMgr::GetKeyUp(Keyboard::Right))
+	if (InputMgr::GetKeyUp(Keyboard::Right)) 
 	{
 		sprite.setScale(4.f, 4.f);
 		animation.Play("Idle");
@@ -143,17 +143,39 @@ void Player::UpdateInput()
 	}
 	if (InputMgr::GetKeyDown(Keyboard::C)) //점프
 	{
-		if (isJump = true)
+		if (InputMgr::GetKeyDown(Keyboard::Right))
 		{
-			sprite.setScale(4.f, 4.f);
-			animation.Play("Jump");
+			if (isJump = true)
+			{
+				sprite.setScale(4.f, 4.f);
+				animation.Play("Jump");
+				animation.PlayQueue("Idle");
+			}
+			animation.PlayQueue("Idle");
+		}
+		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		{
+			if (isJump = true)
+			{
+				sprite.setScale(-4.f, 4.f);
+				animation.Play("Jump");
+				animation.PlayQueue("Idle");
+			}
 			animation.PlayQueue("Idle");
 		}		
-		animation.PlayQueue("Idle");
 	}
+
 	if (InputMgr::GetKeyDown(Keyboard::X)) //대쉬
 	{
-		sprite.setScale(4.f, 4.f);
+		if (InputMgr::GetKeyDown(Keyboard::Right))
+		{
+			sprite.setScale(4.f, 4.f);
+		}
+		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		{
+			sprite.setScale(-4.f, 4.f);
+		}
+		
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Z)) // 벽잡기
 	{
@@ -165,7 +187,7 @@ void Player::UpdateInput()
 /*============================================
 	키 입력에 따른 플레이어의 액션 업데이트
 ==============================================*/
-void Player::Update(float dt, std::vector<Wall*> walls)
+void Player::Update(float dt, std::vector<Wall *> walls)
 {
 	UpdateInput();
 	// 중 력
@@ -174,15 +196,7 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		gravityV += gravity * dt;
 		position.y += gravityV * dt;
 	}
-	// 점 프
-	if (position.y == 0)
-	{
-		isJump = false;
-	}
-	else
-	{
-		isJump = true;
-	}
+	
 	/*float h = InputMgr::GetAxis(Axis::Horizontal);
 
 	if (h > 0)
@@ -210,19 +224,41 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 	}
 
 	// 점프 이동
-	if (InputMgr::GetKey(Keyboard::C))
-	{		
-		if (dt < 10.f)
+	// 바닥에 닿았을 때만 작동되도록
+	// 점 프
+	if (position.y == 0)
+	{
+		isJump = false;
+	}
+	else
+	{
+		isJump = true;
+	}
+
+	if (isJump && InputMgr::GetKey(Keyboard::C))
+	{
+		if (dt < 6.f)
 		{
-			if (isJump == true)
+			
+			isFalling = true;
+			if (position.y > 1)
 			{
-				isFalling = true;
 				position.y -= dt * speed * 3.f;
 			}
-			isJump == false;
+			
+			//isJump == false;
 		}
-		
 	}
+
+	/*if (InputMgr::GetKey(Keyboard::C))
+	{
+		if (isJump == true)
+		{
+			
+		}
+		 
+
+	}*/
 	/*if (InputMgr::GetKey(Keyboard::C))
 	{
 		if (position.y < 24.f)
@@ -240,21 +276,41 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 	{
 		if (dt < 3.f)
 		{
-
-			!isFalling;			
+			isFalling == false;
 		}
 		else
 		{
-			isFalling;
+			isFalling == true;
 		}
-	}	
-	//대쉬
-	if (InputMgr::GetKeyDown(Keyboard::X)||InputMgr::GetKey(Keyboard::X))
-	{
-		isJump = false;
-
-		position.x -= dt * speed * 5.f;
 	}
+	//대쉬
+	if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
+	{
+		if (InputMgr::GetKey(Keyboard::Right))
+		{
+			isJump = true;
+			isFalling = false;
+			position.x += dt * speed * 4.f;
+		}
+		else if (InputMgr::GetKey(Keyboard::Left))
+		{
+			isJump = true;
+			isFalling = false;
+			position.x -= dt * speed * 4.f;
+		}
+		else if (InputMgr::GetKey(Keyboard::Up))
+		{
+			isJump = true;
+			isFalling = false;
+			position.y -= dt * speed * 4.f;
+		}
+		else if (InputMgr::GetKey(Keyboard::Down))
+		{
+			isJump = true;
+			isFalling = false;
+			position.y += dt * speed * 4.f;
+		}		
+	}	
 	
 	/*Vector2f dir(h, v);
 	float length = sqrt(dir.x * dir.x + dir.y * dir.y);
