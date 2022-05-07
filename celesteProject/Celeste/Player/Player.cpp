@@ -7,8 +7,8 @@
 		플레이어 생성자
 ================================*/
 Player::Player()
-	:speed(START_SPEED), gravity(GRAVITY), isJump(false), isDash(false), isCatch(false)
-	, isFalling(true)
+	:speed(START_SPEED), gravity(GRAVITY), isJump(true), isDash(false), isCatch(false)
+	, isFalling(true), isSeizeWall(false)
 {	
 }
 
@@ -19,7 +19,24 @@ void Player::Init()
 {
 	sprite.setPosition(700,0);
 	sprite.setScale(4.f, 4.f);
-	sprite.setOrigin(0, 32 * 4.f);
+	sprite.setOrigin(Vector2f(16*4.f, 32 * 4.f));
+
+	//몸 히트 박스
+	bodyHitbox.setFillColor(Color::Green);
+	bodyHitbox.setSize(Vector2f(20.f * CharacSize, 20.f * CharacSize - 30));	
+	bodyHitbox.setOrigin(0,(32* CharacSize)*0.5);
+	bodyPosition.x = position.x;
+	bodyPosition.y = position.y;
+	bodyHitbox.setPosition(bodyPosition);
+	
+	
+	//바닥 히트 박스
+	floorHitbox.setFillColor(Color::Red);
+	floorHitbox.setSize(Vector2f(32.f * CharacSize, 30));
+	floorHitbox.setOrigin(0, (32 * CharacSize) * 0.5);
+	floorPosition.x = position.x;
+	floorPosition.y = position.y;
+	floorHitbox.setPosition(floorPosition);
 
 	texture.loadFromFile("graphics/player_idle A_B_C.png");
 	animation.SetTarget(&sprite);
@@ -141,6 +158,35 @@ void Player::UpdateInput()
 		animation.Play("Idle");
 		animation.PlayQueue("Idle");
 	}
+	if (InputMgr::GetKeyDown(Keyboard::Up))
+	{
+		//위 올려보는 애니메이션
+		//animation.Play("");
+	}
+	if (InputMgr::GetKeyDown(Keyboard::Down))
+	{
+		if (isSeizeWall == true)
+		{
+
+		}
+		else
+		{
+			sprite.setScale(4.f, 3.f);
+		}
+		
+	}
+	if (InputMgr::GetKeyUp(Keyboard::Down))
+	{
+		if (isSeizeWall == true)
+		{
+
+		}
+		else
+		{
+			sprite.setScale(4.f, 4.f);
+		}
+
+	}
 	if (InputMgr::GetKeyDown(Keyboard::C)) //점프
 	{
 		if (InputMgr::GetKeyDown(Keyboard::Right))
@@ -185,7 +231,7 @@ void Player::UpdateInput()
 }
 
 /*============================================
-	키 입력에 따른 플레이어의 액션 업데이트
+				키 입력에 따른 플레이어의 액션 업데이트
 ==============================================*/
 void Player::Update(float dt, std::vector<Wall *> walls)
 {
@@ -196,22 +242,8 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 		gravityV += gravity * dt;
 		position.y += gravityV * dt;
 	}
-	
-	/*float h = InputMgr::GetAxis(Axis::Horizontal);
 
-	if (h > 0)
-	{
-		animation.Play("Walk");
-		animation.PlayQueue("Idle");
-	}
-	if (h < 0)
-	{
-		sprite.setScale(-1.f, 1.f);
-		animation.Play("Walk");
-		animation.PlayQueue("Idle");
-	}*/
-
-	// 좌우 이동
+	// 상하좌우이동
 	if (InputMgr::GetKey(Keyboard::Right))
 	{
 		//!isFalling;
@@ -222,10 +254,35 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 		//!isFalling;
 		position.x -= dt * speed;
 	}
+	if (InputMgr::GetKey(Keyboard::Up))
+	{
+		if (isSeizeWall == true)
+		{
+			position.y -= dt * speed;
+		}
+		else
+		{
+			position.y;
+		}
+	}
+	if (InputMgr::GetKey(Keyboard::Down))
+	{
+		if (isSeizeWall == true)
+		{
+			position.y += dt * speed;
+		}
+		else
+		{
+			position.y;
+		}
+	}
+	if (InputMgr::GetKey(Keyboard::Down))
+	{
+
+	}
 
 	// 점프 이동
 	// 바닥에 닿았을 때만 작동되도록
-	// 점 프
 	if (position.y == 0)
 	{
 		isJump = false;
@@ -235,54 +292,26 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 		isJump = true;
 	}
 
-	if (isJump && InputMgr::GetKey(Keyboard::C))
+	if ( isJump && InputMgr::GetKey(Keyboard::C))
 	{
-		if (dt < 6.f)
+		if (dt <2.f)
 		{
-			
-			isFalling = true;
-			if (position.y > 1)
+			if (isJump == true)
 			{
-				position.y -= dt * speed * 3.f;
+				isFalling = true;
+				if (position.y > 1)
+				{
+					position.y -= dt * speed * 3.f;
+				}
 			}
-			
-			//isJump == false;
+			isJump = false;
 		}
 	}
-
-	/*if (InputMgr::GetKey(Keyboard::C))
-	{
-		if (isJump == true)
-		{
-			
-		}
-		 
-
-	}*/
-	/*if (InputMgr::GetKey(Keyboard::C))
-	{
-		if (position.y < 24.f)
-		{
-			isFalling = false;
-			position.y -= dt * speed * 3.f;
-		}
-		else
-		{
-			isFalling = true;
-		}
-	}*/
 	// 붙잡기
-	if (InputMgr::GetKeyDown(Keyboard::Z))
+	/*if (InputMgr::GetKeyDown(Keyboard::Z))
 	{
-		if (dt < 3.f)
-		{
-			isFalling == false;
-		}
-		else
-		{
-			isFalling == true;
-		}
-	}
+		
+	}*/
 	//대쉬
 	if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
 	{
@@ -377,6 +406,8 @@ Sprite Player::GetSprite() const
 void Player::Draw(RenderWindow &window)
 {
 	window.draw(sprite);
+	window.draw(bodyHitbox);
+	window.draw(floorHitbox);
 }
 /*===============================
 작 성 자 : 최 윤 화
@@ -384,5 +415,6 @@ void Player::Draw(RenderWindow &window)
 작 성 일 : 2022 - 05 - 04
 수 정 일 : 2022 - 05 - 06
  - 충돌처리 오류
- - 점프키 구현
+ - 점프 키 구현
+ - 대쉬 키 구현
 =================================*/
