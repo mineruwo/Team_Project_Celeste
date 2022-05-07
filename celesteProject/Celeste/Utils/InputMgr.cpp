@@ -9,39 +9,26 @@ list<Keyboard::Key> InputMgr::downKeys;
 list<Keyboard::Key> InputMgr::ingKeys;
 list<Keyboard::Key> InputMgr::upKeys;
 
-list<Mouse::Button>  InputMgr::downButtons;
-list<Mouse::Button>  InputMgr::ingButtons;
-list<Mouse::Button>  InputMgr::upButtons;
-
-
 void InputMgr::Init()
 {
 	mapAxis.clear();
-
 	HorInit();
 	VerInit();
+	Jump();
+	Dash();
 }
 
 void InputMgr::HorInit()
 {
 	AxisInfo info;
-	// Horizontal
 	info.axis = Axis::Horizontal;
 	info.sensi = 2.f;
 	info.value = 0.f;
 	info.limit = 0.05f;
 	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::D);
 	info.positiveKeys.push_back(Keyboard::Right);
 	info.negativeKeys.clear();
-	info.negativeKeys.push_back(Keyboard::A);
 	info.negativeKeys.push_back(Keyboard::Left);
-	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::D);
-	info.positiveKeys.push_back(Keyboard::Right);
-	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::D);
-	info.positiveKeys.push_back(Keyboard::Right);
 	mapAxis[info.axis] = info;
 }
 
@@ -55,11 +42,31 @@ void InputMgr::VerInit()
 	info.value = 0.f;
 	info.limit = 0.05f;
 	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::S);
 	info.positiveKeys.push_back(Keyboard::Down);
 	info.negativeKeys.clear();
-	info.negativeKeys.push_back(Keyboard::W);
 	info.negativeKeys.push_back(Keyboard::Up);
+	mapAxis[info.axis] = info;
+}
+void InputMgr::Jump()
+{
+	AxisInfo info;
+	info.axis = Axis::Jump;
+	info.sensi = 2.f;
+	info.value = 0.f;
+	info.limit = 0.05f;
+	info.positiveKeys.clear();
+	info.positiveKeys.push_back(Keyboard::C);
+	mapAxis[info.axis] = info;
+}
+void InputMgr::Dash()
+{
+	AxisInfo info;
+	info.axis = Axis::Dash;
+	info.sensi = 2.f;
+	info.value = 0.f;
+	info.limit = 0.05f;
+	info.positiveKeys.clear();
+	info.positiveKeys.push_back(Keyboard::X);
 	mapAxis[info.axis] = info;
 }
 
@@ -67,8 +74,6 @@ void InputMgr::ClearInput()
 {
 	downKeys.clear();
 	upKeys.clear();
-	downButtons.clear();
-	upButtons.clear();
 }
 
 void InputMgr::ProcessInput(const Event& event)
@@ -86,12 +91,13 @@ void InputMgr::ProcessInput(const Event& event)
 		ingKeys.remove(event.key.code);
 		upKeys.push_back(event.key.code);
 		break;
+	
 	default:
 		break;
 	}
 }
 
-void InputMgr::Update(float dt,RenderWindow& window ,View& view)
+void InputMgr::Update(float dt)
 {
 	for (auto it = mapAxis.begin(); it != mapAxis.end(); ++it)
 	{
@@ -118,7 +124,6 @@ void InputMgr::Update(float dt,RenderWindow& window ,View& view)
 			ref.value = -1.f;
 		}
 	}
-
 }
 
 float InputMgr::GetAxis(Axis axis)
@@ -144,7 +149,6 @@ int InputMgr::GetAxisRaw(const list<Keyboard::Key>& positive, const list<Keyboar
 			break;
 		}
 	}
-
 	for (auto it = negaive.cbegin(); it != negaive.cend(); ++it)
 	{
 		Keyboard::Key key = (*it);
@@ -154,7 +158,6 @@ int InputMgr::GetAxisRaw(const list<Keyboard::Key>& positive, const list<Keyboar
 			break;
 		}
 	}
-
 	if (isPositive && isNegative)
 	{
 		axis = 0;
@@ -180,20 +183,28 @@ int InputMgr::GetAxisRaw(Axis axis)
 	return 0;
 }
 
+/*========================
+	 키보드 눌렀을때
+==========================*/
 bool InputMgr::GetKeyDown(Keyboard::Key key)
 {
 	auto it = find(downKeys.begin(), downKeys.end(), key);
 	return it != downKeys.end();
 }
-
+/*========================
+	키보드 누르는 중일때
+==========================*/
 bool InputMgr::GetKey(Keyboard::Key key)
 {
 	auto it = find(ingKeys.begin(), ingKeys.end(), key);
 	return it != ingKeys.end();
 }
-
+/*========================
+	 키보드를 뗏을때
+==========================*/
 bool InputMgr::GetKeyUp(Keyboard::Key key)
 {
 	auto it = find(upKeys.begin(), upKeys.end(), key);
 	return it != upKeys.end();
 }
+
