@@ -3,7 +3,6 @@
 
 Scene::Scene()
 {
-	font.loadFromFile("Font/korean.ttf");
 }
 
 void Scene::Init(Vector2i resolution)

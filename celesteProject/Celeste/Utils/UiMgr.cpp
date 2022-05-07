@@ -12,6 +12,7 @@ void UiMgr::SetText(Text text, unsigned int size, Color color, Vector2f positon)
 	text.setCharacterSize(size);
 	text.setFillColor(color);
 	text.setPosition(positon);
+
 }
 
 void UiMgr::InitMainMenu()
@@ -43,9 +44,13 @@ void UiMgr::MenuTextFlash()
 {
 }
 
-void UiMgr::InitSceneUi(SceneID Id, Scene* scene)
+
+
+
+void UiMgr::InitSceneUi(SceneID Id)
 {
-	this->scene = scene;
+	
+	currScene = Id;
 
 	switch (Id)
 	{
@@ -80,6 +85,7 @@ void UiMgr::InitSceneUi(SceneID Id, Scene* scene)
 	case SceneID::Pause:
 		break;
 	}
+	
 }
 
 void UiMgr::MenuDraw(RenderWindow& window)
@@ -107,10 +113,12 @@ void UiMgr::cxDraw(RenderWindow& window)
 
 void UiMgr::Draw(RenderWindow& window)
 {
-	switch (Id)
+	
+
+	switch (currScene)
 	{
 	case SceneID::Title:
-		break;
+	break;
 	case SceneID::MainMenu:	
 		UiMgr::MenuDraw(window);
 		break;

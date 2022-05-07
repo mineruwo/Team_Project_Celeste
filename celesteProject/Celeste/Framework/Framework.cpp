@@ -15,7 +15,9 @@ Framework::Framework()
 
 void Framework::init()
 {
-	sceneMgr.SceneInit(resolution);
+	//sceneMgr.SceneInit(resolution);
+
+	SceneMgr::GetInstance().SceneInit(resolution);
 }
 
 
@@ -34,14 +36,17 @@ void Framework::Update()
 	}
 	//float dt, RenderWindow& window, View& view
 	//InputMgr::Update(dt, window, 
-	sceneMgr.SceneUpdate(dt, window);
-
+	//sceneMgr.SceneUpdate(dt, window);
+	SceneMgr::GetInstance().SceneUpdate(dt, window);
 }
 
 void Framework::Draw()
 {
 	window.clear();
-	sceneMgr.SceneDraw(window);
-	ui.Draw(window);
+	//sceneMgr.SceneDraw(window);
+	SceneMgr::GetInstance().SceneDraw(window);
+	//ui.Draw(window);
+	UiMgr::GetInstance().Draw(window);
+
 	window.display();
 }

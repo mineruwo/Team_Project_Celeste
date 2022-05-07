@@ -60,7 +60,7 @@ void SceneMgr::ChangeScene(SceneID Id)
 	
 	}
 
-	Ui.InitSceneUi(Id, scene);
+	Ui.InitSceneUi(Id);
 }
 
 void SceneMgr::SceneInit(Vector2i resolution)
@@ -81,7 +81,7 @@ void SceneMgr::SceneUpdate(Time dt, RenderWindow& window)
 void SceneMgr::SceneDraw(RenderWindow& window)
 {
 	scene->Draw(window);
-	//Ui.Draw(window);
+	
 }
 
 void SceneMgr::SceneRelease()

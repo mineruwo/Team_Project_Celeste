@@ -1,15 +1,16 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "../Scene/Scene.h"
+#include "Singleton.h"
 #include <vector>
 using namespace sf;
 
-class UiMgr
+class UiMgr : public Singleton<UiMgr>
 {
 
 private:
-	Scene* scene;
-	SceneID Id;
+
+	SceneID currScene;
 	Font font;
 
 	Text mainMenuText[4]; // 오르기 옵션 크래딧 종료
@@ -33,16 +34,14 @@ public:
 	void InitButtun();
 
 	void MenuTextFlash();
+	
 
-
-	void InitSceneUi(SceneID Id, Scene* scene);
+	void InitSceneUi(SceneID Id);
 
 	void MenuDraw(RenderWindow& window);
 	void OptionDraw(RenderWindow& window);
 	void PauseDraw(RenderWindow& window);
 	void cxDraw(RenderWindow& window);
-
-
 
 
 	void Draw(RenderWindow& window);

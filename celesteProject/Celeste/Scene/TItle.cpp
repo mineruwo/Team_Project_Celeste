@@ -36,6 +36,7 @@ void TItle::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::MainMenu);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
+		UiMgr::GetInstance().InitSceneUi(SceneID::MainMenu);
 	}
 }
 

@@ -9,8 +9,8 @@ class Framework
 {
 private:
 	Vector2i resolution;
-	SceneMgr sceneMgr;
-	UiMgr ui;
+	/*SceneMgr sceneMgr;
+	UiMgr ui;*/
 	RenderWindow window;
 	View* mainView;
 	Image icon;
