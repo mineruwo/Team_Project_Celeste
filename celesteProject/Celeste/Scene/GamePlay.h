@@ -3,7 +3,9 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
 #include "../SceneMgr/SceneMgr.h"
-
+#include "../Bat.h"
+#include "../Wall.h"
+#include "../Player/Player.h"
 using namespace sf;
 using namespace std;
 
@@ -11,11 +13,16 @@ class GamePlay : public Scene
 {
 private:
 
+	Player player;
+	Bat bat;
+
+
 
 
 	SceneID currScene;
 
 public:
+
 	GamePlay();
 	~GamePlay();
 

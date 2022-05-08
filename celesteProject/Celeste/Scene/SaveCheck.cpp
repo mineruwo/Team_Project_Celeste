@@ -12,8 +12,6 @@ void SaveCheck::Init(Vector2i resolution)
 	cTexture = "Graphics/Atlases/Gui/controls/keyboard/c.png";
 	xTexture = "Graphics/Atlases/Gui/controls/keyboard/x.png";
 
-
-
 	backGrnd.setTexture(TextureHolder::GetTexture(backGrndTexture));
 	for (int i = 0; i < 3; i++)
 	{
@@ -59,6 +57,7 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::MainMenu);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
+		UiMgr::GetInstance().InitSceneUi(SceneID::MainMenu);
 
 	}
 
@@ -68,6 +67,7 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::GamePlay);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
+		UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);
 	}
 }
 

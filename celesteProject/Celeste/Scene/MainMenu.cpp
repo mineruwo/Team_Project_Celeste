@@ -1,6 +1,5 @@
 #include "MainMenu.h"
 #include "../SceneMgr/SceneMgr.h"
-#include "../Utils/UiMgr.h"
 
 MainMenu::MainMenu():currScene(SceneID::MainMenu)
 {
@@ -55,6 +54,7 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		Scene::NextScene(SceneID::Title);
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::Title);
+		UiMgr::GetInstance().InitSceneUi(SceneID::Title);
 	}
 
 	if (InputMgr::GetKeyDown(Keyboard::Up))
@@ -138,14 +138,17 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		case 0:
 			Scene::NextScene(SceneID::SaveCheck);
 			SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
+			UiMgr::GetInstance().InitSceneUi(SceneID::SaveCheck);
 			break;
 		case 1:
 			Scene::NextScene(SceneID::Option);
 			SceneMgr::GetInstance().ChangeScene(SceneID::Option);
+			UiMgr::GetInstance().InitSceneUi(SceneID::Option);
 			break;
 		case 2:
 			Scene::NextScene(SceneID::Credits);
 			SceneMgr::GetInstance().ChangeScene(SceneID::Credits);
+			UiMgr::GetInstance().InitSceneUi(SceneID::Credits);
 			break;
 		case 3:
 			window.close();
@@ -165,7 +168,6 @@ void MainMenu::Draw(RenderWindow& window)
 	window.draw(exit);
 	window.draw(cSprite);
 	window.draw(xSprite);
-	
 
 }
 

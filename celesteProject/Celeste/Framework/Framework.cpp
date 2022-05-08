@@ -43,7 +43,9 @@ void Framework::Update()
 void Framework::Draw()
 {
 	window.clear();
+	//sceneMgr.SceneDraw(window);
 	SceneMgr::GetInstance().SceneDraw(window);
+	//ui.Draw(window);
 	UiMgr::GetInstance().Draw(window);
 
 	window.display();

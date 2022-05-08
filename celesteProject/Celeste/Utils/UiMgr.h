@@ -26,7 +26,7 @@ private:
 
 public:
 	UiMgr();
-	void SetText(Text text, unsigned int size, Color color , Vector2f positon);
+	void SetText(Text &text, unsigned int size, Color color , Vector2f positon);
 
 	void InitMainMenu();
 	void InitMainOption();
