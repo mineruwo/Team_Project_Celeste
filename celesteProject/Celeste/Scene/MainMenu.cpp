@@ -1,5 +1,6 @@
 #include "MainMenu.h"
 #include "../SceneMgr/SceneMgr.h"
+#include "../Utils/UiMgr.h"
 
 MainMenu::MainMenu():currScene(SceneID::MainMenu)
 {
@@ -164,6 +165,7 @@ void MainMenu::Draw(RenderWindow& window)
 	window.draw(exit);
 	window.draw(cSprite);
 	window.draw(xSprite);
+	
 
 }
 

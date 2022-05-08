@@ -148,30 +148,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="SceneMgr\SceneMgr.cpp" />
     <ClCompile Include="Scene\GamePlay.cpp" />
     <ClCompile Include="Scene\MainMenu.cpp" />
     <ClCompile Include="Scene\Scene.cpp" />
     <ClCompile Include="Scene\SaveCheck.cpp" />
     <ClCompile Include="Scene\TItle.cpp" />
+    <ClCompile Include="Utils\AnimationClip.cpp" />
+    <ClCompile Include="Utils\AnimationController.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp" />
     <ClCompile Include="Utils\TextureHolder.cpp" />
     <ClCompile Include="Utils\UiMgr.cpp" />
+    <ClCompile Include="Wall.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bat.h" />
     <ClInclude Include="Framework\Framework.h" />
+    <ClInclude Include="Player\Player.h" />
     <ClInclude Include="SceneMgr\SceneMgr.h" />
     <ClInclude Include="Scene\GamePlay.h" />
     <ClInclude Include="Scene\MainMenu.h" />
     <ClInclude Include="Scene\Scene.h" />
     <ClInclude Include="Scene\SaveCheck.h" />
     <ClInclude Include="Scene\TItle.h" />
+    <ClInclude Include="Utils\AnimationClip.h" />
+    <ClInclude Include="Utils\AnimationController.h" />
     <ClInclude Include="Utils\InputMgr.h" />
     <ClInclude Include="Utils\Singleton.h" />
     <ClInclude Include="Utils\TextureHolder.h" />
     <ClInclude Include="Utils\UiMgr.h" />
+    <ClInclude Include="Wall.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

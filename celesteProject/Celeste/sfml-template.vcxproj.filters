@@ -25,6 +25,9 @@
     <Filter Include="소스 파일\Scene">
       <UniqueIdentifier>{f59d601b-d20d-4d10-9e68-f1c8f74bed9b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="소스 파일\Player">
+      <UniqueIdentifier>{7c5b2c9f-1a9b-4441-9aad-a3063f43446e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -60,6 +63,21 @@
     <ClCompile Include="Utils\UiMgr.cpp">
       <Filter>소스 파일\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Wall.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Bat.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\Player.cpp">
+      <Filter>소스 파일\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\AnimationController.cpp">
+      <Filter>소스 파일\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\AnimationClip.cpp">
+      <Filter>소스 파일\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\Framework.h">
@@ -93,6 +111,21 @@
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\UiMgr.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Wall.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Bat.h">
+      <Filter>소스 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\Player.h">
+      <Filter>소스 파일\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\AnimationController.h">
+      <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\AnimationClip.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
   </ItemGroup>

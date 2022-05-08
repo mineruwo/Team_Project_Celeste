@@ -12,16 +12,19 @@ void UiMgr::SetText(Text text, unsigned int size, Color color, Vector2f positon)
 	text.setCharacterSize(size);
 	text.setFillColor(color);
 	text.setPosition(positon);
-
 }
 
 void UiMgr::InitMainMenu()
 {
-	
+
 	SetText(mainMenuText[0], 30, Color::White, Vector2f(400, 150));
 	SetText(mainMenuText[1], 30, Color::White, Vector2f(400, 500));
 	SetText(mainMenuText[2], 30, Color::White, Vector2f(400, 600));
 	SetText(mainMenuText[3], 30, Color::White, Vector2f(400, 700));
+	mainMenuText[0].setString("오르기");
+	mainMenuText[1].setString("오션");
+	mainMenuText[2].setString("제작진");
+	mainMenuText[3].setString("종료");
 
 }
 
@@ -38,6 +41,8 @@ void UiMgr::InitButtun()
 {
 	SetText(cText, 10, Color::White, Vector2f(1630, 900));
 	SetText(xText, 10, Color::White, Vector2f(1730, 900));
+	cText.setString("확인");
+	xText.setString("취소");
 }
 
 void UiMgr::MenuTextFlash()
@@ -104,6 +109,8 @@ void UiMgr::PauseDraw(RenderWindow& window)
 
 void UiMgr::cxDraw(RenderWindow& window)
 {
+	window.draw(cText);
+	window.draw(xText);
 }
 
 
@@ -121,6 +128,7 @@ void UiMgr::Draw(RenderWindow& window)
 	break;
 	case SceneID::MainMenu:	
 		UiMgr::MenuDraw(window);
+		UiMgr::cxDraw(window);
 		break;
 	case SceneID::Option:
 		break;

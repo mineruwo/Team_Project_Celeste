@@ -36,6 +36,7 @@ void GamePlay::Update(Time dt, RenderWindow& window)
 
 void GamePlay::Draw(RenderWindow& window)
 {
+
 }
 
 void GamePlay::Release()
