@@ -31,13 +31,15 @@ int main()
     RenderWindow window(VideoMode(1280, 720), "Celeste");
     
     Bat bat;
-    
+
     FloatRect bats = bat.GetBatRect();
     
     std::vector <Wall*> walls;
     CreateWalls(walls, bats);
 
+
     InputMgr::Init();
+
     Player player;
     player.Init();
 

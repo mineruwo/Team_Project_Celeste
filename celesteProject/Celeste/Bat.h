@@ -10,8 +10,6 @@ private:
 	Vector2f position;
 	RectangleShape shape;
 
-	Sprite sprite;
-
 	FloatRect batRect;
 
 public:
@@ -24,7 +22,6 @@ public:
 
 	FloatRect GetBatRect();
 
-	//Sprite GetSprite();
 	const RectangleShape &GetShape();
 
 	void Update(std::vector <Wall*> walls);
