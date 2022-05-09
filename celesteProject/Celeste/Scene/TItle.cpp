@@ -26,6 +26,8 @@ void TItle::Init(Vector2i resolution)
 	cSprite.setPosition(1700, 900);
 
 	currScene = SceneID::Title;
+
+	snow.initFlake();
 }
 
 void TItle::Update(Time dt, RenderWindow& window)
@@ -39,6 +41,7 @@ void TItle::Update(Time dt, RenderWindow& window)
 		UiMgr::GetInstance().InitSceneUi(SceneID::MainMenu);
 
 	}
+	snow.Update(dt, window);
 }
 
 void TItle::Draw(RenderWindow& window)
@@ -46,6 +49,7 @@ void TItle::Draw(RenderWindow& window)
 	window.draw(backGrnd);
 	window.draw(logoSprite);
 	window.draw(cSprite);
+	snow.Draw(window);
 }
 
 void TItle::Release()

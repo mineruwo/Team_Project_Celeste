@@ -6,6 +6,7 @@ Framework::Framework()
 	resolution.y = VideoMode::getDesktopMode().height;
 
 	window.create(VideoMode(resolution.x, resolution.y), "Celeste", Style::Default);
+	
 	//mainView = new RenderWindow(FloatRect(0, 0, resolution.x, resolution.y));
 	//window.setMouseCursorVisible(false);
 

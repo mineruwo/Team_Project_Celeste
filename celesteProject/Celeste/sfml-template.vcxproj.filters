@@ -82,7 +82,7 @@
       <Filter>소스 파일\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Scene\Snow.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -138,7 +138,7 @@
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Snow.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>소스 파일\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -3,6 +3,7 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
 #include "../SceneMgr/SceneMgr.h"
+#include "Snow.h"
 
 
 using namespace sf;
@@ -12,6 +13,7 @@ class TItle : public Scene
 {
 private:
 
+	Snow snow;
 
 	String backGrndTexture;
 	String logoTexture;
