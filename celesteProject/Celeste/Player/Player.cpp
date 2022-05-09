@@ -149,22 +149,24 @@ void Player::Crash(std::vector<Wall *> walls)
 			switch (pivot)
 			{
 			case Pivots::LC:
-				//왼쪽
+				//오른쪽
 				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (floorHitbox.getGlobalBounds().left);
-				isCollision[2] = true;
+				isCollision[3] = true;
 				break;
-
+				//왼쪽
 			case Pivots::RC:
 				position.x -= (floorHitbox.getGlobalBounds().left + floorHitbox.getGlobalBounds().width) - (v->GetWallRect().left);
-				isCollision[3] = true;
+				isCollision[2] = true;
 				break;
 
 			case Pivots::CT:
 				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (floorHitbox.getGlobalBounds().top);
+				isCollision[1] = true;
 				break;
 
 			case Pivots::CB:
 				position.y -= (floorHitbox.getGlobalBounds().top + floorHitbox.getGlobalBounds().height) - (v->GetWallRect().top);
+				isCollision[0] = true;
 				gravityV = 0.f;
 				break;
 
@@ -343,11 +345,22 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	}
 
 	// 점프 이동
-	// 바닥에 닿았을 때만 작동되도록
 
 	if ( isJump && InputMgr::GetKey(Keyboard::C))
 	{
-		if (isSeizeWall == false)
+		if (isCollision[0])
+		{
+			if (dt < 1.f)
+			{
+				if (isJump = true)
+				{
+					position.y -= dt * speed * 2.f;
+					isFalling = false;
+					
+				}
+			}
+		}
+		/*if (isSeizeWall == false)
 		{
 			if (dt < 1.f)
 			{
@@ -358,10 +371,10 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 					/*if (position.y > 1)
 					{
 						position.y -= dt * speed * 3.f;
-					}*/
+					}
 				}
 			}
-		}
+		}*/
 		/*else if (isSeizeWall == true)
 		{
 			isFalling = true;
@@ -372,6 +385,33 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	//대쉬
 	if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
 	{
+		if (isCollision[1])
+		{
+			if (isRight == true)
+			{
+				if (position.x < deshDir.x + 200)
+				{
+					isFalling = false;
+					position.x += dt * speed * 3.f;
+				}
+				else
+				{
+					isFalling = true;
+				}
+			}
+			else if (isRight == false)
+			{
+				if (position.x > deshDir.x - 200)
+				{
+					isFalling = false;
+					position.x -= dt * speed * 3.f;
+				}
+				else
+				{
+					isFalling = true;
+				}
+			}
+		}
 		/*if (isRight == true)
 		{
 			if (position.x < deshDir.x + 200)
@@ -473,40 +513,6 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	//충돌 처리
 
 	Crash(walls);
-	/*for (auto v : walls)
-	{
-		if (floorHitbox.getGlobalBounds().intersects(v->GetWallRect()))
-		{
-			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), floorHitbox.getGlobalBounds());
-
-
-			switch (pivot)
-			{
-			case Pivots::LC:
-				//왼쪽
-				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (floorHitbox.getGlobalBounds().left);
-				break;
-
-			case Pivots::RC:
-				position.x -= (floorHitbox.getGlobalBounds().left + floorHitbox.getGlobalBounds().width) - (v->GetWallRect().left);
-				break;
-
-			case Pivots::CT:
-				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (floorHitbox.getGlobalBounds().top);
-				break;
-
-			case Pivots::CB:
-				isFloor = true;
-				position.y -= (floorHitbox.getGlobalBounds().top + floorHitbox.getGlobalBounds().height) - (v->GetWallRect().top);
-				gravityV = 0.f;				
-				break;
-
-			defalut:
-				break;
-			}
-			sprite.setPosition(position);
-		}
-	}*/
 
 	sprite.setPosition(position);
 
