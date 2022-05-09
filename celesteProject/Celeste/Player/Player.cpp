@@ -54,6 +54,7 @@ void Player::Init()
 	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(192, 0, 32, 32), Vector2f(16, 32)));
 	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(224, 0, 32, 32), Vector2f(16, 32)));
 	IdleClip.frames.push_back(AnimationFrame(texture, IntRect(0, 32, 32, 32), Vector2f(16, 32)));
+
 	animation.AddClip(IdleClip);
 	IdleClip.frames.clear();
 
@@ -99,8 +100,19 @@ void Player::Init()
 	animation.AddClip(clipJump);
 	clipJump.frames.clear();
 
-	animation.Play("Idle");
+	texture.loadFromFile("graphics/player_climb_dangling_walk.png");
 
+	animation.SetTarget(&sprite);
+	AnimationClip clipClimb;
+
+	clipClimb.id = "Climb";
+	clipClimb.fps = 10;
+	clipClimb.loopType = AnimationLoopTypes::Loop;
+
+	clipClimb.frames.push_back(AnimationFrame(texture, IntRect(32, 96, 32, 32), Vector2f(16, 32)));
+
+
+	animation.Play("Idle");
 	position = sprite.getPosition();
 
 }
@@ -116,12 +128,63 @@ void Player::Init()
 	
 }*/
 /*========================================
+				충돌 처리
+==========================================*/
+
+
+
+void Player::Crash(std::vector<Wall *> walls)
+{
+	for (auto& c : isCollision)
+	{
+		c = false;
+	}
+
+	for (auto v : walls)
+	{
+		if (floorHitbox.getGlobalBounds().intersects(v->GetWallRect()))
+		{
+			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), floorHitbox.getGlobalBounds());
+
+			switch (pivot)
+			{
+			case Pivots::LC:
+				//왼쪽
+				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (floorHitbox.getGlobalBounds().left);
+				isCollision[2] = true;
+				break;
+
+			case Pivots::RC:
+				position.x -= (floorHitbox.getGlobalBounds().left + floorHitbox.getGlobalBounds().width) - (v->GetWallRect().left);
+				isCollision[3] = true;
+				break;
+
+			case Pivots::CT:
+				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (floorHitbox.getGlobalBounds().top);
+				break;
+
+			case Pivots::CB:
+				position.y -= (floorHitbox.getGlobalBounds().top + floorHitbox.getGlobalBounds().height) - (v->GetWallRect().top);
+				gravityV = 0.f;
+				break;
+
+			defalut:
+				break;
+			}
+			sprite.setPosition(position);
+		}
+	}
+
+}
+
+/*========================================
 	키 입력에 따른 플레이어의 애니메이션 
 ==========================================*/
 void Player::UpdateInput()
 {
 	if (InputMgr::GetKeyDown(Keyboard::Right)) //오른쪽 이동
 	{
+		action = PlayerAction::MOVE;
 		isRight = true;
 		sprite.setScale(4.f, 4.f);
 		animation.Play("Walk");		
@@ -134,13 +197,11 @@ void Player::UpdateInput()
 	}
 	if (InputMgr::GetKeyUp(Keyboard::Right)) 
 	{
-		//sprite.setScale(4.f, 4.f);
 		animation.Play("Idle");
 		animation.PlayQueue("Idle");
 	}
 	if (InputMgr::GetKeyUp(Keyboard::Left))
 	{
-		//sprite.setScale(-4.f, 4.f);
 		animation.Play("Idle");
 		animation.PlayQueue("Idle");
 	}
@@ -152,7 +213,15 @@ void Player::UpdateInput()
 	if (InputMgr::GetKeyDown(Keyboard::Down))
 	{
 		isCatch = false;
-		sprite.setScale(4.f, 3.f);				
+		if (isRight)
+		{
+			sprite.setScale(4.f, 3.f);
+		}
+		else if (!isRight)
+		{
+			sprite.setScale(-4.f, 3.f);
+		}
+						
 	}
 	if (InputMgr::GetKeyUp(Keyboard::Down))
 	{
@@ -160,9 +229,13 @@ void Player::UpdateInput()
 		{
 
 		}
-		else
+		else if(isRight)
 		{
 			sprite.setScale(4.f, 4.f);
+		}
+		else if (!isRight)
+		{
+			sprite.setScale(-4.f, 4.f);
 		}
 
 	}
@@ -170,6 +243,8 @@ void Player::UpdateInput()
 	{
 		isJump = true;
 		animation.Play("Jump");
+		prePosition.y = position.y;
+
 		if (InputMgr::GetKeyDown(Keyboard::Right) || InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			animation.PlayQueue("Walk");
@@ -201,7 +276,7 @@ void Player::UpdateInput()
 	}
 	if (InputMgr::GetKeyDown(Keyboard::Z)) // 벽잡기
 	{
-		
+		prePosition.x = position.x;
 	}
 
 }
@@ -226,6 +301,14 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	{
 		isDash = true;
 	}
+	/*if (gravityV == 0)
+	{
+		isJump = true;
+	}
+	else
+	{
+		isJump = false;
+	}*/
 
 	// 상하좌우이동
 	if (InputMgr::GetKey(Keyboard::Right))
@@ -264,26 +347,27 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 
 	if ( isJump && InputMgr::GetKey(Keyboard::C))
 	{
-
-		if (dt < 1.f)
+		if (isSeizeWall == false)
 		{
-			if (isJump == true)
+			if (dt < 1.f)
 			{
-				position.y -= dt * speed * 2.f;
-				isFalling = true;
-				/*if (position.y > 1)
+				if (isJump = true)
 				{
-					position.y -= dt * speed * 3.f;
-				}*/
+					position.y -= dt * speed * 2.f;
+					isFalling = true;
+					/*if (position.y > 1)
+					{
+						position.y -= dt * speed * 3.f;
+					}*/
+				}
 			}
-
 		}
-
-		/*if (position.x )
+		/*else if (isSeizeWall == true)
 		{
-			position.x *= -1.f;
+			isFalling = true;
+			position.y *= -1.f;
 		}*/
-
+		
 	}
 	//대쉬
 	if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
@@ -313,6 +397,7 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 			}
 		}*/
 		
+		// 다시 체크
 		if (InputMgr::GetKey(Keyboard::Right))
 		{
 			if (position.x < deshDir.x + 200)
@@ -323,8 +408,9 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 			}
 			else
 			{
+				dashCount = START_DASH;
 				isFalling = true;
-			}
+			}			
 		}
 		else if (InputMgr::GetKey(Keyboard::Left))
 		{
@@ -336,48 +422,82 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 			}
 			else
 			{
+				dashCount = START_DASH;
 				isFalling = true;
 			}
 		}
 		else if (InputMgr::GetKey(Keyboard::Up))
-		{
-			isJump = true;
+		{			
+			//isJump = true;
 			isFalling = true;
 			dashCount--;
 			position.y -= dt * speed * 3.f;
 		}
 		else if (InputMgr::GetKey(Keyboard::Down))
 		{
-			isJump = true;
+			//isJump = true;
 			isFalling = true;
 			dashCount--;
 			position.y += dt * speed * 3.f;
 		}		
 	}	
+	if (InputMgr::GetKey(Keyboard::Z))
+	{
+		if (isCollision[2] || isCollision[3])
+		{
+			position.x = prePosition.x;
+			isFalling = false;
+			if (InputMgr::GetKey(Keyboard::Up))
+			{
+				position.y -= dt * speed;
+			}
+			if (InputMgr::GetKey(Keyboard::Down))
+			{
+				position.y += dt * speed;
+			}
+			if (dt > 6.f)
+			{
+				position.y += dt * speed;
+			}
+		}
+		else
+		{
+			isFalling = true;
+		}
+		//isFalling = true;
+	}
+	if (InputMgr::GetKeyUp(Keyboard::Z))
+	{
+		isFalling = true;
+	}
 	//충돌 처리
-	for (auto v : walls)
+
+	Crash(walls);
+	/*for (auto v : walls)
 	{
 		if (floorHitbox.getGlobalBounds().intersects(v->GetWallRect()))
 		{
-			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), sprite.getGlobalBounds());
+			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), floorHitbox.getGlobalBounds());
+
 
 			switch (pivot)
 			{
 			case Pivots::LC:
-				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (sprite.getGlobalBounds().left);
+				//왼쪽
+				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (floorHitbox.getGlobalBounds().left);
 				break;
 
 			case Pivots::RC:
-				position.x -= (sprite.getGlobalBounds().left + sprite.getGlobalBounds().width) - (v->GetWallRect().left);
+				position.x -= (floorHitbox.getGlobalBounds().left + floorHitbox.getGlobalBounds().width) - (v->GetWallRect().left);
 				break;
 
 			case Pivots::CT:
-				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (sprite.getGlobalBounds().top);
+				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (floorHitbox.getGlobalBounds().top);
 				break;
 
 			case Pivots::CB:
 				isFloor = true;
-				position.y -= (sprite.getGlobalBounds().top + sprite.getGlobalBounds().height) - (v->GetWallRect().top);
+				position.y -= (floorHitbox.getGlobalBounds().top + floorHitbox.getGlobalBounds().height) - (v->GetWallRect().top);
 				gravityV = 0.f;				
 				break;
 
@@ -386,7 +506,7 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 			}
 			sprite.setPosition(position);
 		}
-	}
+	}*/
 
 	sprite.setPosition(position);
 
@@ -401,7 +521,7 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	animation.Update(dt);
 }
 
-FloatRect Player::GetGobalBound() const
+FloatRect Player::GetFloorGobalBound() const
 {
 	return floorHitbox.getGlobalBounds();
 }

@@ -31,6 +31,7 @@
     </ClCompile>
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Wall.cpp" />
+    <ClCompile Include="Bat2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -50,5 +51,6 @@
     </ClInclude>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Wall.h" />
+    <ClInclude Include="Bat2.h" />
   </ItemGroup>
 </Project>

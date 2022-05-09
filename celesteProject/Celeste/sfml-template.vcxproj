@@ -149,6 +149,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Bat.cpp" />
+    <ClCompile Include="Bat2.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="Utils\AnimationClip.cpp" />
@@ -159,6 +160,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bat.h" />
+    <ClInclude Include="Bat2.h" />
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="Utils\AnimationClip.h" />
     <ClInclude Include="Utils\AnimationController.h" />

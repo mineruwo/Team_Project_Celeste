@@ -28,10 +28,12 @@ public:
 
 	static int RandomRange(int min, int excludeMax);
 
+	static Pivots CollisionDir(FloatRect standRect, FloatRect testRect);
+
 	static float GetLength(const Vector2f &vector);
 	static Vector2f Normalize(const Vector2f &vector);
 	static float GetAngel(const Vector2f &from, const Vector2f &to);
 
-	static Pivots CollisionDir(FloatRect standRect, FloatRect testRect);
+
 };
 

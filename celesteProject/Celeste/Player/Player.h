@@ -4,9 +4,19 @@
 #include <list>
 #include "../Wall.h"
 #include "../Bat.h"
+#include "../Bat2.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
+
+enum class PlayerAction
+{
+	IDLE,
+	MOVE,
+	JUMP,
+	DASH,
+};
+
 
 class Player
 {
@@ -16,8 +26,11 @@ private:
 	const float CharacSize = 4.f;
 	const int START_DASH = 1;
 
+	PlayerAction action = PlayerAction::IDLE;
+
 	Sprite sprite; //플레이어 그리기
 	Vector2f position; // 플레이어의 위치
+	Vector2f prePosition; //플레이어의 이전 위치
 	
 	AnimationController animation; 
 	Vector2i resolution;
@@ -29,7 +42,6 @@ private:
 	int dashCount;
 
 	float jumpspeed;
-
 
 	bool isFloor; //플레이어 바닥 유무
 	bool isRight; //플레이어 오른쪽 유무
@@ -58,6 +70,7 @@ private:
 	float speed;
 	float timer;	
 
+	bool isCollision[4]; // Up Down Left Right
 public:
 	Player();
 
@@ -65,10 +78,12 @@ public:
 
 	//void Spawn(IntRect arena, Vector2i res);
 	
+	void Crash(std::vector<Wall *> walls);
+
 	void UpdateInput();
 	void Update(float dt, std::vector<Wall*> walls);
 
-	FloatRect GetGobalBound() const;
+	FloatRect GetFloorGobalBound() const;
 
 	Vector2f GetPosition() const;
 

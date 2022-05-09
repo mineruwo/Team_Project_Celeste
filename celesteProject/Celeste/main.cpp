@@ -1,13 +1,12 @@
 ﻿#include <SFML/Graphics.hpp>
 #include "Player/Player.h"
-#include "Bat.h"
 #include "Wall.h"
 #include "Utils/InputMgr.h"
 
 using namespace sf;
 
 
-void CreateWalls(std::vector<Wall*>& walls, FloatRect bat)
+void CreateWalls(std::vector<Wall*>& walls, FloatRect bat, FloatRect bat2)
 {
 	for (auto v : walls)
 	{
@@ -18,6 +17,9 @@ void CreateWalls(std::vector<Wall*>& walls, FloatRect bat)
 
 	Wall* wallUp = new Wall(bat);
 	walls.push_back(wallUp);
+    Wall *wallRight = new Wall(bat2);
+    walls.push_back(wallRight);
+  
 	/*Wall* wallDown = new Wall(bat.top + bat.height - offset, bat.left, bat.width, offset);
 	walls.push_back(wallDown);
 	Wall* wallLeft = new Wall(offset, bat.left, offset, bat.height - 2 * offset);
@@ -31,11 +33,13 @@ int main()
     RenderWindow window(VideoMode(1280, 720), "Celeste");
     
     Bat bat;
+    Bat2 bat2;
 
     FloatRect bats = bat.GetBatRect();
+    FloatRect bat2s = bat2.GetBatRect();
     
     std::vector <Wall*> walls;
-    CreateWalls(walls, bats);
+    CreateWalls(walls, bats, bat2s);
 
 
     InputMgr::Init();
@@ -69,6 +73,7 @@ int main()
         //DRAW
         window.clear();
         window.draw(bat.GetShape());
+        window.draw(bat2.GetShape());
         player.Draw(window);
         window.display();       
     }
