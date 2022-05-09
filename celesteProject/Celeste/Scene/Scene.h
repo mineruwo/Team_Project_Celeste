@@ -33,7 +33,7 @@ public:
 	virtual void Draw(sf::RenderWindow& window);
 	virtual void Release() {};
 
-	SceneID NextScene(SceneID Id);
+	SceneID* NextScene(SceneID Id);
 	SceneID GetCurrScene();
 
 };

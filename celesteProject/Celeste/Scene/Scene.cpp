@@ -1,6 +1,5 @@
 #include "Scene.h"
 
-
 Scene::Scene()
 {
 }
@@ -17,13 +16,13 @@ void Scene::Draw(sf::RenderWindow& window)
 {
 }
 
-SceneID Scene::NextScene(SceneID Id)
+SceneID* Scene::NextScene(SceneID Id)
 {
 	currScene = Id;
-	return currScene;
+	return &currScene;
 }
 
 SceneID Scene::GetCurrScene()
 {
-	return Scene::currScene;
+	return currScene;
 }

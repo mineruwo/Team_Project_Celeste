@@ -1,6 +1,7 @@
 #include "SaveCheck.h"
 
 SaveCheck::SaveCheck()
+	:currScene(SceneID::SaveCheck)
 {
 }
 
@@ -54,7 +55,9 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 	if (InputMgr::GetKeyDown(Keyboard::X))
 	{
 		// sceneID ¹Ù²ñ
-		Scene::NextScene(SceneID::MainMenu);
+		//Scene::NextScene(SceneID::MainMenu);
+		SceneMgr::GetInstance().GetScene().NextScene(SceneID::MainMenu);
+
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::MainMenu);
 		UiMgr::GetInstance().InitSceneUi(SceneID::MainMenu);
@@ -64,7 +67,9 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 	if (InputMgr::GetKeyDown(Keyboard::C))
 	{
 		// sceneID ¹Ù²ñ
-		Scene::NextScene(SceneID::GamePlay);
+		//Scene::NextScene(SceneID::GamePlay);
+		SceneMgr::GetInstance().GetScene().NextScene(SceneID::GamePlay);
+
 		//change/;
 		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
 		UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);

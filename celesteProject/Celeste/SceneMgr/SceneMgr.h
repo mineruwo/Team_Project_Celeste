@@ -3,6 +3,7 @@
 #include "../Scene/TItle.h"
 #include"../Scene/Scene.h"
 #include"../Scene/MainMenu.h"
+#include"../Scene/GamePlay.h"
 #include"../Utils/Singleton.h"
 #include"../Scene/SaveCheck.h"
 #include"../Utils/UiMgr.h"
@@ -28,5 +29,6 @@ public:
 	void SceneDraw(RenderWindow& window);
 	void SceneRelease();
 
+	Scene& GetScene();
 };
 

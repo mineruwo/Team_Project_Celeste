@@ -57,7 +57,7 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		UiMgr::GetInstance().InitSceneUi(SceneID::Title);
 	}
 
-	if (InputMgr::GetKeyDown(Keyboard::Up))
+	if (InputMgr::GetKeyUp(Keyboard::Up))
 	{
 		if (menuNum > 0)
 		{
@@ -94,7 +94,7 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 			break;
 		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::Down))
+	if (InputMgr::GetKeyUp(Keyboard::Down))
 	{
 		if (menuNum < 3)
 		{

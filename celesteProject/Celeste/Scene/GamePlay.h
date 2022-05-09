@@ -15,16 +15,19 @@ private:
 
 	Player player;
 	Bat bat;
+	Wall wall;
 
-
-
+	FloatRect bats;
+	std::vector <Wall*> walls;
 
 	SceneID currScene;
 
 public:
 
 	GamePlay();
-	~GamePlay();
+	//~GamePlay();
+
+	void CreateWalls();
 
 	virtual void Init(Vector2i resolution);
 	virtual void Update(Time dt, RenderWindow& window);

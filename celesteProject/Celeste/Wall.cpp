@@ -19,3 +19,4 @@ const FloatRect Wall::GetWallRect()
 {
 	return wallRect;
 }
+

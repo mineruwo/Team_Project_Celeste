@@ -11,6 +11,7 @@ Framework::Framework()
 
 	icon.loadFromFile("Graphics/icon/icon.PNG");
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+
 }
 
 void Framework::init()

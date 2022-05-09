@@ -12,9 +12,12 @@ private:
 	RectangleShape shape;
 
 public:
+	Wall(){}
 	Wall(int top, int left, int width, int height);
 	Wall(FloatRect setwall);
 	const FloatRect GetWallRect();
+
+
 
 
 };

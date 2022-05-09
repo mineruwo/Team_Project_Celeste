@@ -49,10 +49,11 @@ void SceneMgr::ChangeScene(SceneID Id)
 	//	scene = new ;
 	//	currScene = SceneID::SelectChapter;
 	//	break;
-	//case SceneID::GamePlay:
-	//	scene = new ;
-	//	currScene = SceneID::GamePlay;
-	//	break;
+	case SceneID::GamePlay:
+		scene = new GamePlay;
+		currScene = SceneID::GamePlay;
+		SceneMgr::SceneInit(resolution);
+		break;
 	//case SceneID::Pause:
 	//	scene = new ;
 	//	currScene = SceneID::Pause;
@@ -71,11 +72,7 @@ void SceneMgr::SceneInit(Vector2i resolution)
 void SceneMgr::SceneUpdate(Time dt, RenderWindow& window)
 {
 	scene->Update(dt, window);
-	if (scene->GetCurrScene() != currScene)
-	{
-		ChangeScene(scene->GetCurrScene());
-
-	}
+	
 }
 
 void SceneMgr::SceneDraw(RenderWindow& window)
@@ -87,6 +84,11 @@ void SceneMgr::SceneDraw(RenderWindow& window)
 void SceneMgr::SceneRelease()
 {
 	scene->Release();
+}
+
+Scene& SceneMgr::GetScene()
+{
+	return *scene;
 }
 
 
