@@ -3,6 +3,7 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
 #include "../SceneMgr/SceneMgr.h"
+#include "Snow.h"
 
 using namespace sf;
 using namespace std;
@@ -10,6 +11,9 @@ using namespace std;
 class SaveCheck : public Scene
 {
 private:
+
+	Snow snow;
+
 	String backGrndTexture;
 	String characterCardTexture;
 	String characterTicketTexture;

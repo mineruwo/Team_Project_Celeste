@@ -3,6 +3,7 @@
 #include "../SceneMgr/SceneMgr.h"
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
+#include "Snow.h"
 
 using namespace sf;
 using namespace std;
@@ -10,6 +11,8 @@ using namespace std;
 class MainMenu : public Scene
 {
 private:
+
+	Snow snow;
 
 	String menuBackGrndTexture;
 	String climbTexture;

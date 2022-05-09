@@ -48,6 +48,7 @@ void SaveCheck::Init(Vector2i resolution)
 
 
 	currScene = SceneID::SaveCheck;
+	snow.initFlake();
 }
 
 void SaveCheck::Update(Time dt, RenderWindow& window)
@@ -74,11 +75,13 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
 		UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);
 	}
+	snow.Update(dt, window);
 }
 
 void SaveCheck::Draw(RenderWindow& window)
 {
 	window.draw(backGrnd);
+	snow.Draw(window);
 	window.draw(characterTicket[0]);
 	window.draw(characterTicket[1]);
 	window.draw(characterTicket[2]);

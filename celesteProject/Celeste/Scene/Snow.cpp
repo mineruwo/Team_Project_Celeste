@@ -36,7 +36,7 @@ void Snow::Update(Time dt, RenderWindow& window)
 
 
 
-	offSet = (float)Utils::RandomRange(1, 5) / 10 * -1.f;
+	offSet = ((float)Utils::RandomRange(1, 4) / 10) * -1.f;
 
 
 	for (unsigned int i = 0; i < snowflakes.size(); i++)

@@ -39,6 +39,8 @@ void MainMenu::Init(Vector2i resolution)
 	xSprite.setPosition(1700, 900);
 
 	currScene = SceneID::MainMenu;
+
+	snow.initFlake();
 }
 
 void MainMenu::SelctClimn(Time dt)
@@ -157,11 +159,14 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 			break;
 		}
 	}
+
+	snow.Update(dt, window);
 }
 
 void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
+	snow.Draw(window);
 	window.draw(climn);
 	window.draw(option);
 	window.draw(credit);
