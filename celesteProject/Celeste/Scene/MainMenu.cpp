@@ -17,7 +17,7 @@ void MainMenu::Init(Vector2i resolution)
 
 
 	menuBackGrnd.setTexture(TextureHolder::GetTexture(menuBackGrndTexture));
-	climn.setTexture(TextureHolder::GetTexture(climbTexture));
+	climb.setTexture(TextureHolder::GetTexture(climbTexture));
 	option.setTexture(TextureHolder::GetTexture(optionTexture));
 	credit.setTexture(TextureHolder::GetTexture(creditTexture));
 	exit.setTexture(TextureHolder::GetTexture(exitTexture));
@@ -31,7 +31,7 @@ void MainMenu::Init(Vector2i resolution)
 	xSprite.setScale(0.5f, 0.5f);
 
 	menuBackGrnd.setPosition(0,0);
-	climn.setPosition(300, 150);
+	climb.setPosition(300, 200);
 	option.setPosition(300,500);
 	credit.setPosition(300, 600);
 	exit.setPosition(300, 700);
@@ -43,123 +43,171 @@ void MainMenu::Init(Vector2i resolution)
 	snow.initFlake();
 }
 
-void MainMenu::SelctClimn(Time dt)
+void MainMenu::SelectClimb(Time dt)
 {
-
+	option.setPosition(300, 500);
+	credit.setPosition(300, 600);
+	exit.setPosition(300, 700);
+	
+	float y = 200;
+	if (climbBounce)
+	{
+		if (climbUp)
+		{
+			y -= dt.asSeconds() * 1000.f;
+			climb.setPosition(300, y);
+			if (y < 180)
+			{
+				climbUp = false;
+			}
+		}
+		if (!climbUp)
+		{
+			y += dt.asSeconds() *1000.f;
+			climb.setPosition(300, y);
+			if (y > 200);
+			{
+				climbBounce = false;
+			}
+		}
+	}
 }
+
+void MainMenu::SelectOption()
+{
+	climb.setPosition(300, 200);
+	option.setPosition(320, 500);
+	credit.setPosition(300, 600);
+}
+
+void MainMenu::Selectcredit()
+{
+	climb.setPosition(300, 200);
+	option.setPosition(300, 500);
+	credit.setPosition(320, 600);	
+	exit.setPosition(300, 700);
+}
+
+void MainMenu::Selectexit()
+{
+	climb.setPosition(300, 200);
+	option.setPosition(300, 500);
+	credit.setPosition(300, 600);
+	exit.setPosition(320, 700);
+}
+
 
 void MainMenu::Update(Time dt, RenderWindow& window)
 {
-	if (InputMgr::GetKeyDown(Keyboard::X))
+	if (!isOption)
 	{
-		// sceneID ¹Ù²ñ
-		Scene::NextScene(SceneID::Title);
-		//change/;
-		SceneMgr::GetInstance().ChangeScene(SceneID::Title);
-		UiMgr::GetInstance().InitSceneUi(SceneID::Title);
-	}
-
-	if (InputMgr::GetKeyUp(Keyboard::Up))
-	{
-		if (menuNum > 0)
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
-			menuNum--;
+			// sceneID ¹Ù²ñ
+			Scene::NextScene(SceneID::Title);
+			//change/;
+			SceneMgr::GetInstance().ChangeScene(SceneID::Title);
+			UiMgr::GetInstance().InitSceneUi(SceneID::Title);
 		}
 
+		if (InputMgr::GetKeyDown(Keyboard::Up))
+		{
+			if (menuNum > 0)
+			{
+				menuNum--;
+				climbBounce = true;
+			}
+
+		}
 		switch (menuNum)
 		{
-
-		case 0:
-			climn.setPosition(300, 160);
-			option.setPosition(300, 500);
-			credit.setPosition(300, 600);
-			exit.setPosition(300, 700);
+		case 0: //climb
+			MainMenu::SelectClimb(dt);
+			UiMgr::GetInstance().MoveText(menuNum, dt);
+			climbBounce = false;
 			break;
-		case 1:
-			option.setPosition(320, 500);
-			climn.setPosition(300, 150);
-			credit.setPosition(300, 600);
-			exit.setPosition(300, 700);
+		case 1: //option
+			MainMenu::SelectOption();
+			UiMgr::GetInstance().MoveText(menuNum, dt);
 			break;
-		case 2:
-			credit.setPosition(320, 600);
-			climn.setPosition(300, 150);
-			option.setPosition(300, 500);
-			exit.setPosition(300, 700);
-		case 3:
-			exit.setPosition(320, 700);
-			climn.setPosition(300, 150);
-			option.setPosition(300, 500);
-			credit.setPosition(300, 600);
+		case 2: // credit
+			MainMenu::Selectcredit();
+			UiMgr::GetInstance().MoveText(menuNum, dt);
+			break;
+		case 3: //exit
+			MainMenu::Selectexit();
+			UiMgr::GetInstance().MoveText(menuNum, dt);
 			break;
 		default:
 			break;
 		}
+
+		if (InputMgr::GetKeyDown(Keyboard::Down))
+		{
+			if (menuNum < 3)
+			{
+				menuNum++;
+			}
+			switch (menuNum)
+			{
+			case 0: //climb
+				MainMenu::SelectClimb(dt);
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				climbBounce = false;
+				break;
+			case 1: //option
+				MainMenu::SelectOption();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			case 2: // credit
+				MainMenu::Selectcredit();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			case 3: //exit
+				MainMenu::Selectexit();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			default:
+				break;
+			}
+		}
+		if (InputMgr::GetKeyDown(Keyboard::C))
+		{
+			switch (menuNum)
+			{
+
+			case 0:
+				Scene::NextScene(SceneID::SaveCheck);
+				SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
+				UiMgr::GetInstance().InitSceneUi(SceneID::SaveCheck);
+				break;
+			case 1:
+				UiMgr::GetInstance().InitMainOption();
+				isOption = true;
+				break;
+			case 2:
+				Scene::NextScene(SceneID::Credits);
+				SceneMgr::GetInstance().ChangeScene(SceneID::Credits);
+				UiMgr::GetInstance().InitSceneUi(SceneID::Credits);
+				break;
+			case 3:
+				window.close();
+				break;
+			default:
+				break;
+			}
+		}
 	}
-	if (InputMgr::GetKeyUp(Keyboard::Down))
+
+	if (isOption)
 	{
-		if (menuNum < 3)
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
-			menuNum++;
+			isOption = false;
 		}
-		switch (menuNum)
-		{
 
-		case 0:
-			climn.setPosition(300, 160);
-			option.setPosition(300, 500);
-			credit.setPosition(300, 600);
-			exit.setPosition(300, 700);
-			break;
-		case 1:
-			option.setPosition(320, 500);
-			climn.setPosition(300, 150);
-			credit.setPosition(300, 600);
-			exit.setPosition(300, 700);
-			break;
-		case 2:
-			credit.setPosition(320, 600);
-			climn.setPosition(300, 150);
-			option.setPosition(300, 500);
-			exit.setPosition(300, 700);
-		case 3:
-			exit.setPosition(320, 700);
-			climn.setPosition(300, 150);
-			option.setPosition(300, 500);
-			credit.setPosition(300, 600);
-			break;
-		default:
-			break;
-		}
 	}
-	if (InputMgr::GetKeyDown(Keyboard::C))
-	{
-		switch (menuNum)
-		{
-
-		case 0:
-			Scene::NextScene(SceneID::SaveCheck);
-			SceneMgr::GetInstance().ChangeScene(SceneID::SaveCheck);
-			UiMgr::GetInstance().InitSceneUi(SceneID::SaveCheck);
-			break;
-		case 1:
-			Scene::NextScene(SceneID::Option);
-			SceneMgr::GetInstance().ChangeScene(SceneID::Option);
-			UiMgr::GetInstance().InitSceneUi(SceneID::Option);
-			break;
-		case 2:
-			Scene::NextScene(SceneID::Credits);
-			SceneMgr::GetInstance().ChangeScene(SceneID::Credits);
-			UiMgr::GetInstance().InitSceneUi(SceneID::Credits);
-			break;
-		case 3:
-			window.close();
-			break;
-		default:
-			break;
-		}
-	}
-
+	UiMgr::GetInstance().InitButtun();
 	snow.Update(dt, window);
 }
 
@@ -167,10 +215,19 @@ void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
 	snow.Draw(window);
-	window.draw(climn);
+	if (!isOption)
+	{
+	window.draw(climb);
 	window.draw(option);
 	window.draw(credit);
 	window.draw(exit);
+	UiMgr::GetInstance().cxDraw(window);
+	UiMgr::GetInstance().Draw(window);
+	}
+	if (isOption)
+	{
+		UiMgr::GetInstance().OptionDraw(window);
+	}
 	window.draw(cSprite);
 	window.draw(xSprite);
 

@@ -4,6 +4,7 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
 #include "Snow.h"
+#include "../Utils/UiMgr.h"
 
 using namespace sf;
 using namespace std;
@@ -13,7 +14,6 @@ class MainMenu : public Scene
 private:
 
 	Snow snow;
-
 	String menuBackGrndTexture;
 	String climbTexture;
 	String optionTexture;
@@ -23,7 +23,7 @@ private:
 	string xTexture;
 
 	Sprite menuBackGrnd;
-	Sprite climn;
+	Sprite climb;
 	Sprite option;
 	Sprite credit;
 	Sprite exit;
@@ -31,13 +31,21 @@ private:
 	Sprite xSprite;
 
 	int menuNum = 0;
+	bool climbBounce ;
+	bool climbUp = true;
+	bool isOption = false;
 
 	SceneID currScene;
+	
 
 public:
 	MainMenu();
 	virtual void Init(Vector2i resolution);
-	virtual void SelctClimn(Time dt);
+	virtual void SelectClimb(Time dt);
+	virtual void SelectOption();
+	virtual void Selectcredit();
+	virtual void Selectexit();
+
 	virtual void Update(Time dt, RenderWindow& window);
 	virtual void Draw(RenderWindow& window);
 	virtual void Release();

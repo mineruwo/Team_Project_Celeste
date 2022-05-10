@@ -7,7 +7,6 @@ enum class SceneID
 {
 	Title,
 	MainMenu,
-	Option,
 	Credits,
 	SaveCheck,
 	SelectMap,
