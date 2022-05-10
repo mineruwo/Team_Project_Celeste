@@ -3,8 +3,6 @@
 #include <vector>
 #include <list>
 #include "../Wall.h"
-#include "../Bat.h"
-#include "../Bat2.h"
 #include <SFML/Graphics.hpp>
 
 using namespace sf;
@@ -15,6 +13,8 @@ enum class PlayerAction
 	MOVE,
 	JUMP,
 	DASH,
+	LOOKUP,
+	Climb
 };
 
 
@@ -23,23 +23,21 @@ class Player
 private:
 	const float START_SPEED = 300; // 시작 플레이어 속도
 	const float GRAVITY = 980.f; // 중력 처리
-	const float CharacSize = 4.f;
-	const int START_DASH = 1;
+	const float CharacSize = 2.f;
 
-	PlayerAction action = PlayerAction::IDLE;
+	PlayerAction moveMent = PlayerAction::IDLE;
 
 	Sprite sprite; //플레이어 그리기
 	Vector2f position; // 플레이어의 위치
 	Vector2f prePosition; //플레이어의 이전 위치
-	
-	AnimationController animation; 
+
+	AnimationController animation;
 	Vector2i resolution;
 
 	Texture texture;
 	std::map<std::string, Texture> texMap;
 
 	Vector2f deshDir;
-	int dashCount;
 
 	float jumpspeed;
 
@@ -60,15 +58,18 @@ private:
 	/*=====================
 		캐릭터 바닥 히트박스
 	=======================*/
-
 	RectangleShape floorHitbox;
 	Vector2f floorPosition;
+
+	float jumpTime;
+	float jumpHeight;
+	float jumpPower;
 
 	float gravity;
 	float gravityV;
 
 	float speed;
-	float timer;	
+	float timer;
 
 	bool isCollision[4]; // Up Down Left Right
 public:
@@ -77,8 +78,12 @@ public:
 	void Init();
 
 	//void Spawn(IntRect arena, Vector2i res);
-	
-	void Crash(std::vector<Wall *> walls);
+
+	void Crash(std::vector<Wall*> walls);
+
+	void Jump(float dt);
+	void Move(float dt);
+
 
 	void UpdateInput();
 	void Update(float dt, std::vector<Wall*> walls);
@@ -89,9 +94,9 @@ public:
 
 	Sprite GetSprite() const;
 
-	void Draw(RenderWindow &window);
+	void Draw(RenderWindow& window);
 
-	
+
 
 
 };

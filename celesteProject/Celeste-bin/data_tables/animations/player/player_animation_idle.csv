@@ -1,0 +1,10 @@
+TEXTURE PATH,L,T,W,H,X,Y
+graphics/player_idle A_B_C.png,0,0,32,32,16,32
+graphics/player_idle A_B_C.png,32,0,32,32,16,32
+graphics/player_idle A_B_C.png,64,0,32,32,16,32
+graphics/player_idle A_B_C.png,96,0,32,32,16,32
+graphics/player_idle A_B_C.png,128,0,32,32,16,32
+graphics/player_idle A_B_C.png,160,0,32,32,16,32
+graphics/player_idle A_B_C.png,192,0,32,32,16,32
+graphics/player_idle A_B_C.png,224,0,32,32,16,32
+graphics/player_idle A_B_C.png,0,32,32,32,16,32

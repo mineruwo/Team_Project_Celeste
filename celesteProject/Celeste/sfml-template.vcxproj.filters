@@ -11,6 +11,9 @@
     <Filter Include="Player">
       <UniqueIdentifier>{81580245-2935-415c-8124-8b7e21a07af0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Map">
+      <UniqueIdentifier>{b04d741d-039e-471d-bbc7-377c8b24c085}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -29,9 +32,16 @@
     <ClCompile Include="Utils\Utils.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Wall.cpp" />
-    <ClCompile Include="Bat2.cpp" />
+    <ClCompile Include="Map\Map.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\TileMap.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\TextureHolder.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Utils\InputMgr.h">
@@ -49,8 +59,18 @@
     <ClInclude Include="Utils\Utils.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h" />
     <ClInclude Include="Wall.h" />
-    <ClInclude Include="Bat2.h" />
+    <ClInclude Include="Map\Map.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\TileMap.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\repidcw.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\TextureHolder.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

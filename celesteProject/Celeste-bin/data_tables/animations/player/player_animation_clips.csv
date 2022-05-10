@@ -1,0 +1,6 @@
+ID,FPS,"LOOP TYPE(0:Single, 1:Loop)",CLIP PATH
+Idle,10,1,data_tables/animations/player/player_animation_idle.csv
+Move,13,1,data_tables/animations/player/player_animation_move.csv
+Jump,5,0,data_tables/animations/player/player_animation_jump.csv
+Climb,6,1,data_tables/animations/player/player_animation_climb.csv
+Lookup,9,0,data_tables/animations/player/player_animation_lookup.csv

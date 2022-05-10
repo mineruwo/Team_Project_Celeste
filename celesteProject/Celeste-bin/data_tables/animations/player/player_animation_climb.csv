@@ -1,0 +1,6 @@
+TEXTURE PATH,L,T,W,H,X,Y
+graphics/player_climb_dangling_walk.png,0,0,32,32,16,32
+graphics/player_climb_dangling_walk.png,32,0,32,32,16,32
+graphics/player_climb_dangling_walk.png,64,0,32,32,16,32
+graphics/player_climb_dangling_walk.png,96,0,32,32,16,32
+graphics/player_climb_dangling_walk.png,128,0,32,32,16,32
