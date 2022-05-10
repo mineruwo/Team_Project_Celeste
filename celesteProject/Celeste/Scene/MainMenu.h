@@ -34,6 +34,7 @@ private:
 	bool climbBounce ;
 	bool climbUp = true;
 	bool isOption = false;
+	bool isCredit = false;
 
 	SceneID currScene;
 	

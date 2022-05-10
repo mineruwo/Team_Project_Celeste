@@ -33,22 +33,34 @@ void UiMgr::InitMainMenu()
 
 void UiMgr::InitMainOption()
 {
-	OptionText[0].setString("OPTION");
-	OptionText[1].setString("Fullscreen");
-	OptionText[2].setString("Window Scale");
-	OptionText[3].setString("Vertical Sync");
-	OptionText[4].setString("Music");
-	OptionText[5].setString("Sound");
+	optionText[0].setString("OPTION");
+	optionText[1].setString("Fullscreen");
+	optionText[2].setString("Window Scale");
+	optionText[3].setString("Vertical Sync");
+	optionText[4].setString("Music");
+	optionText[5].setString("Sound");
 
-	SetText(OptionText[0], 100, Color::White, Vector2f(788,200));
-	SetText(OptionText[1],50, Color::White, Vector2f(700,400));
-	SetText(OptionText[2],50, Color::White, Vector2f(700, 500));
-	SetText(OptionText[3],50, Color::White, Vector2f(700, 600));
-	SetText(OptionText[4],50, Color::White, Vector2f(700, 700));
-	SetText(OptionText[5],50, Color::White, Vector2f(700, 800));
+	SetText(optionText[0], 100, Color::White, Vector2f(788,200));
+	SetText(optionText[1],50, Color::White, Vector2f(600,400));
+	SetText(optionText[2],50, Color::White, Vector2f(600, 500));
+	SetText(optionText[3],50, Color::White, Vector2f(600, 600));
+	SetText(optionText[4],50, Color::White, Vector2f(600, 700));
+	SetText(optionText[5],50, Color::White, Vector2f(600, 800));
 
 
+	SetText(screenSize, 50, Color::White, Vector2f(900, 400));
+	SetText(windowScale, 50, Color::White, Vector2f(900, 500));
+	SetText(VerticalSync, 50, Color::White, Vector2f(900, 600));
+	SetText(MusicControl, 50, Color::White, Vector2f(900, 700));
+	SetText(SoundControl, 50, Color::White, Vector2f(900, 800));
 
+	
+}
+
+void UiMgr::InitCredit()
+{
+	SetText(creditContent, 100, Color::White, Vector2f(800, 600));
+	creditContent.setString("Print Credit");
 }
 
 void UiMgr::InitPause()
@@ -117,11 +129,17 @@ void UiMgr::MenuDraw(RenderWindow& window)
 void UiMgr::OptionDraw(RenderWindow& window)
 {
 	for (int i = 0; i < 6; i++)
-		window.draw(OptionText[i]);
+		window.draw(optionText[i]);
+}
+
+void UiMgr::CreditDraw(RenderWindow& window)
+{
+	window.draw(creditContent);
 }
 
 void UiMgr::PauseDraw(RenderWindow& window)
 {
+	
 }
 
 void UiMgr::cxDraw(RenderWindow& window)
@@ -139,8 +157,6 @@ void UiMgr::Draw(RenderWindow& window)
 	break;
 	case SceneID::MainMenu:	
 		UiMgr::MenuDraw(window);
-		break;
-	case SceneID::Credits:
 		break;
 	case SceneID::SaveCheck:
 		break;
@@ -184,6 +200,33 @@ void UiMgr::MoveText(int num , Time dt)
 		break;
 	}
 }
+
+/*
+void UiMgr::optionUpdate()
+{
+}
+
+void UiMgr::Screen()
+{	
+}
+
+void UiMgr::Scale()
+{
+}
+
+void UiMgr::Sync()
+{
+}
+
+void UiMgr::Music()
+{
+}
+
+void UiMgr::Sound()
+{
+}
+
+*/
 
 
 

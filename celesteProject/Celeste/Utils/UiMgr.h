@@ -18,11 +18,26 @@ private:
 	Font font;
 
 	Text mainMenuText[4]; // 오르기 옵션 크래딧 종료
-	Text OptionText[6]; // 옵션 전체 창비율 수직동기화 음악 소리
+	Text optionText[6]; // 옵션 전체 창비율 수직동기화 음악 소리
 	Text pauseText[7]; // 일시중지 계속 다시 옵션 저장 챕터 맵
 
+	
+	Text screenSize;
+	Text windowScale;
+	Text VerticalSync;
+	Text MusicControl;
+	Text SoundControl;
+
+	Text creditContent;
+	
 	Text cText;
 	Text xText;
+
+	/*bool fullScreen = true;
+	int Scale = 0;
+	bool Sync = true;
+	int musicVolume;
+	int soundVolume;*/
 
 
 
@@ -33,6 +48,7 @@ public:
 
 	void InitMainMenu();
 	void InitMainOption();
+	void InitCredit();
 	void InitPause();
 	void InitButtun();
 
@@ -43,10 +59,21 @@ public:
 
 	void MenuDraw(RenderWindow& window);
 	void OptionDraw(RenderWindow& window);
+	void CreditDraw(RenderWindow& window);
 	void PauseDraw(RenderWindow& window);
 	void cxDraw(RenderWindow& window);
 
 	void Draw(RenderWindow& window);
 	void MoveText(int num, Time dt);
+
+	/*
+	void optionUpdate();
+
+	void Screen();
+	void Scale();
+	void Sync();
+	void Music();
+	void Sound();
+*/
 };
 

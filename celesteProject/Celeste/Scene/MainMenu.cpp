@@ -99,7 +99,7 @@ void MainMenu::Selectexit()
 
 void MainMenu::Update(Time dt, RenderWindow& window)
 {
-	if (!isOption)
+	if (!isOption &&!isCredit)
 	{
 		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
@@ -186,9 +186,8 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 				isOption = true;
 				break;
 			case 2:
-				Scene::NextScene(SceneID::Credits);
-				SceneMgr::GetInstance().ChangeScene(SceneID::Credits);
-				UiMgr::GetInstance().InitSceneUi(SceneID::Credits);
+				UiMgr::GetInstance().InitCredit();
+				isCredit = true;
 				break;
 			case 3:
 				window.close();
@@ -207,6 +206,13 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		}
 
 	}
+	if (isCredit)
+	{
+		if (InputMgr::GetKeyDown(Keyboard::X))
+		{
+			isCredit = false;
+		}
+	}
 	UiMgr::GetInstance().InitButtun();
 	snow.Update(dt, window);
 }
@@ -215,7 +221,7 @@ void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
 	snow.Draw(window);
-	if (!isOption)
+	if (!isOption && !isCredit)
 	{
 	window.draw(climb);
 	window.draw(option);
@@ -227,6 +233,10 @@ void MainMenu::Draw(RenderWindow& window)
 	if (isOption)
 	{
 		UiMgr::GetInstance().OptionDraw(window);
+	}
+	if (isCredit)
+	{
+		UiMgr::GetInstance().CreditDraw(window);
 	}
 	window.draw(cSprite);
 	window.draw(xSprite);
