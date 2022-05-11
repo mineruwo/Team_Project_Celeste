@@ -221,7 +221,7 @@ void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
 	snow.Draw(window);
-	if (!isOption && !isCredit)
+	if (!isOption && !isCredit) 
 	{
 	window.draw(climb);
 	window.draw(option);

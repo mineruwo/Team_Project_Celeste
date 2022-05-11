@@ -7,12 +7,9 @@ enum class SceneID
 {
 	Title,
 	MainMenu,
-	Credits,
 	SaveCheck,
-	SelectMap,
-	SelectChapter,
+	ConfirmSelectedMapScene,
 	GamePlay,
-	Pause,
 };
 
 

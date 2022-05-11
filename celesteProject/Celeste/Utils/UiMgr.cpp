@@ -96,25 +96,15 @@ void UiMgr::InitSceneUi(SceneID Id)
 		UiMgr::InitMainMenu();
 		UiMgr::InitButtun();
 		break;
-	case SceneID::Credits:
-
-		UiMgr::InitButtun();
-		break;
 	case SceneID::SaveCheck:
 
 		UiMgr::InitButtun();
 		break;
-	case SceneID::SelectMap:
-
-		UiMgr::InitButtun();
-		break;
-	case SceneID::SelectChapter:
+	case SceneID::ConfirmSelectedMapScene:
 
 		break;
 	case SceneID::GamePlay:
 
-		break;
-	case SceneID::Pause:
 		break;
 	}
 	
@@ -160,13 +150,9 @@ void UiMgr::Draw(RenderWindow& window)
 		break;
 	case SceneID::SaveCheck:
 		break;
-	case SceneID::SelectMap:
-		break;
-	case SceneID::SelectChapter:
+	case SceneID::ConfirmSelectedMapScene:
 		break;
 	case SceneID::GamePlay:
-		break;
-	case SceneID::Pause:
 		break;
 	}
 }

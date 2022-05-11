@@ -69,11 +69,12 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 	{
 		// sceneID ¹Ù²ñ
 		//Scene::NextScene(SceneID::GamePlay);
-		SceneMgr::GetInstance().GetScene().NextScene(SceneID::GamePlay);
+		SceneMgr::GetInstance().GetScene().NextScene(SceneID::ConfirmSelectedMapScene);
 
 		//change/;
-		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
-		UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);
+		SceneMgr::GetInstance().ChangeScene(SceneID::ConfirmSelectedMapScene);
+		UiMgr::GetInstance().InitSceneUi(SceneID::ConfirmSelectedMapScene
+		);
 	}
 	snow.Update(dt, window);
 }
