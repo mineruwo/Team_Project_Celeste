@@ -16,14 +16,14 @@ int main()
     RenderWindow window(VideoMode(1366, 768), "Celeste");
     TextureHolder textureHolder;
 
-    int windowMagnification = 3;
-    View mainView(FloatRect(0, 0, window.getSize().x / windowMagnification, window.getSize().y / windowMagnification));
-
-    View UiView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
-
     IntRect area;
     area.width = window.getSize().x;
     area.height = window.getSize().y;
+
+    int windowMagnification = 2;
+    View mainView(FloatRect(736, 256, area.width / windowMagnification, area.height / windowMagnification));
+
+    View UiView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
 
     Player player;
     bool isPlayerInit = false;

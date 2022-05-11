@@ -7,7 +7,9 @@ Wall::Wall(int top, int left, int width, int height)
 	wallRect.width = width;
 	wallRect.height = height;
 
+
 	shape.setPosition(wallRect.left, wallRect.top);
+	shape.setOrigin(width * 0.5, height * 0.5);
 	shape.setSize(Vector2f(wallRect.width, wallRect.height));
 	shape.setFillColor(Color(0, 255, 0, 126));
 
@@ -20,8 +22,6 @@ Wall::Wall(FloatRect setwall)
 	shape.setPosition(wallRect.left, wallRect.top);
 	shape.setSize(Vector2f(wallRect.width, wallRect.height));
 	shape.setFillColor(Color(0, 255, 0, 126));
-
-
 }
 
 void Wall::DrawWall(RenderWindow& window)
