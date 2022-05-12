@@ -25,8 +25,8 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	position.x = 815.f;
-	position.y = 511.f;
+	position.x = 900.f;
+	position.y = 1000.f;
 	sprite.setPosition(position); //815, 511
 	sprite.setScale(CharacSize, CharacSize);
 	sprite.setOrigin(Vector2f((16.f * CharacSize)*0.5f, 32.f * CharacSize));
@@ -47,26 +47,29 @@ void Player::Init()
 
 	AnimationInit();
 	animation.Play("Idle");
-	//position = sprite.getPosition();
+	position = sprite.getPosition();
 }
 
-/*void Player::Spawn(IntRect arena, Vector2i res)
-{
-	this->arena = arena;
-	resolution = res;
-
-	position.x = arena.width * 0.5;
-	position.y = arena.height * 0.5;
-	sprite.setPosition(position.x, position.y);
-}*/
+//void Player::Spawn(IntRect arena, Vector2i res)
+//{
+//	this->arena = arena;
+//	resolution = res;
+//
+//	position.x = arena.width * 0.5;
+//	position.y = arena.height * 0.5;
+//	sprite.setPosition(position.x, position.y);
+//}
 
 /*========================================
 				충돌 처리
 ==========================================*/
 void Player::UpdateCrash(std::vector<Wall*> walls)
 {
+	for (auto& c : isCollision)
+	{
+		c = false;
+	}
 	isFloor = false;
-
 	for (auto v : walls)
 	{
 		// 플레이어의 origin를 이용
@@ -118,6 +121,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			//CT
 			if (wallLeft < playerX && wallRight > playerX && wallTop > playerY)
 			{
+				isCollision[2] = true;
 				isFloor = true;
 				std::cout << v->GetId() << "CT충돌" << std::endl;
 				posi.y = wallTop + 1.f;
@@ -151,12 +155,14 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			//LC
 			if (wallLeft > playerX && wallTop < playerY && wallBottom > playerY)
 			{
+				isCollision[2] = true;
 				std::cout << v->GetId() << "LC충돌" << std::endl;
 				posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f;
 			}
 			//RC
 			if (wallRight < playerX && wallTop < playerY && wallBottom > playerY)
 			{
+				isCollision[0] = true;
 				std::cout << "RC충돌" << std::endl;
 				posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
 			}
@@ -183,6 +189,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			//CB
 			if (wallLeft < playerX && wallRight > playerX && wallBottom < playerY)
 			{
+				isCollision[3] = true;
 				std::cout << v->GetId() << "CB충돌" << std::endl;
 				posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 			}
@@ -361,6 +368,12 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		gravityV = 0.f;
 	}
 
+	if (gravityV > 980.f) //최대 중력 조절
+	{
+		gravityV = 980.f;
+	}
+	
+
 	//std::cout << (int)moveMent << std::endl;
 	switch (moveMent)
 	{
@@ -387,93 +400,11 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		break;
 	}
 
-	//if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
-	//{
-	//	isDash = false;
-	//	/*if (isCollision[1])
-	//	{
-	//		if (isRight == true)
-	//		{
-	//			if (position.x < deshDir.x + 200)
-	//			{
-	//				isFalling = false;
-	//				position.x += dt * speed * 3.f;
-	//			}
-	//			else
-	//			{
-	//				isFalling = true;
-	//			}
-	//		}
-	//		else if (isRight == false)
-	//		{
-	//			if (position.x > deshDir.x - 200)
-	//			{
-	//				isFalling = false;
-	//				position.x -= dt * speed * 3.f;
-	//			}
-	//			else
-	//			{
-	//				isFalling = true;
-	//			}
-	//		}
-	//	}*/		
-	//	/*if (InputMgr::GetKey(Keyboard::Right))
-	//	{
-	//		if (position.x < deshDir.x + 200)
-	//		{
-	//			isFalling = false;
-	//			position.x += dt * speed * 3.f;
-	//		}
-	//	}
-	//	else if (InputMgr::GetKey(Keyboard::Left))
-	//	{
-	//		if (position.x > deshDir.x - 200)
-	//		{
-	//			isFalling = false;
-	//			position.x -= dt * speed * 3.f;
-	//		}
-	//	}
-	//	else if (InputMgr::GetKey(Keyboard::Up))
-	//	{
-	//		isFalling = true;
-	//		position.y -= dt * speed * 3.f;
-	//	}
-	//	else if (InputMgr::GetKey(Keyboard::Down))
-	//	{
-	//		isFalling = true;
-	//		position.y += dt * speed * 3.f;
-	//	}*/
-	//}
-	/*if (InputMgr::GetKey(Keyboard::Z))
-	{
-		if (isCollision[2] || isCollision[3])
-		{
-			position.x = prePosition.x;
-			isFalling = false;
-			if (InputMgr::GetKey(Keyboard::Up))
-			{
-				position.y -= dt * speed;
-			}
-			if (InputMgr::GetKey(Keyboard::Down))
-			{
-				position.y += dt * speed;
-			}
-		}
-		else
-		{
-			isFalling = true;
-		}
-		//isFalling = true;
-	}
-	if (InputMgr::GetKeyUp(Keyboard::Z))
-	{
-		isFalling = true;
-	}*/
-
 	//충돌 처리 업데이트
 	UpdateCrash(walls);
 	sprite.setPosition(position);
-
+	bodyHitbox.setPosition(position);
+	floorHitbox.setPosition(position);
 	/*bodyPosition.x = position.x + 2.f;
 	bodyPosition.y = position.y - 15.f;
 	bodyHitbox.setPosition(bodyPosition);
@@ -558,7 +489,7 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::LOOKDOWN);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		else if (InputMgr::GetKey(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
@@ -761,6 +692,7 @@ void Player::SetAnimation(PlayerAction action)
 {
 	PlayerAction pastAction = moveMent;
 	moveMent = action;
+
 	switch (moveMent)
 	{
 	case PlayerAction::IDLE:

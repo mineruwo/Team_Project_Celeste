@@ -66,7 +66,7 @@ private:
 	float speed;
 	float timer;
 
-	bool isCollision[8]; 
+	bool isCollision[4]; // 0.Right 1.Left 2.Top 3.Bottom 
 
 	/*====================
 	   캐릭터 몸 히트박스
