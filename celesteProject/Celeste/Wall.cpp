@@ -15,7 +15,7 @@ Wall::Wall(int top, int left, int width, int height)
 
 }
 
-Wall::Wall(FloatRect setwall)
+Wall::Wall(FloatRect setwall, int id) : id(id)
 {
 	wallRect = setwall;
 

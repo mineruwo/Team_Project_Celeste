@@ -29,10 +29,7 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
         LoadMap();
     }
 
-    if (InputMgr::GetKeyDown(Keyboard::F2))
-    {
-        SaveMap();
-    }
+
 
     if (InputMgr::GetKeyDown(Keyboard::PageUp))
     {

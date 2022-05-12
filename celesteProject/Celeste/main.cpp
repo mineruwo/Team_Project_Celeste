@@ -86,7 +86,7 @@ int main()
         }
 
         //UPDATE
-        if (isPlayerInit && time.asSeconds() <= 1.f / 200.f)
+        if (isPlayerInit && time.asSeconds() <= 1.f / 60.f)
         {
             InputMgr::Update(time.asSeconds());
             player.Update(time.asSeconds(), walls);
@@ -97,8 +97,9 @@ int main()
         window.clear();
         window.setView(mainView);
 
-        if (isPlayerInit && time.asSeconds() <= 1.f / 200.f)
+        if (isPlayerInit && time.asSeconds() <= 1.f / 60.f)
         {
+
             window.draw(player.GetSprite());
         }
         for (auto it : walls)
@@ -134,7 +135,7 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
             break;
         }
 
-        Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds());
+        Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds(), idx);
         walls.push_back(tile);
 
         idx++;

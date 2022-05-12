@@ -13,6 +13,11 @@ Player::Player()
 	, isFalling(true), isSeizeWall(false), isRight(true), isFloor(false),
 	jumpTime(0.f), jumpHeight(0), jumpPower(50.f)
 {
+	font.loadFromFile("../Celeste-bin/graphics/RobotoFlex-Regular.ttf");
+	poscheck.setFont(font);
+	poscheck.setCharacterSize(10);
+	poscheck.setFillColor(Color(255, 0, 0));
+
 }
 
 /*==============================
@@ -20,31 +25,29 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	sprite.setPosition(815, 500); //815, 511
+	position.x = 815.f;
+	position.y = 511.f;
+	sprite.setPosition(position); //815, 511
 	sprite.setScale(CharacSize, CharacSize);
-	sprite.setOrigin(Vector2f(16 * CharacSize, 32 * CharacSize));
+	sprite.setOrigin(Vector2f((16.f * CharacSize)*0.5f, 32.f * CharacSize));
 
 	//몸 히트 박스
-	bodyHitbox.setFillColor(Color::Green);
+	bodyHitbox.setFillColor(Color::Transparent);
+	bodyHitbox.setOutlineColor(Color::Yellow);
+	bodyHitbox.setOutlineThickness(1.f);
 	bodyHitbox.setSize(Vector2f(8.f * CharacSize, 10.f * CharacSize));
-	bodyPosition.x = bodyHitbox.getSize().x * 0.5;
-	bodyPosition.y = bodyHitbox.getSize().y * 0.5;
-	//bodyPosition.x = position.x + 2.f;
-	//bodyPosition.y = position.y - 15.f;
-	bodyHitbox.setOrigin(bodyPosition.x, bodyPosition.y);
-	bodyHitbox.setPosition(bodyPosition);
+	bodyHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 10.f * CharacSize));
+	
+	//bodyHitbox.setPosition(position);
 
 	//바닥 히트 박스
 	floorHitbox.setFillColor(Color::Red);
 	floorHitbox.setSize(Vector2f(8.f * CharacSize, 2.f * CharacSize));
-	floorHitbox.setOrigin(floorHitbox.getGlobalBounds().width * 0.5, floorHitbox.getGlobalBounds().height * 0.5);
-	floorPosition.x = position.x + 2.f;
-	floorPosition.y = position.y - 2.f;
-	floorHitbox.setPosition(floorPosition);
+	floorHitbox.setOrigin(Vector2f((8.f * CharacSize)*0.5f, 2.f * CharacSize));
 
 	AnimationInit();
 	animation.Play("Idle");
-	position = sprite.getPosition();
+	//position = sprite.getPosition();
 }
 
 /*void Player::Spawn(IntRect arena, Vector2i res)
@@ -55,8 +58,6 @@ void Player::Init()
 	position.x = arena.width * 0.5;
 	position.y = arena.height * 0.5;
 	sprite.setPosition(position.x, position.y);
-
-
 }*/
 
 /*========================================
@@ -64,147 +65,149 @@ void Player::Init()
 ==========================================*/
 void Player::UpdateCrash(std::vector<Wall*> walls)
 {
-	for (auto& c : isCollision)
-	{
-		c = false;
-	}
+	isFloor = false;
 
 	for (auto v : walls)
 	{
-		//플레이어의 origin를 이용
+		// 플레이어의 origin를 이용
 		// x > y 일경우 (위/아래)으로 보냄, x < y일 경우 (오른쪽/왼쪽)으로 보냄
-		/*
-		if (floorHitbox.getGlobalBounds().intersects(v->GetWallRect()))
+		
+		if (bodyHitbox.getGlobalBounds().intersects(v->GetWallRect()))
 		{
 			float wallTop = v->GetWallRect().top;
 			float wallBottom = v->GetWallRect().top + v->GetWallRect().height;
 			float wallLeft = v->GetWallRect().left;
 			float wallRight = v->GetWallRect().left + v->GetWallRect().width;
 
-			float playerX = floorHitbox.getPosition().x;
-			float playerY = floorHitbox.getPosition().y - floorHitbox.getGlobalBounds().height;
-			Vector2f pos = floorHitbox.getPosition();
+			float playerTop = bodyHitbox.getPosition().y - bodyHitbox.getGlobalBounds().height;
+			float playerBottom = bodyHitbox.getPosition().y;
+			float playerLeft = bodyHitbox.getGlobalBounds().left;
+			float playerRight = bodyHitbox.getPosition().x + bodyHitbox.getGlobalBounds().width * 0.5;
 
-			float playerTop = floorHitbox.getPosition().y - floorHitbox.getGlobalBounds().height;
-			float playerBottom = floorHitbox.getPosition().y;
-			float playerLeft = floorHitbox.getGlobalBounds().left;
-			float playerRight = floorHitbox.getPosition().x + floorHitbox.getGlobalBounds().width;
+			float playerX = bodyHitbox.getPosition().x;
+			float playerY = bodyHitbox.getPosition().y - bodyHitbox.getGlobalBounds().height;
+			Vector2f posi = bodyHitbox.getPosition();
+			
 
-			
-			
 			//LT
-			if (wallLeft < playerX && wallRight > playerX && wallTop > playerY)
+			if (wallLeft > playerX && wallTop > playerY)
 			{
+				isFloor = true;
 				//X가 큰 범위 인 경우 위로 보냄
 				if (abs(wallTop - playerBottom) < abs(wallLeft - playerRight))
 				{
-					std::cout << "LT충돌" << std::endl;
-					pos.y = wallTop;
+					std::cout << v->GetId() << "LTX충돌" << std::endl;
+					posi.y = wallTop + 1.f;
+					//gravityV = 0.f;
 				}
 				//Y가 큰 범위 인 경우 옆으로 보냄
 				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerBottom))
 				{
-					pos.x = wallLeft;
+					std::cout << v->GetId() << "LTY충돌" << std::endl;
+					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5;
+				}
+				//X와 Y 값이 동일한 경우
+				else 
+				{
+					posi.y -= abs(wallTop - playerBottom);
+					posi.x -= abs(wallLeft - playerRight);
+					posi.y += 1.f;
 				}
 			}
+
 			//CT
 			if (wallLeft < playerX && wallRight > playerX && wallTop > playerY)
 			{
-				pos.y = wallTop;
+				isFloor = true;
+				std::cout << v->GetId() << "CT충돌" << std::endl;
+				posi.y = wallTop + 1.f;
+				//gravityV = 0.f;
 			}
 			//RT
-			if (wallLeft > playerX && wallRight < playerX && wallTop > playerY)
+			if (wallRight < playerX && wallTop > playerY)
 			{
+				isFloor = true;
+
+				std::cout << v->GetId() << "RT충돌" << std::endl;
 				//X
-				if (abs(wallTop - playerBottom) < abs(wallLeft - playerBottom))
+				if (abs(wallTop - playerBottom) < abs(wallLeft - playerRight))
 				{
-					pos.y = wallTop;
+					posi.y = wallTop + 1.f;
+					gravityV = 0.f;
 				}
 				//Y
-				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerBottom))
+				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerRight))
 				{
-					pos.x = wallLeft;
+					posi.x = wallLeft + bodyHitbox.getGlobalBounds().width * 0.5f;
+				}		
+				else
+				{
+					posi.x -= abs(wallLeft - wallRight);
+					posi.y -= abs(wallTop - wallBottom);
+					posi.y += 1.f;
 				}
-
 			}
+
 			//LC
 			if (wallLeft > playerX && wallTop < playerY && wallBottom > playerY)
 			{
-				pos.x = wallLeft;
+				std::cout << v->GetId() << "LC충돌" << std::endl;
+				posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f;
 			}
-			if (wallLeft < playerX && wallTop<playerY && wallBottom > playerY)
+			//RC
+			if (wallRight < playerX && wallTop < playerY && wallBottom > playerY)
 			{
-				pos.x = wallRight;
+				std::cout << "RC충돌" << std::endl;
+				posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
 			}
 			//LB
-			if (wallBottom < playerY && wallLeft > playerX && wallRight < playerX)
+			if (wallBottom < playerY && wallLeft > playerX)
 			{
+				std::cout << v->GetId() << "LB충돌" << std::endl;
 				//X
 				if (abs(wallBottom - playerTop) < abs(wallLeft - playerRight))
 				{
-					pos.y = wallBottom;
+					posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 				}
 				//Y
 				else if (abs(wallBottom - playerTop) > abs(wallLeft - playerRight))
 				{
-					pos.x = wallLeft;
+					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width*0.5f;
+				}
+				else
+				{
+					posi.x -= abs(wallLeft = playerRight);
+					posi.y -= abs(wallBottom - playerTop);
 				}
 			}
 			//CB
 			if (wallLeft < playerX && wallRight > playerX && wallBottom < playerY)
 			{
-				pos.y = wallBottom;
+				std::cout << v->GetId() << "CB충돌" << std::endl;
+				posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 			}
 			//RB
-			if (wallBottom < playerY && wallLeft > playerX && wallRight < playerX)
+			if (wallBottom < playerY && wallRight < playerX)
 			{
+				std::cout << v->GetId() << "RB충돌" << std::endl;
 				//X
-				if (abs(wallTop - playerBottom) < abs(wallLeft - playerBottom))
+				if (abs(wallBottom = playerTop) < abs(wallLeft - playerRight))
 				{
-					pos.y = wallBottom;
+					posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 				}
 				//Y
-				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerBottom))
+				else if (abs(wallBottom = playerTop) > abs(wallLeft - playerRight))
 				{
-					pos.x = wallRight;
+					posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
+				}
+				else
+				{
+					posi.x += abs(wallLeft - playerRight);
+					posi.y -= abs(wallBottom = playerTop);
 				}
 			}
-			//floorHitbox.setPosition(pos);
-			sprite.setPosition(pos);
-			floorHitbox.setPosition(pos);
-		}*/
-
-		if (floorHitbox.getGlobalBounds().intersects(v->GetWallRect()))
-		{
-			Pivots pivot = Utils::CollisionDir(v->GetWallRect(), floorHitbox.getGlobalBounds());
-
-			switch (pivot)
-			{
-			case Pivots::LC:
-				//오른쪽
-				position.x += (v->GetWallRect().left + v->GetWallRect().width) - (floorHitbox.getGlobalBounds().left);
-				isCollision[3] = true;
-				break;
-				//왼쪽
-			case Pivots::RC:
-				position.x -= (floorHitbox.getGlobalBounds().left + floorHitbox.getGlobalBounds().width) - (v->GetWallRect().left);
-				isCollision[2] = true;
-				break;
-			case Pivots::CT:
-				position.y += (v->GetWallRect().top + v->GetWallRect().height) - (floorHitbox.getGlobalBounds().top);
-				isCollision[1] = true;
-				break;
-
-			case Pivots::CB:
-				position.y -= (floorHitbox.getGlobalBounds().top + floorHitbox.getGlobalBounds().height) - (v->GetWallRect().top);
-				isCollision[0] = true;
-				gravityV = 0.f;
-				break;
-
-			defalut:
-				break;
-			}
-			sprite.setPosition(position);
+			bodyHitbox.setPosition(posi);
+			position = posi;
 		}
 	}
 }
@@ -229,25 +232,49 @@ void Player::Jump()
 		isJump = false;
 	}*/
 
-	isFalling = true;
-	if (statusDT < 1.f)
+	//isFalling = true;
+	if (isJump == true)
+	{
+		if (statusDT < 1.f)
+		{
+			if (isRight == true)
+			{
+				position.y -= statusDT * speed * 2.f;
+			}
+			else if (isRight == false)
+			{
+				position.y -= statusDT * speed * 2.f;
+			}
+		}
+	}
+	else if (isJump == false)
+	{
+
+	}
+	if (isCollision[2] || isCollision[3])
 	{
 		if (isRight == true)
 		{
-			position.y -= statusDT * speed * 2.f;
+			position.x *= -1.f;
 		}
 		else if (isRight == false)
 		{
-			position.y -= statusDT * speed * 2.f;
+			position.x *= -1.f;
 		}
 	}
+
+	/*if (isJump == true)
+	{
+		jumpSpeed -= GRAVITY * statusDT;
+
+	}*/
+
 }
 /*===========================
 	  움직이는 액션 코드
 =============================*/
 void Player::Move()
 {
-
 	if (InputMgr::GetKey(Keyboard::Right))
 	{
 		position.x += statusDT * speed;
@@ -257,8 +284,6 @@ void Player::Move()
 	{
 		position.x -= statusDT * speed;
 	}
-
-
 }
 
 /*===========================
@@ -266,7 +291,6 @@ void Player::Move()
 =============================*/
 void Player::Dash()
 {
-	isFalling = false;
 	if (position.x < deshDir.x + 200)
 	{
 		if (isRight == true)
@@ -295,8 +319,6 @@ void Player::Dash()
 			position.y += statusDT * speed * 3.f;
 		}
 	}
-	isFalling = true;
-
 }
 
 /*===========================
@@ -304,14 +326,17 @@ void Player::Dash()
 =============================*/
 void Player::Climb()
 {
-	if (isUp == true)
+	if (isCollision[2] || isCollision[3])
 	{
-		position.y -= statusDT * speed;
-	}
-	else if (isUp == false)
-	{
-		position.y += statusDT * speed;
-	}
+		if (InputMgr::GetKey(Keyboard::Up))
+		{
+			position.y -= statusDT * speed;
+		}
+		else if (InputMgr::GetKey(Keyboard::Down))
+		{
+			position.y += statusDT * speed;
+		}		
+	}	
 }
 
 
@@ -322,13 +347,21 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 {
 	statusDT = dt;
 	UpdateAnimation(dt);
+
+	isFalling = moveMent != PlayerAction::DASH && !isFloor;
+
 	// 중 력
-	if (isFalling == true)
+	if (isFalling)
 	{
 		gravityV += gravity * dt;
 		position.y += gravityV * dt;
 	}
-	std::cout << (int)moveMent << std::endl;
+	else
+	{
+		gravityV = 0.f;
+	}
+
+	//std::cout << (int)moveMent << std::endl;
 	switch (moveMent)
 	{
 	case PlayerAction::IDLE:
@@ -352,29 +385,6 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		break;
 	default:
 		break;
-	}
-
-	if (InputMgr::GetKey(Keyboard::Up))
-	{
-		if (isSeizeWall == true)
-		{
-			position.y -= dt * speed;
-		}
-		else
-		{
-			position.y;
-		}
-	}
-	if (InputMgr::GetKey(Keyboard::Down))
-	{
-		if (isSeizeWall == true)
-		{
-			position.y += dt * speed;
-		}
-		else
-		{
-			position.y;
-		}
 	}
 
 	//if ((InputMgr::GetKeyDown(Keyboard::X) || InputMgr::GetKey(Keyboard::X)))
@@ -460,20 +470,38 @@ void Player::Update(float dt, std::vector<Wall*> walls)
 		isFalling = true;
 	}*/
 
+	//충돌 처리 업데이트
 	UpdateCrash(walls);
-
 	sprite.setPosition(position);
 
-	bodyPosition.x = position.x + 2.f;
+	/*bodyPosition.x = position.x + 2.f;
 	bodyPosition.y = position.y - 15.f;
 	bodyHitbox.setPosition(bodyPosition);
 
 	floorPosition.x = position.x + 2.f;
 	floorPosition.y = position.y - 2.f;
-	floorHitbox.setPosition(floorPosition);
+	floorHitbox.setPosition(floorPosition);*/
 
 	animation.Update(dt);
+
+	/*poscheck.setPosition(sprite.getPosition().x, sprite.getPosition().y);
+	std::string pos;
+	char buffer[15];
+
+	pos += "player floor [ ";
+	pos += itoa(floorPosition.x, buffer, 10);
+	pos += " , ";
+	pos += itoa(floorPosition.y, buffer, 10);
+	pos += " ]";
+	poscheck.setString(pos);
+
+	if (position.y > 1000)
+	{
+		position.y = 200;
+	}*/
+
 }
+
 /*============================================
 		디자인 패턴 : 유한 상태 머신
 ==============================================*/
@@ -646,6 +674,7 @@ void Player::UpdateAnimation(float dt)
 			SetAnimation(PlayerAction::CLIMB);
 		}
 		break;
+
 	case PlayerAction::LOOKDOWN:
 		if (InputMgr::GetKeyDown(Keyboard::Right))
 		{
@@ -683,6 +712,7 @@ void Player::UpdateAnimation(float dt)
 			SetAnimation(PlayerAction::CLIMB);
 		}
 		break;
+
 	case PlayerAction::CLIMB:
 		if (InputMgr::GetKeyDown(Keyboard::Right))
 		{
@@ -700,11 +730,15 @@ void Player::UpdateAnimation(float dt)
 		}
 		else if (InputMgr::GetKey(Keyboard::Up))
 		{
-			SetAnimation(PlayerAction::LOOKUP);
+			SetAnimation(PlayerAction::CLIMB);
+			//isSeizeWall = true;
+			//SetAnimation(PlayerAction::LOOKUP);
 		}
 		else if (InputMgr::GetKey(Keyboard::Down))
 		{
-			SetAnimation(PlayerAction::LOOKDOWN);
+			SetAnimation(PlayerAction::CLIMB);
+			//isSeizeWall = false;
+			//SetAnimation(PlayerAction::LOOKDOWN);
 		}
 		else if (InputMgr::GetKeyDown(Keyboard::C))
 		{
@@ -712,10 +746,10 @@ void Player::UpdateAnimation(float dt)
 		}
 		else if (InputMgr::GetKeyUp(Keyboard::Z))
 		{
-			isFalling = true;
 			SetAnimation(PlayerAction::IDLE);
 		}
 		break;
+
 	default:
 		break;
 	}
@@ -764,17 +798,23 @@ void Player::SetAnimation(PlayerAction action)
 		animation.PlayQueue("Idle");
 		break;
 	case PlayerAction::LOOKUP:
-		animation.Play("Lookup");
+		if (isSeizeWall == false)
+		{
+			animation.Play("Lookup");
+		}		
 		break;
 	case PlayerAction::LOOKDOWN:
-		if (isRight == true)
+		if (isSeizeWall == false)
 		{
-			sprite.setScale(CharacSize, CharacSize - 0.5f);
-		}
-		else if (isRight == false)
-		{
-			sprite.setScale(-CharacSize, CharacSize - 0.5f);
-		}
+			if (isRight == true)
+			{
+				sprite.setScale(CharacSize, CharacSize - 0.5f);
+			}
+			else if (isRight == false)
+			{
+				sprite.setScale(-CharacSize, CharacSize - 0.5f);
+			}
+		}		
 		break;
 	case PlayerAction::CLIMB:
 		isSeizeWall = true;
@@ -788,6 +828,16 @@ void Player::SetAnimation(PlayerAction action)
 FloatRect Player::GetGobalBound() const
 {
 	return sprite.getGlobalBounds();
+}
+
+FloatRect Player::BodyHitGetGobalBound() const
+{
+	return bodyHitbox.getGlobalBounds();
+}
+
+FloatRect Player::FloorHitGetGoalBound() const
+{
+	return floorHitbox.getGlobalBounds();
 }
 
 Vector2f Player::GetPosition() const
@@ -853,9 +903,9 @@ void Player::AnimationInit()
 ================================*/
 void Player::Draw(RenderWindow& window)
 {
-	window.draw(floorHitbox);
-	window.draw(bodyHitbox);
 	window.draw(sprite);
+	window.draw(floorHitbox);
+	window.draw(bodyHitbox);	
 }
 /*===============================
 작 성 자 : 최 윤 화

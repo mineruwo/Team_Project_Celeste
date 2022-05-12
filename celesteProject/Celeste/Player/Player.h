@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4996)
 #include "../Utils/AnimationController.h"
 #include <vector>
 #include <list>
@@ -22,8 +23,8 @@ enum class PlayerAction
 class Player
 {
 private:
-	const float START_SPEED = 300; // 시작 플레이어 속도
-	const float GRAVITY = 980.f; // 중력 처리
+	const float START_SPEED = 100; // 시작 플레이어 속도
+	const float GRAVITY = 100.f; // 중력 처리
 	const float CharacSize = 2.f;
 
 	AnimationController animation;
@@ -57,13 +58,15 @@ private:
 	float jumpHeight;
 	float jumpPower;
 
+	float jumpSpeed;
+
 	float gravity;
 	float gravityV;
 
 	float speed;
 	float timer;
 
-	bool isCollision[4]; // Up Down Left Right
+	bool isCollision[8]; 
 
 	/*====================
 	   캐릭터 몸 히트박스
@@ -75,6 +78,9 @@ private:
 	=======================*/
 	RectangleShape floorHitbox;
 	Vector2f floorPosition;
+
+	Font font;
+	Text poscheck;
 
 public:
 	Player();
@@ -96,6 +102,8 @@ public:
 	void SetAnimation(PlayerAction action);
 
 	FloatRect GetGobalBound() const;
+	FloatRect BodyHitGetGobalBound() const;
+	FloatRect FloorHitGetGoalBound() const;
 
 	Vector2f GetPosition() const;
 
