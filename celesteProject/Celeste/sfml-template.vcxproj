@@ -152,7 +152,7 @@
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Player\Player.cpp" />
-    <ClCompile Include="SceneMgr\MapSpriteMgr.cpp" />
+    <ClCompile Include="SceneMgr\SelectMapSpriteMgr.cpp" />
     <ClCompile Include="SceneMgr\SceneMgr.cpp" />
     <ClCompile Include="Scene\ConfirmSelectedMapScene.cpp" />
     <ClCompile Include="Scene\GamePlay.cpp" />
@@ -174,7 +174,7 @@
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Framework\Framework.h" />
     <ClInclude Include="Player\Player.h" />
-    <ClInclude Include="SceneMgr\MapSpriteMgr.h" />
+    <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h" />
     <ClInclude Include="SceneMgr\SceneMgr.h" />
     <ClInclude Include="Scene\ConfirmSelectedMapScene.h" />
     <ClInclude Include="Scene\GamePlay.h" />

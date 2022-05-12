@@ -15,6 +15,8 @@ private:
 	Snow snow;
 
 	SceneID currScene;
+	
+	
 
 
 

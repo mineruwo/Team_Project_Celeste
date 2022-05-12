@@ -5,7 +5,7 @@
 #include "../Utils/Singleton.h"
 using namespace sf;
 
-class MapSpriteMgr : Singleton<MapSpriteMgr>
+class SelectMapSpriteMgr : Singleton<SelectMapSpriteMgr>
 {
 private:
 
@@ -40,7 +40,7 @@ private:
 
 
 public:
-	MapSpriteMgr();
+	SelectMapSpriteMgr();
 
 	void LoadFile();
 	void SetSpite();

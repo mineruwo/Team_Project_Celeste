@@ -1,9 +1,11 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "../Scene/Scene.h"
+#include "../Utils/GameInfoMgr.h"
 #include "Singleton.h"
 #include <vector>
 #include <random>
+#include <sstream>
 using namespace sf;
 
 class UiMgr : public Singleton<UiMgr>
@@ -33,6 +35,21 @@ private:
 	Text cText;
 	Text xText;
 
+	int IndexCount;
+
+	char berry[3][30];
+	char deathCount[3][30];
+	char playTime[3][30];
+	
+	Text berryText[3];
+	Text deathText[3];
+	Text playTimeText[3];
+
+	float pt;
+	int hour;
+	int minute;
+	int second;
+
 	/*bool fullScreen = true;
 	int Scale = 0;
 	bool Sync = true;
@@ -54,6 +71,7 @@ public:
 
 	void MenuTextFlash();
 	
+	void InitSaveCheckUi();
 
 	void InitSceneUi(SceneID Id);
 
@@ -63,8 +81,13 @@ public:
 	void PauseDraw(RenderWindow& window);
 	void cxDraw(RenderWindow& window);
 
+	void SaveCheckDraw(RenderWindow& window);
+
+
 	void Draw(RenderWindow& window);
 	void MoveText(int num, Time dt);
+
+
 
 	/*
 	void optionUpdate();

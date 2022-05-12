@@ -3,6 +3,7 @@
 #include "../Utils/TextureHolder.h"
 #include "../Utils/InputMgr.h"
 #include "../SceneMgr/SceneMgr.h"
+#include"../Utils/GameInfoMgr.h"
 #include "Snow.h"
 
 using namespace sf;
@@ -19,12 +20,16 @@ private:
 	String characterTicketTexture;
 	string cTexture;
 	string xTexture;
+	string berryTexture;
+	string deathTexture;
 
 	Sprite backGrnd;
 	Sprite characterCard[3];
 	Sprite characterTicket[3];
 	Sprite cSprite;
 	Sprite xSprite;
+	Sprite berrySprite[3];
+	Sprite deathSprite[3];
 
 	float cardCenter;
 	float ticketCenter;

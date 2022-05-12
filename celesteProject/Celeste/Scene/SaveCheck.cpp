@@ -12,15 +12,21 @@ void SaveCheck::Init(Vector2i resolution)
 	characterTicketTexture = "Graphics/Atlases/FileSelect/ticket.png";
 	cTexture = "Graphics/Atlases/Gui/controls/keyboard/c.png";
 	xTexture = "Graphics/Atlases/Gui/controls/keyboard/x.png";
-
+	berryTexture = "Graphics/Atlases/Gui/collectables/strawberry.png";
+	deathTexture = "Graphics/Atlases/Gui/collectables/skullBlue.png";
 	backGrnd.setTexture(TextureHolder::GetTexture(backGrndTexture));
 	for (int i = 0; i < 3; i++)
 	{
 		characterCard[i].setTexture(TextureHolder::GetTexture(characterCardTexture));
 		characterTicket[i].setTexture(TextureHolder::GetTexture(characterTicketTexture));
+		berrySprite[i].setTexture(TextureHolder::GetTexture(berryTexture));
+		deathSprite[i].setTexture(TextureHolder::GetTexture(deathTexture));
 	}
 	cSprite.setTexture(TextureHolder::GetTexture(cTexture));
 	xSprite.setTexture(TextureHolder::GetTexture(xTexture));
+
+	
+
 
 	cSprite.setScale(0.5f, 0.5f);
 	xSprite.setScale(0.5f, 0.5f);
@@ -41,10 +47,17 @@ void SaveCheck::Init(Vector2i resolution)
 	cSprite.setPosition(1600, 900);
 	xSprite.setPosition(1700, 900);
 
+	berrySprite[0].setPosition(600, 100);
+	deathSprite[0].setPosition(600, 200);
+	berrySprite[1].setPosition(600, 400);
+	deathSprite[1].setPosition(600, 500);
+	berrySprite[2].setPosition(600, 700);
+	deathSprite[2].setPosition(600, 800);
 
 	cSprite.setTexture(TextureHolder::GetTexture(cTexture));
 	xSprite.setTexture(TextureHolder::GetTexture(xTexture));
 
+	UiMgr::GetInstance().InitSaveCheckUi();
 
 
 	currScene = SceneID::SaveCheck;
@@ -86,11 +99,20 @@ void SaveCheck::Draw(RenderWindow& window)
 	window.draw(characterTicket[0]);
 	window.draw(characterTicket[1]);
 	window.draw(characterTicket[2]);
-	window.draw(characterCard[0]);	
-	window.draw(characterCard[1]);
-	window.draw(characterCard[2]);
+	UiMgr::GetInstance().SaveCheckDraw(window);
+	//window.draw(characterCard[0]);	
+	//window.draw(characterCard[1]);
+	//window.draw(characterCard[2]);
 	window.draw(cSprite);
 	window.draw(xSprite);
+	window.draw(berrySprite[0]);
+	window.draw(deathSprite[0]);
+	window.draw(berrySprite[1]);
+	window.draw(deathSprite[1]);
+	window.draw(berrySprite[2]);
+	window.draw(deathSprite[2]);
+	
+	
 }
 
 void SaveCheck::Release()

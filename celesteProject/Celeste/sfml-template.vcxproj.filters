@@ -87,7 +87,7 @@
     <ClCompile Include="Scene\ConfirmSelectedMapScene.cpp">
       <Filter>소스 파일\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SceneMgr\MapSpriteMgr.cpp">
+    <ClCompile Include="SceneMgr\SelectMapSpriteMgr.cpp">
       <Filter>소스 파일\SceneMgr</Filter>
     </ClCompile>
     <ClCompile Include="Utils\GameInfoMgr.cpp">
@@ -152,7 +152,7 @@
     <ClInclude Include="Scene\ConfirmSelectedMapScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SceneMgr\MapSpriteMgr.h">
+    <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h">
       <Filter>소스 파일\SceneMgr</Filter>
     </ClInclude>
     <ClInclude Include="Utils\GameInfoMgr.h">

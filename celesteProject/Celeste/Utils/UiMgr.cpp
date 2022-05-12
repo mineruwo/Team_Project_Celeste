@@ -1,8 +1,7 @@
 #include "UiMgr.h"
-
 UiMgr::UiMgr()
 {
-	
+	IndexCount = GameInfoMgr::GetInstance().getVecctorIndex().size();
 }
 
 void UiMgr::SetText(Text &text, unsigned int size, Color color, Vector2f positon)
@@ -80,6 +79,56 @@ void UiMgr::MenuTextFlash()
 {
 }
 
+void UiMgr::InitSaveCheckUi()
+{
+	 
+	
+	IndexCount = GameInfoMgr::GetInstance().getVecctorIndex().size();
+	for (int i = 0; i < IndexCount; i++)
+	{
+		pt = GameInfoMgr::GetInstance().getVectorTime()[i];
+		
+		if (pt > 3600)
+		{
+			hour = pt / 3600;
+			minute = ((int)pt % 3600) % 60;
+			second = pt - (hour * 3600) - (minute * 60);
+		}
+		else if (pt < 3600)
+		{
+			hour = 0;
+			minute = pt / 60;
+			second = pt - (minute * 60);
+		}
+
+
+		sprintf_s(berry[i], "x %d", GameInfoMgr::GetInstance().getVectorBerry()[i]);
+		sprintf_s(deathCount[i], "x %d", GameInfoMgr::GetInstance().getVectorDeath()[i]);
+		sprintf_s(playTime[i], "%d:%d:%d", hour, minute, second);
+		berryText[i].setString(berry[i]);
+		deathText[i].setString(deathCount[i]);
+		playTimeText[i].setString(playTime[i]);
+		berryText[i].setOutlineThickness(2);
+		deathText[i].setOutlineThickness(2);
+		playTimeText[i].setOutlineThickness(2);
+
+	}
+	
+	SetText(berryText[0], 50, Color::White, Vector2f(700, 100));
+	SetText(berryText[1], 50, Color::White, Vector2f(700, 400));
+	SetText(berryText[2], 50, Color::White, Vector2f(700, 700));
+
+	SetText(deathText[0], 50, Color::White, Vector2f(700, 200));
+	SetText(deathText[1], 50, Color::White, Vector2f(700, 500));
+	SetText(deathText[2], 50, Color::White, Vector2f(700, 800));
+
+	SetText(playTimeText[0], 50, Color::White, Vector2f(1000, 270));
+	SetText(playTimeText[1], 50, Color::White, Vector2f(1000, 570));
+	SetText(playTimeText[2], 50, Color::White, Vector2f(1000, 870));
+
+
+}
+
 
 
 
@@ -134,6 +183,16 @@ void UiMgr::PauseDraw(RenderWindow& window)
 
 void UiMgr::cxDraw(RenderWindow& window)
 {
+}
+
+void UiMgr::SaveCheckDraw(RenderWindow& window)
+{
+	for (int i = 0; i < IndexCount; i++)
+	{
+		window.draw(berryText[i]);
+		window.draw(deathText[i]);
+		window.draw(playTimeText[i]);
+	}
 }
 
 

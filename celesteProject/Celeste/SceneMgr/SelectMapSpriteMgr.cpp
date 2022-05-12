@@ -1,10 +1,10 @@
-#include "MapSpriteMgr.h"
+#include "SelectMapSpriteMgr.h"
 
-MapSpriteMgr::MapSpriteMgr()
+SelectMapSpriteMgr::SelectMapSpriteMgr()
 {
 }
 
-void MapSpriteMgr::LoadFile()
+void SelectMapSpriteMgr::LoadFile()
 {
 	tutorialBackGrndText = "Graphics/map/prolog.png";
 	firstMapBackGrndText = "Graphics/map/ch1.png";
@@ -18,7 +18,7 @@ void MapSpriteMgr::LoadFile()
 	xTexture = "Graphics/Atlases/Gui/controls/keyboard/x.png";
 }
 
-void MapSpriteMgr::SetSpite()
+void SelectMapSpriteMgr::SetSpite()
 {	
 	tutorialBackGrnd.setTexture(TextureHolder::GetTexture(tutorialBackGrndText));
 	firstMapBackGrnd.setTexture(TextureHolder::GetTexture(firstMapBackGrndText));
@@ -39,7 +39,7 @@ void MapSpriteMgr::SetSpite()
 }
 
 
-void MapSpriteMgr::InitTutirial()
+void SelectMapSpriteMgr::InitTutirial()
 {
 	tutorialBackGrnd.setPosition(0, 0);
 	backPack.setPosition(1400, 600);
@@ -51,12 +51,12 @@ void MapSpriteMgr::InitTutirial()
 	cSprite.setPosition(1600, 900);
 	xSprite.setPosition(1700, 900);
 
-
+	
 
 }
 
 
-void MapSpriteMgr::InitFirstMap()
+void SelectMapSpriteMgr::InitFirstMap()
 {
 	firstMapBackGrnd.setPosition(0,0);
 	backPack.setPosition(1400,600);
@@ -69,11 +69,11 @@ void MapSpriteMgr::InitFirstMap()
 	xSprite.setPosition(1700, 900);
 }
 
-void MapSpriteMgr::Update()
+void SelectMapSpriteMgr::Update()
 {
 }
 
-void MapSpriteMgr::Draw(RenderWindow& window)
+void SelectMapSpriteMgr::Draw(RenderWindow& window)
 {
 	window.draw(firstMapBackGrnd);
 	window.draw(backPack);

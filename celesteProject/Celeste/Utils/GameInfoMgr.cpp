@@ -2,34 +2,56 @@
 
 GameInfoMgr::GameInfoMgr()
 {
-	rapidcsv::Document gameInfo("dataCenter/gamedata.csv");
+	rapidcsv::Document gameInfo("data_tables/gamedata.csv");
+
+	Index = gameInfo.GetColumn<int>("Index");
+	Berry = gameInfo.GetColumn<int>("Berry");
+	Death = gameInfo.GetColumn<int>("Death");
+	playTime = gameInfo.GetColumn<float>("PlayTime");
+	tutoClear = gameInfo.GetColumn<int>("Tutorial");
+	firstClear = gameInfo.GetColumn<int>("First");
 
 }
 
-int GameInfoMgr::getBerry()
+void GameInfoMgr::InitInfo()
 {
-	return Berry[saveDataIdx];
+
+
 }
 
-int GameInfoMgr::getDeath()
+std::vector<int> GameInfoMgr::getVecctorIndex()
 {
-	return Death[saveDataIdx];
+	return Index;
 }
 
-float GameInfoMgr::getTime()
+std::vector<int> GameInfoMgr::getVectorBerry()
 {
-	return playTime[saveDataIdx];
+	return Berry;
 }
 
-int GameInfoMgr::getTutoClear()
+std::vector<int> GameInfoMgr::getVectorDeath()
 {
-	return tutoClear[saveDataIdx];
+	return Death;
 }
 
-int GameInfoMgr::getFirstClear()
+std::vector<float> GameInfoMgr::getVectorTime()
 {
-	return firstClear[saveDataIdx];
+	return playTime;
 }
+
+std::vector<int> GameInfoMgr::getVectorTutoClear()
+{
+	return tutoClear;
+}
+
+std::vector<int> GameInfoMgr::getVectorFirstClear()
+{
+	return firstClear;
+}
+
+
+
+
 //void GameInfoMgr::addBerry()
 //{
 //	Berry[saveDataIdx]++;
