@@ -63,14 +63,14 @@
     <ClInclude Include="Map\Map.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="Map\TileMap.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\repidcw.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\TextureHolder.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\TileMap.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
