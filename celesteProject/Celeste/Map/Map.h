@@ -7,6 +7,8 @@
 #include <iostream>
 #include <string.h>
 #include "TileMap.h"
+#include "../Obj.h"
+
 
 class Map
 {
@@ -16,6 +18,7 @@ private:
 	std::vector<int> MapXSize;
 	std::vector<int> MapYSize;
 	std::vector<std::string> OBJFilePath;
+	std::vector<std::string> OBJSFilePath;
 
 	std::vector<int> ColObjNum;
 	std::vector<int> ColL;
@@ -23,31 +26,31 @@ private:
 	std::vector<int> ColW;
 	std::vector<int> ColH;
 
+	std::vector<int> OBJnum;
+	std::vector<std::string> ObjFilePath;
+	std::vector<int> PosX;
+	std::vector<int> PosY;
 
 	std::vector<sf::RectangleShape*> blocks;
+	std::vector<Obj*> Objs;
 
 	Vector2i originPos;
 	Vector2f worldPos;
-
-	bool isDrag = false;
-
-	RectangleShape* currDrag;
-
-
-
+	Vector2f currworldPos;
+	
 public:
 	Map();
-	void InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window);
 	void DrawMap(sf::RenderWindow& window);
 
 	void LoadMap();
-	void SaveMap();
-
+	void InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window);
 
 	std::vector<int> GetMapNumber();
 	std::vector<int> GetMapXSize();
 	std::vector<int> GetMapYSize();
 	std::vector<sf::RectangleShape*> Getblocks();
+	std::vector<Obj*> GetObjs();
+
 	
 };
 

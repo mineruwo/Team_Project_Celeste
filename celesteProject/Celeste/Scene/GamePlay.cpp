@@ -2,15 +2,11 @@
 
 GamePlay::GamePlay():currScene(SceneID::GamePlay)
 {
-	bats = bat.GetBatRect();
 	
 }
 
-//GamePlay::~GamePlay()
-//{
-//}
 
-void GamePlay::CreateWalls()
+void GamePlay::CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
 {
 	for (auto v : walls)
 	{
@@ -19,16 +15,29 @@ void GamePlay::CreateWalls()
 
 	walls.clear();
 
-	Wall* wallUp = new Wall(bats);
-	walls.push_back(wallUp);
+	int idx = 0;
+
+	while (true)
+	{
+
+		if (idx == mapdata.Getblocks().size())
+		{
+			break;
+		}
+
+		Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds(), idx);
+		walls.push_back(tile);
+
+		idx++;
+
+	}
 
 }
 
 void GamePlay::Init(Vector2i resolution)
 {
-
-	GamePlay::CreateWalls();
-	//캐릭터 , 맵 ,오브젝트 초기화
+	map.LoadMap();
+	CreateWalls(walls, map);
 	player.Init();
 
 	currScene = SceneID::GamePlay;
@@ -36,31 +45,33 @@ void GamePlay::Init(Vector2i resolution)
 
 void GamePlay::Update(Time dt, RenderWindow& window)
 {
-	//플레이 상호작용 
+	map.InputMap(windowMagnification, mainView, dt, window);
 	if (dt.asSeconds() <= 1.f / 200.f)
 	{
 		InputMgr::Update(dt.asSeconds());
 		player.Update(dt.asSeconds(), walls);
-		// bat.Update(walls);
+	}	
+
+	if (InputMgr::GetKeyDown(Keyboard::F2))
+	{
+		player.Init();
 	}
-
-
-	//if (InputMgr::GetKeyDown(Keyboard::Escape))
-	//{
-	//	// sceneID 바뀜
-	//	Scene::NextScene(SceneID::);
-	//	//change/;
-	//	SceneMgr::GetInstance().ChangeScene(SceneID::);
-	//}
-
-	
 }
 
 void GamePlay::Draw(RenderWindow& window)
 {
-	window.draw(bat.GetShape());
+	window.setView(mainView);
 	player.Draw(window);
 	
+	for (auto it : walls)
+	{
+		it->DrawWall(window);
+	}
+
+	for (auto it : map.GetObjs())
+	{
+		window.draw(it->GetSprite());
+	}
 }
 
 void GamePlay::Release()

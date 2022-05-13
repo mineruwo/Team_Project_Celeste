@@ -8,7 +8,7 @@ Map::Map()
     MapXSize = mapData.GetColumn<int>("MapXSize");
     MapYSize = mapData.GetColumn<int>("MapYSize");
     OBJFilePath = mapData.GetColumn<std::string>("OBJFilePath");
-
+    OBJSFilePath = mapData.GetColumn< std::string>("OBJSFilePath");
 
     for (auto it : OBJFilePath)
     {
@@ -18,6 +18,15 @@ Map::Map()
         ColT = objData.GetColumn<int>("ColT");
         ColW = objData.GetColumn<int>("ColW");
         ColH = objData.GetColumn<int>("ColH");
+    }
+
+    for (auto it : OBJSFilePath)
+    {
+        rapidcsv::Document objsData(it);
+        OBJnum = objsData.GetColumn<int>("OBJnum");
+        ObjFilePath = objsData.GetColumn<std::string>("ObjFilePath");
+        PosX = objsData.GetColumn<int>("PosX");
+        PosY = objsData.GetColumn<int>("PosY");
     }
     
 }
@@ -55,7 +64,7 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
     {
 
         mainview.move(-1 * offset * dt.asSeconds(), 0.f);
-      
+
     }
     if (InputMgr::GetKey(Keyboard::D))
     {
@@ -68,56 +77,20 @@ void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWin
     }
     if (InputMgr::GetKey(Keyboard::W))
     {
-        mainview.move(0.f, -1 * offset* dt.asSeconds());
+        mainview.move(0.f, -1 * offset * dt.asSeconds());
     }
 
-    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButtonDown(Mouse::Left))
-    {
-        originPos = Mouse::getPosition(window)/8 * 8;
-        worldPos = window.mapPixelToCoords(originPos);
-
-        currDrag = new RectangleShape;
-
-        currDrag->setFillColor(Color(255, 0, 0,128));
-        currDrag->setPosition(worldPos.x/8 * 8, worldPos.y/8 * 8);
-        isDrag = true;
-    }
     
-    if (InputMgr::GetKey(Keyboard::LShift) && InputMgr::GetMouseButton(Mouse::Left)&& isDrag)
-    {
-        worldPos = window.mapPixelToCoords(originPos);
-
-        currDrag->setSize(Vector2f((Mouse::getPosition(window).x/8)*8- worldPos.x, (Mouse::getPosition(window).y / 8)*8- worldPos.y));
-    }
-
-    if (isDrag && InputMgr::GetMouseButton(Mouse::Right))
-    {
-        isDrag = false;
-    }
-
-    if ((InputMgr::GetKeyUp(Keyboard::LShift) || InputMgr::GetMouseButtonUp(Mouse::Left))&&isDrag)
-
-    {
-        RectangleShape* createBlock = new RectangleShape;
-        
-        createBlock->setPosition(currDrag->getPosition());
-        createBlock->setSize(currDrag->getSize());
-
-        blocks.push_back(createBlock);
-
-        delete currDrag;
-        isDrag = false;
-    }
 }
 
 void Map::DrawMap(sf::RenderWindow& window)
 {
  
-    if (isDrag)
+    for (auto it : Objs)
     {
-       window.draw(*currDrag);
+        window.draw(it->GetSprite());
     }
-   
+ 
 }
 
 void Map::LoadMap()
@@ -128,30 +101,26 @@ void Map::LoadMap()
         RectangleShape* createBlock = new RectangleShape;
 
         createBlock->setPosition(ColL[idx], ColT[idx]);
-        createBlock->setSize(Vector2f(ColW[idx],ColH[idx]));
-        
+        createBlock->setSize(Vector2f(ColW[idx], ColH[idx]));
+
         blocks.push_back(createBlock);
 
         idx++;
     }
-    
-}
 
-void Map::SaveMap()
-{
-    fstream fs;
-
-    int idx = 0;
-    for (auto it : OBJFilePath)
+    idx = 0;
+    for (auto it : OBJnum)
     {
-        fs.open(it, ios::app);
-        
-        for (auto it2 : blocks)
-        {
-            fs  << idx << "," << it2->getGlobalBounds().left << "," << it2->getGlobalBounds().top << "," << it2->getGlobalBounds().width << "," << it2->getGlobalBounds().height << ",";
-            idx++;
-        }
+        Obj* creatobj = new Obj;
+
+        creatobj->SetFile(ObjFilePath[idx]);
+        creatobj->SetPosition(Vector2f(PosX[idx], PosY[idx]));
+
+        Objs.push_back(creatobj);
+
+        idx++;
     }
+   
 }
 
 std::vector<int> Map::GetMapNumber()
@@ -172,5 +141,10 @@ std::vector<int> Map::GetMapYSize()
 std::vector<sf::RectangleShape*> Map::Getblocks()
 {
     return blocks;
+}
+
+std::vector<Obj*> Map::GetObjs()
+{
+    return Objs;
 }
 

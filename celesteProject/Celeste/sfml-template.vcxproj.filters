@@ -75,9 +75,6 @@
     <ClCompile Include="Utils\AnimationClip.cpp">
       <Filter>소스 파일\Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Bat.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
       <Filter>소스 파일\Utils</Filter>
     </ClCompile>
@@ -92,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="Utils\GameInfoMgr.cpp">
       <Filter>소스 파일\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Map.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\TileMap.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="Obj.cpp">
+      <Filter>소스 파일</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -140,24 +146,17 @@
     <ClInclude Include="Utils\AnimationClip.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Bat.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\Utils.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Scene\Snow.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="Utils\repidcw.h">
-      <Filter>Utils</Filter>
-
     <ClInclude Include="Scene\ConfirmSelectedMapScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h">
       <Filter>소스 파일\SceneMgr</Filter>
-
     </ClInclude>
     <ClInclude Include="Utils\GameInfoMgr.h">
       <Filter>소스 파일\Utils</Filter>
@@ -165,8 +164,14 @@
     <ClInclude Include="Utils\repidcw.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Map\Map.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
     <ClInclude Include="Map\TileMap.h">
-      <Filter>Player</Filter>
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Obj.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -24,20 +24,20 @@ void Player::Init()
 	position.y = 511.f;
 	sprite.setPosition(position); //815, 511
 	sprite.setScale(CharacSize, CharacSize);
-	sprite.setOrigin(Vector2f((16.f * CharacSize)*0.5f, 32.f * CharacSize));
+	sprite.setOrigin(Vector2f((16.f * CharacSize) * 0.5f, 32.f * CharacSize));
 
 	//몸 히트 박스
 	bodyHitbox.setFillColor(Color::Transparent);
 	bodyHitbox.setOutlineColor(Color::Yellow);
 	bodyHitbox.setOutlineThickness(1.f);
 	bodyHitbox.setSize(Vector2f(8.f * CharacSize, 10.f * CharacSize));
-	bodyHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 10.f * CharacSize));	
+	bodyHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 10.f * CharacSize));
 	//bodyHitbox.setPosition(position);
 
 	//바닥 히트 박스
 	floorHitbox.setFillColor(Color::Red);
 	floorHitbox.setSize(Vector2f(8.f * CharacSize, 2.f * CharacSize));
-	floorHitbox.setOrigin(Vector2f((8.f * CharacSize)*0.5f, 2.f * CharacSize));
+	floorHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 2.f * CharacSize));
 
 	AnimationInit();
 	animation.Play("Idle");
@@ -57,7 +57,7 @@ void Player::Init()
 /*============================================
 	키 입력에 따른 플레이어의 액션 업데이트
 ==============================================*/
-void Player::Update(float dt, std::vector<Wall *> walls)
+void Player::Update(float dt, std::vector<Wall*> walls)
 {
 	isFalling = moveMent != PlayerAction::DASH && !isFloor;
 
@@ -77,7 +77,7 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	}
 
 	//충돌 처리 업데이트
-	UpdateCrash(walls);	
+	UpdateCrash(walls);
 
 	//std::cout << (int)moveMent << std::endl;
 	switch (moveMent)
@@ -109,7 +109,7 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	animation.Update(dt);
 	UpdateAnimation(dt);
 
-	
+
 	sprite.setPosition(position);
 	bodyHitbox.setPosition(position);
 	floorHitbox.setPosition(position);
@@ -130,7 +130,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 	{
 		// 플레이어의 origin를 이용
 		// x > y 일경우 (위/아래)으로 보냄, x < y일 경우 (오른쪽/왼쪽)으로 보냄
-		
+
 		if (bodyHitbox.getGlobalBounds().intersects(v->GetWallRect()))
 		{
 			float wallTop = v->GetWallRect().top;
@@ -172,7 +172,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5;
 				}
 				//X와 Y 값이 동일한 경우
-				else 
+				else
 				{
 					posi.y -= abs(wallTop - playerBottom);
 					posi.x -= abs(wallLeft - playerRight);
@@ -205,7 +205,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerRight))
 				{
 					posi.x = wallLeft + bodyHitbox.getGlobalBounds().width * 0.5f;
-				}		
+				}
 				else
 				{
 					posi.x += abs(wallLeft - wallRight);
@@ -226,7 +226,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			{
 				isCollision[0] = true;
 				//std::cout << "RC충돌" << std::endl;
-				posi.x = wallRight+bodyHitbox.getGlobalBounds().width * 0.5f ;
+				posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
 			}
 			//LB
 			if (wallBottom < playerY && wallLeft > playerX)
@@ -240,7 +240,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 				//Y
 				else if (abs(wallBottom - playerTop) > abs(wallLeft - playerRight))
 				{
-					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width*0.5f;
+					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f;
 				}
 				else
 				{
@@ -306,10 +306,10 @@ void Player::Jump(float dt)
 			fallingSpeed = 1000.f;
 		}
 	}
-	
+
 	/*if (dt < 1.f)
 	{
-		
+
 		position.y -= dt * speed * 3.f;
 		if (position.y < 200.f)
 		{
@@ -318,64 +318,7 @@ void Player::Jump(float dt)
 
 	}*/
 }
-	/*if (isJump == true)
-	{
-		if (InputMgr::GetKeyUp(Keyboard::C))
-		{
-			jumpTime = 0.5f;
-		}
-		if (InputMgr::GetKey(Keyboard::C))
-		{
-			jumpTime += dt;
-			if (jumpTime < 0.5f)
-			{
-				gravity -= gravityV * dt;
-			}
-		}
 
-	}*/	
-	/*if (isJump == true)
-	{
-		if (isRight == true)
-		{
-			position.y -= statusDT * speed * 1.f;
-		}
-		else if (isRight == false)
-		{
-			position.y -= statusDT * speed * 1.f;
-		}
-	}*/
-	
-	//if (isJump == true)
-	//{
-	//	if (statusDT < 1.f)
-	//	{
-	//		
-	//	}
-	//}
-	//else if (isJump == false)
-	//{
-
-	//}
-	//if (isCollision[2] || isCollision[3])
-	//{
-	//	if (isRight == true)
-	//	{
-	//		position.x *= -1.f;
-	//	}
-	//	else if (isRight == false)
-	//	{
-	//		position.x *= -1.f;
-	//	}
-	//}
-
-	/*if (isJump == true)
-	{
-		jumpSpeed -= GRAVITY * statusDT;
-
-	}*/
-
-//}
 /*===========================
 	  움직이는 액션 코드
 =============================*/
@@ -414,8 +357,8 @@ void Player::Dash(float dt)
 			isDash = false;
 		}
 	}
-	
-	
+
+
 	/*if (position.x < deshDir.x + 200)
 	{
 		if (isRight == true)
@@ -460,8 +403,8 @@ void Player::Climb(float dt)
 		else if (InputMgr::GetKey(Keyboard::Down))
 		{
 			position.y += dt * speed;
-		}		
-	}	
+		}
+	}
 }
 
 /*============================================
@@ -752,7 +695,7 @@ void Player::SetAnimation(PlayerAction action)
 		{
 			sprite.setScale(-CharacSize, CharacSize);
 			animation.Play("Idle");
-		}		
+		}
 		break;
 	case PlayerAction::MOVE:
 		if (isRight == true)
@@ -764,9 +707,10 @@ void Player::SetAnimation(PlayerAction action)
 		{
 			animation.Play("Move");
 			sprite.setScale(-CharacSize, CharacSize);
-		}	
+		}
 		break;
 	case PlayerAction::JUMP:
+		isJump = true;
 		animation.Play("Jump");
 		//animation.PlayQueue("Idle");
 		break;
@@ -779,7 +723,7 @@ void Player::SetAnimation(PlayerAction action)
 		if (isSeizeWall == false)
 		{
 			animation.Play("Lookup");
-		}		
+		}
 		break;
 	case PlayerAction::LOOKDOWN:
 		if (isRight == true)
@@ -796,7 +740,7 @@ void Player::SetAnimation(PlayerAction action)
 		{
 			isSeizeWall = true;
 		}
-		animation.PlayQueue("Climb");		
+		animation.PlayQueue("Climb");
 		break;
 	default:
 		break;
@@ -883,7 +827,7 @@ void Player::Draw(RenderWindow& window)
 {
 	window.draw(sprite);
 	window.draw(floorHitbox);
-	window.draw(bodyHitbox);	
+	window.draw(bodyHitbox);
 }
 /*===============================
 작 성 자 : 최 윤 화

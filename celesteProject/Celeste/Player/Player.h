@@ -35,7 +35,7 @@ private:
 	Sprite sprite; //플레이어 그리기
 	Vector2f position; // 플레이어의 위치
 	Vector2f prePosition; //플레이어의 이전 위치
-	
+
 	Vector2i resolution;
 
 	Texture texture;
@@ -90,7 +90,7 @@ public:
 
 	void UpdateCrash(std::vector<Wall*> walls);
 
-	void Update(float dt, std::vector<Wall *> walls);
+	void Update(float dt, std::vector<Wall*> walls);
 
 	void Jump(float dt);
 	void Move(float dt);
