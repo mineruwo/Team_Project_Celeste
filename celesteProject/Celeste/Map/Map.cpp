@@ -24,11 +24,6 @@ Map::Map()
 
 void Map::InputMap(int& windowMagnification, View& mainview, Time& dt, RenderWindow& window)
 {
-    if (InputMgr::GetKeyDown(Keyboard::F3))
-    {
-        LoadMap();
-    }
-
 
 
     if (InputMgr::GetKeyDown(Keyboard::PageUp))

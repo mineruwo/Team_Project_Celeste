@@ -23,7 +23,7 @@ enum class PlayerAction
 class Player
 {
 private:
-	const float START_SPEED = 100; // 시작 플레이어 속도
+	const float START_SPEED = 200; // 시작 플레이어 속도
 	const float GRAVITY = 100.f; // 중력 처리
 	const float CharacSize = 2.f;
 
@@ -43,6 +43,7 @@ private:
 	Vector2f deshDir;
 
 	float jumpspeed;
+	float jumpTime;
 	float statusDT; //dt 변수
 
 	bool isFloor; //플레이어 바닥 유무
@@ -53,10 +54,6 @@ private:
 	bool isCatch; //플레이어 잡기 유무
 	bool isFalling; //플레이어 중력 유무
 	bool isSeizeWall; //플레이어 벽을 붙잡을 때
-
-	float jumpTime;
-	float jumpHeight;
-	float jumpPower;
 
 	float jumpSpeed;
 
@@ -91,12 +88,12 @@ public:
 
 	void UpdateCrash(std::vector<Wall*> walls);
 
-	void Jump();
-	void Move();
-	void Dash();
-	void Climb();
+	void Update(float dt, std::vector<Wall *> walls);
 
-	void Update(float dt, std::vector<Wall*> walls);
+	void Jump(float dt);
+	void Move(float dt);
+	void Dash(float dt);
+	void Climb(float dt);
 
 	void UpdateAnimation(float dt);
 	void SetAnimation(PlayerAction action);

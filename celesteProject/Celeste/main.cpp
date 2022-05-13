@@ -31,6 +31,7 @@ int main()
     Map map;
     Clock clock;
 
+    map.LoadMap();
     int currMap = 0;
 
     std::vector <Wall*> walls;
