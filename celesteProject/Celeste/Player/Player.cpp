@@ -286,7 +286,7 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 		점프 액션 코드
 =============================*/
 void Player::Jump(float dt)
-{/*
+{
 	isFalling = false;
 	if (isJump == true)
 	{
@@ -305,9 +305,9 @@ void Player::Jump(float dt)
 		{
 			fallingSpeed = 1000.f;
 		}
-	}*/
+	}
 	
-	if (dt < 1.f)
+	/*if (dt < 1.f)
 	{
 		
 		position.y -= dt * speed * 3.f;
@@ -316,7 +316,7 @@ void Player::Jump(float dt)
 			isJump = false;
 		}
 
-	}
+	}*/
 }
 	/*if (isJump == true)
 	{
