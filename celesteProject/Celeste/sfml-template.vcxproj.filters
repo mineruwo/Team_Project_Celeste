@@ -149,17 +149,24 @@
     <ClInclude Include="Scene\Snow.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Utils\repidcw.h">
+      <Filter>Utils</Filter>
+
     <ClInclude Include="Scene\ConfirmSelectedMapScene.h">
       <Filter>소스 파일\Scene</Filter>
     </ClInclude>
     <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h">
       <Filter>소스 파일\SceneMgr</Filter>
+
     </ClInclude>
     <ClInclude Include="Utils\GameInfoMgr.h">
       <Filter>소스 파일\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\repidcw.h">
       <Filter>소스 파일\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\TileMap.h">
+      <Filter>Player</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

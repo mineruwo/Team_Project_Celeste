@@ -24,7 +24,8 @@ class Player
 {
 private:
 	const float START_SPEED = 200; // 시작 플레이어 속도
-	const float GRAVITY = 100.f; // 중력 처리
+	const float START_JUMPSPEED = 800.f;
+	const float GRAVITY = 200.f; // 중력 처리
 	const float CharacSize = 2.f;
 
 	AnimationController animation;
@@ -56,6 +57,7 @@ private:
 	bool isSeizeWall; //플레이어 벽을 붙잡을 때
 
 	float jumpSpeed;
+	float fallingSpeed;
 
 	float gravity;
 	float gravityV;

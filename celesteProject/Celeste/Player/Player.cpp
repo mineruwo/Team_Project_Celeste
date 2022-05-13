@@ -9,15 +9,10 @@
 		 플레이어 생성자
 ================================*/
 Player::Player()
-	:speed(START_SPEED), gravity(GRAVITY), isJump(false), isDash(false), isCatch(false)
+	:speed(START_SPEED), isJump(false), isDash(false), isCatch(false)
 	, isFalling(true), isSeizeWall(false), isRight(true), isFloor(false),
-	jumpTime(0.f)
+	jumpTime(0.f), jumpSpeed(START_JUMPSPEED), fallingSpeed(0.f)
 {
-	font.loadFromFile("../Celeste-bin/graphics/RobotoFlex-Regular.ttf");
-	poscheck.setFont(font);
-	poscheck.setCharacterSize(10);
-	poscheck.setFillColor(Color(255, 0, 0));
-
 }
 
 /*==============================
@@ -69,14 +64,13 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	// 중 력
 	if (isFalling)
 	{
-		gravityV += gravity * dt;
-		position.y += gravityV * dt;
+		gravity += GRAVITY * dt;
+		position.y += gravity * dt;
 	}
 	else
 	{
 		gravityV = 0.f;
 	}
-
 	if (gravityV > 980.f) //최대 중력 조절
 	{
 		gravityV = 980.f;
@@ -119,23 +113,6 @@ void Player::Update(float dt, std::vector<Wall *> walls)
 	sprite.setPosition(position);
 	bodyHitbox.setPosition(position);
 	floorHitbox.setPosition(position);
-
-
-	/*poscheck.setPosition(sprite.getPosition().x, sprite.getPosition().y);
-	std::string pos;
-	char buffer[15];
-
-	pos += "player floor [ ";
-	pos += itoa(floorPosition.x, buffer, 10);
-	pos += " , ";
-	pos += itoa(floorPosition.y, buffer, 10);
-	pos += " ]";
-	poscheck.setString(pos);
-
-	if (position.y > 1000)
-	{
-		position.y = 200;
-	}*/
 
 }
 
@@ -309,8 +286,39 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 		점프 액션 코드
 =============================*/
 void Player::Jump(float dt)
-{	
+{
+	isFalling = false;
 	if (isJump == true)
+	{
+		jumpSpeed -= GRAVITY * dt;
+		position.y -= jumpSpeed * dt;
+		if (jumpSpeed < 0.f)
+		{
+			isJump = false;
+			jumpSpeed = START_JUMPSPEED;
+		}
+	}
+	else if (isJump == false)
+	{
+		fallingSpeed += GRAVITY * dt;
+		if (fallingSpeed > 1000.f)
+		{
+			fallingSpeed = 1000.f;
+		}
+	}
+	
+	/*if (dt < 1.f)
+	{
+		
+		position.y -= dt * speed * 3.f;
+		if (position.y < 200.f)
+		{
+			isJump = false;
+		}
+
+	}*/
+}
+	/*if (isJump == true)
 	{
 		if (InputMgr::GetKeyUp(Keyboard::C))
 		{
@@ -325,38 +333,30 @@ void Player::Jump(float dt)
 			}
 		}
 
-	}
-	
+	}*/	
 	/*if (isJump == true)
 	{
-		if (InputMgr::GetKey(Keyboard::C))
+		if (isRight == true)
 		{
-			if (isRight == true)
-			{
-				position.y -= statusDT * speed * 1.f;
-			}
-			else if (isRight == false)
-			{
-				position.y -= statusDT * speed * 1.f;
-			}
+			position.y -= statusDT * speed * 1.f;
 		}
-		if (InputMgr::GetKeyUp(Keyboard::C))
+		else if (isRight == false)
 		{
-			position.x -= dt * speed;
+			position.y -= statusDT * speed * 1.f;
 		}
-	}
-	
-	if (isJump == true)
-	{
-		if (statusDT < 1.f)
-		{
-			
-		}
-	}
-	else if (isJump == false)
-	{
-
 	}*/
+	
+	//if (isJump == true)
+	//{
+	//	if (statusDT < 1.f)
+	//	{
+	//		
+	//	}
+	//}
+	//else if (isJump == false)
+	//{
+
+	//}
 	//if (isCollision[2] || isCollision[3])
 	//{
 	//	if (isRight == true)
@@ -375,7 +375,7 @@ void Player::Jump(float dt)
 
 	}*/
 
-}
+//}
 /*===========================
 	  움직이는 액션 코드
 =============================*/
@@ -397,7 +397,26 @@ void Player::Move(float dt)
 =============================*/
 void Player::Dash(float dt)
 {
-	if (position.x < deshDir.x + 200)
+	deshDir = position;
+
+	if (isDash = true)
+	{
+		if (isRight == true)
+		{
+			position.x += dt * speed * 2.f;
+		}
+		else if (isRight == false)
+		{
+			position.x -= dt * speed * 2.f;
+		}
+		if (position.x < deshDir.y + 200 || position.x > deshDir.y - 200)
+		{
+			isDash = false;
+		}
+	}
+	
+	
+	/*if (position.x < deshDir.x + 200)
 	{
 		if (isRight == true)
 		{
@@ -424,7 +443,7 @@ void Player::Dash(float dt)
 		{
 			position.y += dt * speed * 3.f;
 		}
-	}
+	}*/
 }
 
 /*===========================
@@ -483,10 +502,13 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
-		{
-			SetAnimation(PlayerAction::CLIMB);
-		}
+		//if (InputMgr::GetKey(Keyboard::Z))
+		//{
+		//	if (isCollision[2] || isCollision[3])
+		//	{
+		//		SetAnimation(PlayerAction::CLIMB);
+		//	}			
+		//}
 		break;
 	case PlayerAction::MOVE: //Right or Left
 		if (InputMgr::GetKeyUp(Keyboard::Right) || InputMgr::GetKeyUp(Keyboard::Left))
@@ -509,9 +531,12 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -542,9 +567,12 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -575,9 +603,12 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -612,9 +643,12 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -639,7 +673,6 @@ void Player::UpdateAnimation(float dt)
 		}
 		if (InputMgr::GetKeyUp(Keyboard::Down))
 		{
-
 			SetAnimation(PlayerAction::IDLE);
 		}
 		if (InputMgr::GetKey(Keyboard::C))
@@ -650,9 +683,12 @@ void Player::UpdateAnimation(float dt)
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -756,7 +792,10 @@ void Player::SetAnimation(PlayerAction action)
 		}
 		break;
 	case PlayerAction::CLIMB:
-		isSeizeWall = true;
+		if (isCollision[2] || isCollision[3])
+		{
+			isSeizeWall = true;
+		}
 		animation.PlayQueue("Climb");		
 		break;
 	default:
