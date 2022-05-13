@@ -79,6 +79,15 @@ void UiMgr::MenuTextFlash()
 {
 }
 
+void UiMgr::MoveSaveInfo(int select)
+{
+	UiMgr::InitSaveCheckUi();
+	berryText[select].move(400, 0);
+	deathText[select].move(400, 0);
+	playTimeText[select].move(400, 0);
+
+}
+
 void UiMgr::InitSaveCheckUi()
 {
 	 
@@ -122,9 +131,9 @@ void UiMgr::InitSaveCheckUi()
 	SetText(deathText[1], 50, Color::White, Vector2f(700, 500));
 	SetText(deathText[2], 50, Color::White, Vector2f(700, 800));
 
-	SetText(playTimeText[0], 50, Color::White, Vector2f(1000, 270));
-	SetText(playTimeText[1], 50, Color::White, Vector2f(1000, 570));
-	SetText(playTimeText[2], 50, Color::White, Vector2f(1000, 870));
+	SetText(playTimeText[0], 50, Color::White, Vector2f(1100, 270));
+	SetText(playTimeText[1], 50, Color::White, Vector2f(1100, 570));
+	SetText(playTimeText[2], 50, Color::White, Vector2f(1100, 870));
 
 
 }
@@ -222,22 +231,18 @@ void UiMgr::MoveText(int num , Time dt)
 	switch (num)
 	{
 	case 0: //climb
-		//InitMainMenu();
 		SetText(mainMenuText[0], 50, Color::White, Vector2f(360, 420));
 		mainMenuText[0].setFillColor(Color::Green);
 		break;
 	case 1: //option
-	//	InitMainMenu();
 		SetText(mainMenuText[1], 50, Color::White, Vector2f(420, 500));
 		mainMenuText[1].setFillColor(Color::Green);
 		break;
 	case 2: // credit
-		//InitMainMenu();
 		SetText(mainMenuText[2], 50, Color::White, Vector2f(420, 600));
 		mainMenuText[2].setFillColor(Color::Green);
 		break;
 	case 3: //exit
-	//	InitMainMenu();
 		SetText(mainMenuText[3], 50, Color::White, Vector2f(420, 700));
 		mainMenuText[3].setFillColor(Color::Green);
 		break;

@@ -118,30 +118,30 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 				climbBounce = true;
 			}
 
-		}
-		switch (menuNum)
-		{
-		case 0: //climb
-			MainMenu::SelectClimb(dt);
-			UiMgr::GetInstance().MoveText(menuNum, dt);
-			climbBounce = false;
-			break;
-		case 1: //option
-			MainMenu::SelectOption();
-			UiMgr::GetInstance().MoveText(menuNum, dt);
-			break;
-		case 2: // credit
-			MainMenu::Selectcredit();
-			UiMgr::GetInstance().MoveText(menuNum, dt);
-			break;
-		case 3: //exit
-			MainMenu::Selectexit();
-			UiMgr::GetInstance().MoveText(menuNum, dt);
-			break;
-		default:
-			break;
-		}
 
+			switch (menuNum)
+			{
+			case 0: //climb
+				MainMenu::SelectClimb(dt);
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				climbBounce = false;
+				break;
+			case 1: //option
+				MainMenu::SelectOption();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			case 2: // credit
+				MainMenu::Selectcredit();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			case 3: //exit
+				MainMenu::Selectexit();
+				UiMgr::GetInstance().MoveText(menuNum, dt);
+				break;
+			default:
+				break;
+			}
+		}
 		if (InputMgr::GetKeyDown(Keyboard::Down))
 		{
 			if (menuNum < 3)
@@ -213,7 +213,7 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 			isCredit = false;
 		}
 	}
-	UiMgr::GetInstance().InitButtun();
+	//UiMgr::GetInstance().InitButtun();
 	snow.Update(dt, window);
 }
 
@@ -221,13 +221,13 @@ void MainMenu::Draw(RenderWindow& window)
 {
 	window.draw(menuBackGrnd);
 	snow.Draw(window);
+	UiMgr::GetInstance().cxDraw(window);
 	if (!isOption && !isCredit) 
 	{
 	window.draw(climb);
 	window.draw(option);
 	window.draw(credit);
 	window.draw(exit);
-	UiMgr::GetInstance().cxDraw(window);
 	UiMgr::GetInstance().Draw(window);
 	}
 	if (isOption)

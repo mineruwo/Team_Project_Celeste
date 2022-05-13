@@ -31,14 +31,27 @@ private:
 	Sprite berrySprite[3];
 	Sprite deathSprite[3];
 
+	bool isMove = false;
+	bool isRollback = true;
+
 	float cardCenter;
 	float ticketCenter;
+
+	float MoveX;
+	float RollX;
+	int selectLoad = 0;
+	bool tutorialClear = false;
 
 	SceneID currScene;
 
 public:
-	SaveCheck();
+	SaveCheck();	
+
+
 	virtual void Init(Vector2i resolution);
+	void moveCard(int select);
+	//void MoveCard(int select, Time dt);
+	//void RollBackCard(int select, Time dt);
 	virtual void Update(Time dt, RenderWindow& window);
 	virtual void Draw(RenderWindow& window);
 	virtual void Release();

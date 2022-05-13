@@ -28,37 +28,20 @@ void SceneMgr::ChangeScene(SceneID Id)
 		currScene = SceneID::MainMenu;
 		SceneMgr::SceneInit(resolution);
 		break;
-	//case SceneID::Option:
-	//	scene = new ;
-	//	currScene = SceneID::Option;
-	//	break;
-	//case SceneID::Credits:
-	//	scene = new ;
-	//	currScene = SceneID::Credits;
-	//	break;
 	case SceneID::SaveCheck:
 		scene = new SaveCheck;
 		currScene = SceneID::SaveCheck;
 		SceneMgr::SceneInit(resolution);
 		break;
-	//case SceneID::SelectMap:
-	//	scene = new ;
-	//	currScene = SceneID::SelectMap;
-	//	break;
-	//case SceneID::SelectChapter:
-	//	scene = new ;
-	//	currScene = SceneID::SelectChapter;
-	//	break;
+	/*case SceneID::ConfirmSelectedMapScene:
+		scene = new ConfirmSelectedMapScene;
+		currScene = SceneID::ConfirmSelectedMapScene;
+		break;*/
 	case SceneID::GamePlay:
 		scene = new GamePlay;
 		currScene = SceneID::GamePlay;
 		SceneMgr::SceneInit(resolution);
 		break;
-	//case SceneID::Pause:
-	//	scene = new ;
-	//	currScene = SceneID::Pause;
-	//	break;
-	
 	}
 
 	Ui.InitSceneUi(Id);

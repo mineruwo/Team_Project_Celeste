@@ -70,7 +70,7 @@ public:
 	void InitButtun();
 
 	void MenuTextFlash();
-	
+	void MoveSaveInfo(int select);
 	void InitSaveCheckUi();
 
 	void InitSceneUi(SceneID Id);
