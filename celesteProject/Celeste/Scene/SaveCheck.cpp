@@ -180,17 +180,7 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 		if (selectLoad < 2)
 		{
 			selectLoad++;
-			/*		isMove = true;
-					isRollback = true;
-					MoveX = characterCard[selectLoad].getPosition().x;
-					if (selectLoad == 0)
-					{
-						RollX = characterCard[selectLoad + 1].getPosition().x;
-					}
-					else if (selectLoad != 0)
-					{
-						RollX = characterCard[selectLoad - 1].getPosition().x;
-					}*/
+
 		}
 
 
@@ -201,14 +191,17 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 			//SaveCheck::MoveCard(selectLoad, dt);
 			SaveCheck::moveCard(selectLoad);
 			UiMgr::GetInstance().MoveSaveInfo(selectLoad);
+
 			break;
 		case 1:
 			SaveCheck::moveCard(selectLoad);
 			UiMgr::GetInstance().MoveSaveInfo(selectLoad);
+
 			break;
 		case 2:
 			SaveCheck::moveCard(selectLoad);
 			UiMgr::GetInstance().MoveSaveInfo(selectLoad);
+
 			break;
 		default:
 			break;
@@ -218,14 +211,36 @@ void SaveCheck::Update(Time dt, RenderWindow& window)
 
 	if (InputMgr::GetKeyDown(Keyboard::C))
 	{
-		// sceneID ¹Ù²ñ
-		Scene::NextScene(SceneID::GamePlay);
-		SceneMgr::GetInstance().GetScene().NextScene(SceneID::GamePlay);
 
-		//change/;
-		SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
-		UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay
-		);
+		switch (selectLoad)
+		{
+		case 0:
+			Scene::NextScene(SceneID::ConfirmSelectedMapScene);
+			SceneMgr::GetInstance().ChangeScene(SceneID::ConfirmSelectedMapScene);
+			
+			UiMgr::GetInstance().InitSceneUi(SceneID::ConfirmSelectedMapScene);
+			GameInfoMgr::GetInstance().SetSaveDataIdx(selectLoad);
+			/*Index = GameInfoMgr::GetInstance().getVecctorIndex()[];
+			ConfirmSelectedMapScene::GetTutorialClear(Index);*/
+
+			break;
+		case 1:
+			Scene::NextScene(SceneID::ConfirmSelectedMapScene);
+			SceneMgr::GetInstance().ChangeScene(SceneID::ConfirmSelectedMapScene);
+			UiMgr::GetInstance().InitSceneUi(SceneID::ConfirmSelectedMapScene);
+			GameInfoMgr::GetInstance().SetSaveDataIdx(selectLoad);
+			break;
+		case 2:
+			Scene::NextScene(SceneID::ConfirmSelectedMapScene);
+			SceneMgr::GetInstance().ChangeScene(SceneID::ConfirmSelectedMapScene);
+			UiMgr::GetInstance().InitSceneUi(SceneID::ConfirmSelectedMapScene);
+			GameInfoMgr::GetInstance().SetSaveDataIdx(selectLoad);
+			break;
+		default:
+			break;
+		}
+
+
 	}
 	snow.Update(dt, window);
 
@@ -243,6 +258,8 @@ void SaveCheck::Draw(RenderWindow& window)
 {
 	window.draw(backGrnd);
 	snow.Draw(window);
+	window.draw(cSprite);
+	window.draw(xSprite);
 	window.draw(characterTicket[0]);
 	window.draw(characterTicket[1]);
 	window.draw(characterTicket[2]);
@@ -256,8 +273,7 @@ void SaveCheck::Draw(RenderWindow& window)
 	window.draw(characterCard[0]);	
 	window.draw(characterCard[1]);
 	window.draw(characterCard[2]);
-	window.draw(cSprite);
-	window.draw(xSprite);
+
 
 	
 	

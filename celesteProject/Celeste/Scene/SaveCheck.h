@@ -4,6 +4,7 @@
 #include "../Utils/InputMgr.h"
 #include "../SceneMgr/SceneMgr.h"
 #include"../Utils/GameInfoMgr.h"
+#include "../Scene/ConfirmSelectedMapScene.h"
 #include "Snow.h"
 
 using namespace sf;
@@ -40,8 +41,8 @@ private:
 	float MoveX;
 	float RollX;
 	int selectLoad = 0;
-	bool tutorialClear = false;
-
+	// save index 번호 가질변수 > 맵선택에 클리어여부 전달 
+	int Index;
 	SceneID currScene;
 
 public:

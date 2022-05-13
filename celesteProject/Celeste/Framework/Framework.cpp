@@ -48,7 +48,6 @@ void Framework::Draw()
 
 	SceneMgr::GetInstance().SceneDraw(window);
 
-	//UiMgr::GetInstance().Draw(window);
 
 	window.display();
 }
