@@ -36,12 +36,18 @@ private:
 	static list<Keyboard::Key> ingKeys;
 	static list<Keyboard::Key> upKeys;
 
+	static list<Mouse::Button> downButtons;
+	static list<Mouse::Button> ingButtons;
+	static list<Mouse::Button> upButtons;
+
+	static Vector2i mousePosititon;
+	static Vector2f mousePosititonWorld;
+
 public:
 	static void Init();
 	static void HorInit();
 	static void VerInit();
-	static void Jump();
-	static void Dash();
+
 
 	static void ClearInput();
 	static void ProcessInput(const Event& event);
@@ -55,4 +61,13 @@ public:
 	static bool GetKeyDown(Keyboard::Key key);
 	static bool GetKey(Keyboard::Key key);
 	static bool GetKeyUp(Keyboard::Key key);
+
+	static Vector2i GetMousePosition();
+
+	static Vector2f GetMouseWolrdPosition();
+
+	static bool GetMouseButtonDown(Mouse::Button button);
+	static bool GetMouseButton(Mouse::Button button);
+	static bool GetMouseButtonUp(Mouse::Button button);
+
 };

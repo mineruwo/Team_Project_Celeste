@@ -1,6 +1,5 @@
 ﻿#include <SFML/Graphics.hpp>
 #include "Framework/Framework.h"
-
 int main()
 {
     Framework mainLoop;
@@ -11,5 +10,3 @@ int main()
         mainLoop.Update();
         mainLoop.Draw();
     }
-
-}

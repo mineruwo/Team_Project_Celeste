@@ -9,13 +9,18 @@ list<Keyboard::Key> InputMgr::downKeys;
 list<Keyboard::Key> InputMgr::ingKeys;
 list<Keyboard::Key> InputMgr::upKeys;
 
+list<Mouse::Button>  InputMgr::downButtons;
+list<Mouse::Button>  InputMgr::ingButtons;
+list<Mouse::Button>  InputMgr::upButtons;
+
+Vector2i InputMgr::mousePosititon;
+Vector2f InputMgr::mousePosititonWorld;
+
 void InputMgr::Init()
 {
 	mapAxis.clear();
 	HorInit();
 	VerInit();
-	Jump();
-	Dash();
 }
 
 void InputMgr::HorInit()
@@ -47,28 +52,6 @@ void InputMgr::VerInit()
 	info.negativeKeys.push_back(Keyboard::Up);
 	mapAxis[info.axis] = info;
 }
-void InputMgr::Jump()
-{
-	AxisInfo info;
-	info.axis = Axis::Jump;
-	info.sensi = 2.f;
-	info.value = 0.f;
-	info.limit = 0.05f;
-	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::C);
-	mapAxis[info.axis] = info;
-}
-void InputMgr::Dash()
-{
-	AxisInfo info;
-	info.axis = Axis::Dash;
-	info.sensi = 2.f;
-	info.value = 0.f;
-	info.limit = 0.05f;
-	info.positiveKeys.clear();
-	info.positiveKeys.push_back(Keyboard::X);
-	mapAxis[info.axis] = info;
-}
 
 void InputMgr::ClearInput()
 {
@@ -91,7 +74,7 @@ void InputMgr::ProcessInput(const Event& event)
 		ingKeys.remove(event.key.code);
 		upKeys.push_back(event.key.code);
 		break;
-	
+
 	default:
 		break;
 	}
@@ -208,3 +191,30 @@ bool InputMgr::GetKeyUp(Keyboard::Key key)
 	return it != upKeys.end();
 }
 
+Vector2i InputMgr::GetMousePosition()
+{
+	return mousePosititon;
+}
+
+Vector2f InputMgr::GetMouseWolrdPosition()
+{
+	return mousePosititonWorld;
+}
+
+bool InputMgr::GetMouseButtonDown(Mouse::Button button)
+{
+	auto it = find(downButtons.begin(), downButtons.end(), button);
+	return it != downButtons.end();
+}
+
+bool InputMgr::GetMouseButton(Mouse::Button button)
+{
+	auto it = find(ingButtons.begin(), ingButtons.end(), button);
+	return it != ingButtons.end();
+}
+
+bool InputMgr::GetMouseButtonUp(Mouse::Button button)
+{
+	auto it = find(upButtons.begin(), upButtons.end(), button);
+	return it != upButtons.end();
+}

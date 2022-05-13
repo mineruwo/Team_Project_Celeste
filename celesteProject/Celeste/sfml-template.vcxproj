@@ -148,9 +148,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+
     <ClCompile Include="Bat.cpp" />
     <ClCompile Include="Framework\Framework.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Map\Map.cpp" />
+    <ClCompile Include="Map\TileMap.cpp" />
     <ClCompile Include="Player\Player.cpp" />
     <ClCompile Include="SceneMgr\SelectMapSpriteMgr.cpp" />
     <ClCompile Include="SceneMgr\SceneMgr.cpp" />
@@ -166,6 +169,7 @@
     <ClCompile Include="Utils\GameInfoMgr.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp" />
     <ClCompile Include="Utils\TextureHolder.cpp" />
+
     <ClCompile Include="Utils\UiMgr.cpp" />
     <ClCompile Include="Utils\Utils.cpp" />
     <ClCompile Include="Wall.cpp" />
@@ -173,6 +177,10 @@
   <ItemGroup>
     <ClInclude Include="Bat.h" />
     <ClInclude Include="Framework\Framework.h" />
+
+    <ClInclude Include="Map\Map.h" />
+    <ClInclude Include="Map\TileMap.h" />
+
     <ClInclude Include="Player\Player.h" />
     <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h" />
     <ClInclude Include="SceneMgr\SceneMgr.h" />
@@ -188,9 +196,13 @@
     <ClInclude Include="Utils\GameInfoMgr.h" />
     <ClInclude Include="Utils\InputMgr.h" />
     <ClInclude Include="Utils\repidcw.h" />
+
     <ClInclude Include="Utils\Singleton.h" />
     <ClInclude Include="Utils\TextureHolder.h" />
     <ClInclude Include="Utils\UiMgr.h" />
+
+    <ClInclude Include="Utils\TextureHolder.h" />
+
     <ClInclude Include="Utils\Utils.h" />
     <ClInclude Include="Wall.h" />
   </ItemGroup>

@@ -64,7 +64,7 @@ void AnimationController::Update(float dt)
 			Play(nextClipId, false);
 		}
 	}
-	sprite->setTexture(currentClip->frames[currentFrame].texture);
+	sprite->setTexture(*currentClip->frames[currentFrame].texture);
 	sprite->setTextureRect(currentClip->frames[currentFrame].texCoord);
 	sprite->setOrigin(currentClip->frames[currentFrame].origin);
 }

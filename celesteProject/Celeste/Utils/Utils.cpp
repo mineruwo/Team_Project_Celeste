@@ -8,28 +8,28 @@ std::mt19937 Utils::gen(rd());
 /*==============================
 	텍스트 좌표 preset지정
 ================================*/
-void Utils::SetOrigin(sf::Text &text, Pivots preset)
+void Utils::SetOrigin(sf::Text& text, Pivots preset)
 {
 	SetOrigin(text, text.getLocalBounds(), preset);
 }
 /*==============================
-      도형 좌표 preset지정
+	  도형 좌표 preset지정
 ================================*/
-void Utils::SetOrigin(sf::Shape &shape, Pivots preset)
+void Utils::SetOrigin(sf::Shape& shape, Pivots preset)
 {
 	SetOrigin(shape, shape.getLocalBounds(), preset);
 }
 /*==============================
 	  그림 좌표 preset지정
 ================================*/
-void Utils::SetOrigin(sf::Sprite &sprite, Pivots preset)
+void Utils::SetOrigin(sf::Sprite& sprite, Pivots preset)
 {
 	SetOrigin(sprite, sprite.getLocalBounds(), preset);
 }
 /*==============================
 		  origin 설정
 ================================*/
-void Utils::SetOrigin(sf::Transformable &tr, sf::FloatRect bounds, Pivots preset)
+void Utils::SetOrigin(sf::Transformable& tr, sf::FloatRect bounds, Pivots preset)
 {
 	switch (preset)
 	{
@@ -75,7 +75,7 @@ int Utils::RandomRange(int min, int excludeMax)
 	return min + gen() % range;
 }
 /*==============================
-		    충돌 처리
+			충돌 처리
 ================================*/
 Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 {
@@ -106,14 +106,14 @@ Pivots Utils::CollisionDir(FloatRect standRect, FloatRect testRect)
 /*==============================
 		  길이를 가지고옴
 ================================*/
-float Utils::GetLength(const Vector2f &vector)
+float Utils::GetLength(const Vector2f& vector)
 {
 	return sqrt(vector.x * vector.x + vector.y * vector.y);
 }
 /*==============================
 		  정규화 처리
 ================================*/
-Vector2f Utils::Normalize(const Vector2f &vector)
+Vector2f Utils::Normalize(const Vector2f& vector)
 {
 	Vector2f v = vector;
 	float length = GetLength(vector);
@@ -126,7 +126,7 @@ Vector2f Utils::Normalize(const Vector2f &vector)
 	return v;
 }
 
-float Utils::GetAngel(const Vector2f &from, const Vector2f &to)
+float Utils::GetAngel(const Vector2f& from, const Vector2f& to)
 {
 	Vector2f dir = to - from;
 	float radian = atan2(dir.y, dir.x);

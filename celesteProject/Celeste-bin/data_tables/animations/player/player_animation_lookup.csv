@@ -1,0 +1,9 @@
+TEXTURE PATH,L,T,W,H,X,Y
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,0,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,32,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,64,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,96,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,128,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,160,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,192,0,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,224,0,32,32,16,32
