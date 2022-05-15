@@ -1,177 +1,109 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="소스 파일">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="헤더 파일">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
     <Filter Include="리소스 파일">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="소스 파일\Framework">
-      <UniqueIdentifier>{a7ba2c25-4641-464c-a90d-501019a7d389}</UniqueIdentifier>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{a758bdba-d3d5-474a-bba4-57686eef51a0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\SceneMgr">
-      <UniqueIdentifier>{2c944c86-4f16-4af4-a195-7c7421fe022c}</UniqueIdentifier>
+    <Filter Include="Player">
+      <UniqueIdentifier>{81580245-2935-415c-8124-8b7e21a07af0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Utils">
-      <UniqueIdentifier>{efe88c3e-9321-48c6-aec3-92ded860e612}</UniqueIdentifier>
+    <Filter Include="Map">
+      <UniqueIdentifier>{b04d741d-039e-471d-bbc7-377c8b24c085}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\Scene">
-      <UniqueIdentifier>{f59d601b-d20d-4d10-9e68-f1c8f74bed9b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="소스 파일\Player">
-      <UniqueIdentifier>{19475546-4d08-43e7-849b-0e182690223a}</UniqueIdentifier>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b535e618-3b87-4969-8544-8ac5b8c1aa21}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Framework\Framework.cpp">
-      <Filter>소스 파일\Framework</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneMgr\SceneMgr.cpp">
-      <Filter>소스 파일\SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\TextureHolder.cpp">
-      <Filter>소스 파일\Utils</Filter>
-    </ClCompile>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="Utils\InputMgr.cpp">
-      <Filter>소스 파일\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\Scene.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\TItle.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\MainMenu.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\SaveCheck.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\GamePlay.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\UiMgr.cpp">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Player\Player.cpp">
-      <Filter>소스 파일\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Wall.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\AnimationController.cpp">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Player</Filter>
     </ClCompile>
     <ClCompile Include="Utils\AnimationClip.cpp">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Utils\AnimationController.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="Utils\Utils.cpp">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Scene\Snow.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene\ConfirmSelectedMapScene.cpp">
-      <Filter>소스 파일\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneMgr\SelectMapSpriteMgr.cpp">
-      <Filter>소스 파일\SceneMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="Utils\GameInfoMgr.cpp">
-      <Filter>소스 파일\Utils</Filter>
-    </ClCompile>
+    <ClCompile Include="Wall.cpp" />
     <ClCompile Include="Map\Map.cpp">
-      <Filter>소스 파일</Filter>
+      <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map\TileMap.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Utils\TextureHolder.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="Obj.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="Player\PlayerHair.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Tile.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Obj.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Berry.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ColiderObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Thorny.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Framework\Framework.h">
-      <Filter>소스 파일\Framework</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMgr\SceneMgr.h">
-      <Filter>소스 파일\SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\TextureHolder.h">
-      <Filter>소스 파일\Utils</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\InputMgr.h">
-      <Filter>소스 파일\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\Scene.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\TItle.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\MainMenu.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\SaveCheck.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\GamePlay.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\Singleton.h">
-      <Filter>소스 파일\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\UiMgr.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Player\Player.h">
-      <Filter>소스 파일\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Wall.h">
-      <Filter>소스 파일</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\AnimationController.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Player</Filter>
     </ClInclude>
     <ClInclude Include="Utils\AnimationClip.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils\AnimationController.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\Utils.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Scene\Snow.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene\ConfirmSelectedMapScene.h">
-      <Filter>소스 파일\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneMgr\SelectMapSpriteMgr.h">
-      <Filter>소스 파일\SceneMgr</Filter>
-    </ClInclude>
-    <ClInclude Include="Utils\GameInfoMgr.h">
-      <Filter>소스 파일\Utils</Filter>
+    <ClInclude Include="Wall.h" />
+    <ClInclude Include="Map\Map.h">
+      <Filter>Map</Filter>
     </ClInclude>
     <ClInclude Include="Utils\repidcw.h">
-      <Filter>소스 파일\Utils</Filter>
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Map\Map.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Utils\TextureHolder.h">
+      <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Map\TileMap.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Player\PlayerHair.h">
+      <Filter>Player</Filter>
     </ClInclude>
-    <ClInclude Include="Obj.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="Map\Tile.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Obj.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Berry.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ColiderObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Thorny.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
