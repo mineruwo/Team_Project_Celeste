@@ -19,18 +19,25 @@ enum class PlayerAction
 	CLIMB
 };
 
+enum class PlayerDir // 플레이어 키
+{
+	R,L,U,D,
+	RU,LU,RD,LD
+};
+
 
 class Player
 {
 private:
 	const float START_SPEED = 200; // 시작 플레이어 속도
-	const float START_JUMPSPEED = 800.f;
-	const float GRAVITY = 200.f; // 중력 처리
+	const float START_JUMPSPEED = 400.f;
+	const float GRAVITY = 400.f; // 중력 처리
 	const float CharacSize = 2.f;
 
 	AnimationController animation;
 
 	PlayerAction moveMent = PlayerAction::IDLE;
+	PlayerDir keyDir;
 
 	Sprite sprite; //플레이어 그리기
 	Vector2f position; // 플레이어의 위치
@@ -57,7 +64,7 @@ private:
 	bool isSeizeWall; //플레이어 벽을 붙잡을 때
 
 	float jumpSpeed;
-	float fallingSpeed;
+	float fallingAcc;
 
 	float gravity;
 	float gravityV;
@@ -99,6 +106,8 @@ public:
 
 	void UpdateAnimation(float dt);
 	void SetAnimation(PlayerAction action);
+
+	void UpdateKeybord();
 
 	FloatRect GetGobalBound() const;
 	FloatRect BodyHitGetGobalBound() const;

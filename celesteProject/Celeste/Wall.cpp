@@ -32,6 +32,4 @@ void Wall::DrawWall(RenderWindow& window)
 const FloatRect Wall::GetWallRect()
 {
 	return wallRect;
-
 }
-
