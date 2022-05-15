@@ -9,7 +9,6 @@ class Framework
 {
 private:
 	Vector2i resolution;
-	
 	RenderWindow window;
 	View* mainView;
 	Image icon;
