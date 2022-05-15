@@ -18,7 +18,7 @@ void Berry::Init()
 	bool isGetBerry = false;
 }
 
-void Berry::MoveBerry(float dt, Player player)
+void Berry::MoveBerry(float dt, Player &player)
 {
 	/*if (!isGetBerry)
 	{
@@ -46,19 +46,51 @@ void Berry::MoveBerry(float dt, Player player)
 		}
 	}*/
 
-		berryPosition = player.GetPosition();
 
-		BerryObj->move(berryPosition.x - 30.f * dt, berryPosition.y - 30.f * dt);
+	//berryPosition = player.GetPrePosition();
+	
+
+	if (berrySpeed <= 0)
+	{
+		berrySpeed += 20 * dt;
+	}
+	else if(berrySpeed > 1000)
+	{
+		berrySpeed -= 20 * dt;
+	}
+	if (berryPosition.x <= player.GetPosition().x)
+	{
+		berryPosition.x += player.GetPosition().x * berrySpeed * dt;
+	}
+	if (berryPosition.y <= player.GetPosition().y)
+	{
+		berryPosition.y += player.GetPosition().y * berrySpeed * dt;
+	}
+	
+	if (berryPosition.x > player.GetPosition().x)
+	{
+		berryPosition.x -= player.GetPosition().x * berrySpeed * dt;
+	}
+	if (berryPosition.y > player.GetPosition().y)
+	{
+		berryPosition.y -= player.GetPosition().y * berrySpeed * dt;
+	}
+		
+	BerryObj->setPosition(berryPosition.x, berryPosition.y);
 
 
-		GetBerryDeley += dt;
+	std::cout << "berry pos : [ " << berryPosition.x << " , " << berryPosition.y << " ] " << std::endl;
+	std::cout << "object pos : [ " << BerryObj->getPosition().x << " , " << BerryObj->getPosition().y << " ] " << std::endl;
 
-		if (GetBerryDeley > 1.0)
-		{
+	GetBerryDeley += dt;
 
-			isGetBerry = false;
+	if (player.GetSprite().getGlobalBounds().intersects(BerryObj->getGlobalBounds()))
+	{
 
-		}
+		isGetBerry = false;
+
+
+	}
 
 }
 
@@ -66,12 +98,11 @@ void Berry::ColliderBerry(Player player)
 {
 	if (player.GetSprite().getGlobalBounds().intersects(BerryObj->getGlobalBounds()))
 	{
-		isGetBerry = true;
+		
+			isGetBerry = true;
+	
 	}
 }
-
-
-
 
 void Berry::GetPlayerPosition(Vector2f Position)
 {

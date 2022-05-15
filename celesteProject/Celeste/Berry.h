@@ -3,6 +3,7 @@
 #include "Player/Player.h"
 #include "Utils/TextureHolder.h"
 #include "ColiderObject.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -18,11 +19,13 @@ private:
 	bool isGetBerry;
 	float Speed;
 
+	float berrySpeed;
+
 
 public:
 	Berry();
 	void Init();
-	void MoveBerry(float dt, Player player);
+	void MoveBerry(float dt, Player &player);
 	void ColliderBerry(Player player);
 	void GetPlayerPosition(Vector2f Position);
 	void Update(Player player, float dt);

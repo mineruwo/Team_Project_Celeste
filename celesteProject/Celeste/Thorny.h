@@ -3,6 +3,7 @@
 #include "Player/Player.h"
 #include "Utils/TextureHolder.h"
 #include "ColiderObject.h"
+#include <iostream>
 
 using namespace sf;
 
@@ -19,7 +20,7 @@ private:
 public:
 	Thorny();
 	void Init();
-	void Update(Player player);
+	void Update(Player &player);
 	void Draw(RenderWindow& window);
 };
 

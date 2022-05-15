@@ -14,7 +14,7 @@ void Thorny::Init()
 
 	thornyObj.setPosition(thronyPos);
 	thornyObj.setScale(3, 3);
-	thornyObj.setColor(Color::Red);
+	//thornyObj.setColor(Color::Red);
 
 	thornyBox.setPosition(thronyPos);
 	thornyBox.setSize(Vector2f(30, 30));
@@ -24,11 +24,12 @@ void Thorny::Init()
 
 }
 
-void Thorny::Update(Player player)
+void Thorny::Update(Player &player)
 {
 	if (player.GetSprite().getGlobalBounds().intersects(thornyBox.getGlobalBounds()))
 	{
-		
+		std::cout << "Thorny" << std::endl;
+		player.ResetPosition();
 	}
 }
 

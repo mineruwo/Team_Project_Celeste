@@ -121,8 +121,8 @@ public:
 	void AnimationInit();
 	void Draw(RenderWindow& window);
 
-
-
+	void ResetPosition();
+	Vector2f GetPrePosition();
 
 };
 

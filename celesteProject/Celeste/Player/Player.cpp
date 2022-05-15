@@ -874,6 +874,20 @@ void Player::Draw(RenderWindow& window)
 	window.draw(bodyHitbox);	
 	window.draw(sprite);
 }
+void Player::ResetPosition()
+{
+	sprite.setPosition(Vector2f(815.f,511.f));
+	bodyHitbox.setPosition(Vector2f(815.f, 511.f));
+	floorHitbox.setPosition(Vector2f(815.f, 511.f));
+	position = Vector2f(815.f, 511.f);
+
+}
+
+Vector2f Player::GetPrePosition()
+{
+	return position;
+}
+
 /*===============================
 작 성 자 : 최 윤 화
 구 현 내 용 : 플레이어 동작 구현
