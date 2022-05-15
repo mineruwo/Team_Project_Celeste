@@ -6,6 +6,8 @@
 #include "../Wall.h"
 #include "../Player/Player.h"
 #include "../Map/Map.h"
+#include "../Object/Berry.h"
+#include "../Object/Thorny.h"
 
 using namespace sf;
 using namespace std;
@@ -17,7 +19,12 @@ private:
 	Player player;
 	bool isPlayerInit = false;
 	View mainView;
+	View backView;
 	int windowMagnification = 2;
+	bool initBackView = false;
+	Sprite backGround;
+	Berry berry;
+	Thorny thorny;
 
 	Map map;
 	std::vector <Wall*> walls;

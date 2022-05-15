@@ -9,6 +9,9 @@
 #include "Tile.h"
 #include "Obj.h"
 
+#define TilePath "Graphics/tilesets"
+#define ObjPath "Graphics"
+
 class Map
 {
 private:
