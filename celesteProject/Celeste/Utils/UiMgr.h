@@ -30,10 +30,14 @@ private:
 	Text MusicControl;
 	Text SoundControl;
 
-	Text creditContent;
+	Text creditContent[3];
 	
 	Text cText;
 	Text xText;
+
+	Text faceName[3];
+
+
 
 	int IndexCount;
 
@@ -82,10 +86,11 @@ public:
 	void cxDraw(RenderWindow& window);
 
 	void SaveCheckDraw(RenderWindow& window);
-
+	void SaveCheckNameDraw(RenderWindow& window);
 
 	void Draw(RenderWindow& window);
 	void MoveText(int num, Time dt);
+	void MoveOption(int num, Time dt);
 
 
 

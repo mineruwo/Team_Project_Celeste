@@ -58,8 +58,15 @@ void UiMgr::InitMainOption()
 
 void UiMgr::InitCredit()
 {
-	SetText(creditContent, 100, Color::White, Vector2f(800, 600));
-	creditContent.setString("Print Credit");
+	for (int i = 0; i < 3; i++)
+	{
+
+		SetText(creditContent[i], 100, Color::White, Vector2f(600, 200*(i+1)));
+	}
+	creditContent[0].setString(" Son Minwoo ");
+	creditContent[1].setString(" Choi Yunhwa ");
+	creditContent[2].setString(" Hong Seokjun ");
+
 }
 
 void UiMgr::InitPause()
@@ -85,6 +92,7 @@ void UiMgr::MoveSaveInfo(int select)
 	berryText[select].move(400, 0);
 	deathText[select].move(400, 0);
 	playTimeText[select].move(400, 0);
+	faceName[select].move(-400, 0);
 
 }
 
@@ -135,6 +143,16 @@ void UiMgr::InitSaveCheckUi()
 	SetText(playTimeText[1], 50, Color::White, Vector2f(1100, 570));
 	SetText(playTimeText[2], 50, Color::White, Vector2f(1100, 870));
 
+	SetText(faceName[0],80, Color::Black, Vector2f(840, 140));
+	SetText(faceName[1], 80, Color::Black, Vector2f(840,440));
+	SetText(faceName[2], 80, Color::Black, Vector2f(840, 740));
+
+	for (int i = 0; i < 3; i++)
+	{
+		faceName[i].setString("MADELINE");
+	}
+
+
 
 }
 
@@ -182,7 +200,8 @@ void UiMgr::OptionDraw(RenderWindow& window)
 
 void UiMgr::CreditDraw(RenderWindow& window)
 {
-	window.draw(creditContent);
+	for (int i = 0; i < 3; i++)
+	window.draw(creditContent[i]);
 }
 
 void UiMgr::PauseDraw(RenderWindow& window)
@@ -204,6 +223,14 @@ void UiMgr::SaveCheckDraw(RenderWindow& window)
 	}
 }
 
+void UiMgr::SaveCheckNameDraw(RenderWindow& window)
+{
+	for (int i = 0; i < IndexCount; i++)
+	{
+		window.draw(faceName[i]);
+
+	}
+}
 
 void UiMgr::Draw(RenderWindow& window)
 {
@@ -250,6 +277,36 @@ void UiMgr::MoveText(int num , Time dt)
 		break;
 	}
 }
+
+void UiMgr::MoveOption(int num, Time dt)
+{
+	InitMainOption();
+	switch (num)
+	{
+	case 0: //climb
+		optionText[1].setFillColor(Color::Green);
+		break;
+	case 1: //option		
+		optionText[2].setFillColor(Color::Green);
+		break;
+	case 2: // credit	
+		optionText[3].setFillColor(Color::Green);
+		break;
+	case 3: //exit	
+		optionText[4].setFillColor(Color::Green);
+		break;
+	case 4: //exit	
+		optionText[5].setFillColor(Color::Green);
+		break;
+
+		break;
+	default:
+		break;
+	}
+}
+
+
+
 
 /*
 void UiMgr::optionUpdate()

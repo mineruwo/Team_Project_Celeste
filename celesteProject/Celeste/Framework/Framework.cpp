@@ -9,7 +9,7 @@ Framework::Framework()
 	
 	//mainView = new RenderWindow(FloatRect(0, 0, resolution.x, resolution.y));
 	//window.setMouseCursorVisible(false);
-	//window.setFramerateLimit(120);
+	window.setFramerateLimit(200);
 	icon.loadFromFile("Graphics/icon/icon.PNG");
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 

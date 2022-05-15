@@ -14,7 +14,11 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::ChangeScene(SceneID Id)
 {
-	//delete scene;
+	/*if (nullptr != scene)
+	{
+		delete scene;
+		scene = nullptr;
+	}*/
 
 	switch (Id)
 	{

@@ -32,6 +32,11 @@ private:
 	Sprite berrySprite[3];
 	Sprite deathSprite[3];
 
+
+	String faceTexture;
+	Sprite face[3];
+
+
 	bool isMove = false;
 	bool isRollback = true;
 

@@ -64,12 +64,12 @@ void ConfirmSelectedMapScene::Update(Time dt, RenderWindow& window)
 		}
 		if (!tutorial && first)
 		{
-			//Scene::NextScene(SceneID::GamePlay);
-			////SceneMgr::GetInstance().GetScene().NextScene(SceneID::GamePlay);
-			////change/;
-			//SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
-			//UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);
-			//1스테이지로
+			Scene::NextScene(SceneID::GamePlay);
+			//SceneMgr::GetInstance().GetScene().NextScene(SceneID::GamePlay);
+			//change/;
+			SceneMgr::GetInstance().ChangeScene(SceneID::GamePlay);
+			UiMgr::GetInstance().InitSceneUi(SceneID::GamePlay);
+		//	1스테이지로
 		}
 	}
 
@@ -87,6 +87,7 @@ void ConfirmSelectedMapScene::Draw(RenderWindow& window)
 	{
 		SelectMapSpriteMgr::GetInstance().DrawFirst(window);
 	}
+	snow.Draw(window);
 }
 
 void ConfirmSelectedMapScene::Release()

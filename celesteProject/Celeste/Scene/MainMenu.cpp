@@ -204,8 +204,66 @@ void MainMenu::Update(Time dt, RenderWindow& window)
 		{
 			isOption = false;
 		}
+		//--------------------------------------------------------------
+		if (InputMgr::GetKeyDown(Keyboard::Up))
+		{
+			if (OptionNum > 0)
+			{
+				OptionNum--;
+			}
 
+
+			switch (OptionNum)
+			{
+			case 0: //climb
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 1: //option
+				UiMgr::GetInstance().MoveText(OptionNum, dt);
+				break;
+			case 2: // credit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 3: //exit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 4: //exit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			default:
+				break;
+			}
+		}
+		if (InputMgr::GetKeyDown(Keyboard::Down))
+		{
+			if (OptionNum < 4)
+			{
+				OptionNum++;
+			}
+			switch (OptionNum)
+			{
+			case 0: //climb
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 1: //option
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 2: // credit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 3: //exit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			case 4: //exit
+				UiMgr::GetInstance().MoveOption(OptionNum, dt);
+				break;
+			default:
+				break;
+			}
+		}
 	}
+//-------------------------------------------------------------------
+
 	if (isCredit)
 	{
 		if (InputMgr::GetKeyDown(Keyboard::X))

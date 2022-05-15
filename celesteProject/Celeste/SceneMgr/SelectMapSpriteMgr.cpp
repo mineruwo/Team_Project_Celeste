@@ -70,27 +70,27 @@ void SelectMapSpriteMgr::InitFirstMap()
 void SelectMapSpriteMgr::DrawTutorial(RenderWindow& window)
 {
 	window.draw(tutorialBackGrnd);
-	window.draw(backPack);
+//	window.draw(backPack);
 	window.draw(card);
 	window.draw(accent);
 	window.draw(cardTop);
 	window.draw(title);
 	window.draw(tab);
-	window.draw(cSprite);
-	window.draw(xSprite);
+//	window.draw(cSprite);
+//	window.draw(xSprite);
 
 }
 
 void SelectMapSpriteMgr::DrawFirst(RenderWindow& window)
 {
 	window.draw(firstMapBackGrnd);
-	window.draw(backPack);
+//	window.draw(backPack);
 	window.draw(card);
 	window.draw(accent);
 	window.draw(cardTop);
 	window.draw(title);
 	window.draw(tab);
-	window.draw(cSprite);
-	window.draw(xSprite);
+	//window.draw(cSprite);
+	//window.draw(xSprite);
 
 }
