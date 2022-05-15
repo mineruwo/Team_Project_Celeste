@@ -6,6 +6,8 @@
 #include "Map/Map.h"
 #include "Player/Player.h"
 #include "Wall.h"
+#include "Object/Berry.h"
+#include "Object/Thorny.h"
 
 
 void CreateWalls(std::vector<Wall*>& walls, Map& mapdata);
@@ -21,16 +23,29 @@ int main()
     area.height = window.getSize().y;
 
     int windowMagnification = 2;
-    View mainView(FloatRect(736, 256, area.width / windowMagnification, area.height / windowMagnification));
 
-    View UiView(FloatRect(0, 0, window.getSize().x, window.getSize().y));
+    View backView = window.getDefaultView();
 
     Player player;
     bool isPlayerInit = false;
 
+
+    View mainView(FloatRect(0, 0, area.width / windowMagnification, area.height / windowMagnification));
+
+    Sprite backGround;
+    backGround.setTexture(TextureHolder::GetTexture("graphics/Background.png"));
+    backGround.setScale(Vector2f(2.0f, 2.0f));
+
+    Berry berry;
+    berry.Init();
+
+    Thorny thorny;
+    thorny.Init();
+
     Map map;
     Clock clock;
 
+    map.LoadMap();
     int currMap = 0;
 
     std::vector <Wall*> walls;
@@ -38,10 +53,13 @@ int main()
 
     while (window.isOpen())
     {
-        Event event;
-        InputMgr::ClearInput();
+        Time elapseed = clock.getElapsedTime();
+        if (elapseed.asSeconds() < 1.f / 60.f)
+            continue;
 
         Time time = clock.restart();
+        Event event;
+        InputMgr::ClearInput();
 
         while (window.pollEvent(event))
         {
@@ -50,7 +68,7 @@ int main()
                 window.close();
         }
 
-        map.InputMap(windowMagnification, mainView, time, window);
+        map.InputMap(windowMagnification, mainView, time);
 
         if (InputMgr::GetKeyDown(Keyboard::F3))
         {
@@ -86,18 +104,21 @@ int main()
         }
 
         //UPDATE
-        if (isPlayerInit && time.asSeconds() <= 1.f / 60.f)
-        {
-            InputMgr::Update(time.asSeconds());
-            player.Update(time.asSeconds(), walls);
-        }
-        CreateWalls(walls, map);
+
+        InputMgr::Update(time.asSeconds());
+        player.Update(time.asSeconds(), walls);
+        mainView.setCenter(player.GetPosition().x, player.GetPosition().y);
+        berry.Update(player, time.asSeconds());
+        thorny.Update(player);
 
         //DRAW
         window.clear();
+        window.setView(backView);
+        window.draw(backGround);
+
         window.setView(mainView);
 
-        if (isPlayerInit && time.asSeconds() <= 1.f / 60.f)
+        if (isPlayerInit && time.asSeconds() <= 1.f / 120.f)
         {
 
             window.draw(player.GetSprite());
@@ -106,11 +127,23 @@ int main()
         {
             it->DrawWall(window);
         }
-        map.DrawMap(window);
+        for (auto it : map.GetObjs())
+        {
+            window.draw(it->GetSprite());
+        }
+        for (auto it : walls)
+        {
+            it->DrawWall(window);
+        }
 
-        //window.draw(bat.GetShape());
-        //window.draw(bat2.GetShape());
+        for (auto it : map.GetTiles())
+        {
+            window.draw(it->GetSprite());
+        }
+        map.DrawMap(window);
         player.Draw(window);
+        berry.Draw(window);
+        thorny.Draw(window);
         window.display();
     }
     return 0;
@@ -135,7 +168,7 @@ void CreateWalls(std::vector<Wall*>& walls, Map& mapdata)
             break;
         }
 
-        Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds(), idx);
+        Wall* tile = new Wall(mapdata.Getblocks()[idx]->getGlobalBounds());
         walls.push_back(tile);
 
         idx++;

@@ -14,6 +14,9 @@
     <Filter Include="Map">
       <UniqueIdentifier>{b04d741d-039e-471d-bbc7-377c8b24c085}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{b535e618-3b87-4969-8544-8ac5b8c1aa21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -36,11 +39,26 @@
     <ClCompile Include="Map\Map.cpp">
       <Filter>Map</Filter>
     </ClCompile>
-    <ClCompile Include="Map\TileMap.cpp">
-      <Filter>Map</Filter>
-    </ClCompile>
     <ClCompile Include="Utils\TextureHolder.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Player\PlayerHair.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Tile.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Map\Obj.cpp">
+      <Filter>Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Berry.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\ColiderObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\Thorny.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -63,14 +81,29 @@
     <ClInclude Include="Map\Map.h">
       <Filter>Map</Filter>
     </ClInclude>
-    <ClInclude Include="Map\TileMap.h">
-      <Filter>Map</Filter>
-    </ClInclude>
     <ClInclude Include="Utils\repidcw.h">
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="Utils\TextureHolder.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Player\PlayerHair.h">
+      <Filter>Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Tile.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Map\Obj.h">
+      <Filter>Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Berry.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\ColiderObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Thorny.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

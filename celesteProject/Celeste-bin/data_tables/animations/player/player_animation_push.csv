@@ -1,0 +1,17 @@
+TEXTURE PATH,L,T,W,H,X,Y
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,160,32,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,192,32,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,224,32,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,0,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,32,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,64,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,96,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,128,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,160,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,192,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,224,64,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,0,96,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,32,96,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,64,96,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,96,96,32,32,16,32
+graphics/player_lookUp_pickup_push_runCarry_runWind_runFast_runSlow_runStrumble.png,128,96,32,32,16,32

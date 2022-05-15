@@ -9,15 +9,10 @@
 		 플레이어 생성자
 ================================*/
 Player::Player()
-	:speed(START_SPEED), gravity(GRAVITY), isJump(false), isDash(false), isCatch(false)
+	:speed(START_SPEED), isJump(false), isDash(false), isCatch(false)
 	, isFalling(true), isSeizeWall(false), isRight(true), isFloor(false),
-	jumpTime(0.f), jumpHeight(0), jumpPower(50.f)
+	jumpTime(0.f), jumpSpeed(START_JUMPSPEED), fallingAcc(0.f)
 {
-	font.loadFromFile("../Celeste-bin/graphics/RobotoFlex-Regular.ttf");
-	poscheck.setFont(font);
-	poscheck.setCharacterSize(10);
-	poscheck.setFillColor(Color(255, 0, 0));
-
 }
 
 /*==============================
@@ -25,11 +20,16 @@ Player::Player()
 ================================*/
 void Player::Init()
 {
-	position.x = 900.f;
-	position.y = 1000.f;
+	position.x = 100.f;
+	position.y = 420.f;
 	sprite.setPosition(position); //815, 511
 	sprite.setScale(CharacSize, CharacSize);
-	sprite.setOrigin(Vector2f((16.f * CharacSize)*0.5f, 32.f * CharacSize));
+	sprite.setOrigin(Vector2f((16.f * CharacSize) * 0.5f, 32.f * CharacSize));
+
+	// 머리
+	hair.setFillColor(Color{ 172,50,50,255 });
+	hair.setSize(Vector2f(5.f * CharacSize, 4.f * CharacSize));
+	hair.setOrigin(Vector2f((5.f * CharacSize) * 0.5, (5.f * CharacSize) * 0.5));
 
 	//몸 히트 박스
 	bodyHitbox.setFillColor(Color::Transparent);
@@ -37,17 +37,14 @@ void Player::Init()
 	bodyHitbox.setOutlineThickness(1.f);
 	bodyHitbox.setSize(Vector2f(8.f * CharacSize, 10.f * CharacSize));
 	bodyHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 10.f * CharacSize));
-	
-	//bodyHitbox.setPosition(position);
 
 	//바닥 히트 박스
 	floorHitbox.setFillColor(Color::Red);
 	floorHitbox.setSize(Vector2f(8.f * CharacSize, 2.f * CharacSize));
-	floorHitbox.setOrigin(Vector2f((8.f * CharacSize)*0.5f, 2.f * CharacSize));
+	floorHitbox.setOrigin(Vector2f((8.f * CharacSize) * 0.5f, 2.f * CharacSize));
 
 	AnimationInit();
 	animation.Play("Idle");
-	position = sprite.getPosition();
 }
 
 //void Player::Spawn(IntRect arena, Vector2i res)
@@ -60,6 +57,67 @@ void Player::Init()
 //	sprite.setPosition(position.x, position.y);
 //}
 
+/*============================================
+	키 입력에 따른 플레이어의 액션 업데이트
+==============================================*/
+void Player::Update(float dt, std::vector<Wall*> walls)
+{
+	isFalling = moveMent != PlayerAction::DASH && !isFloor && moveMent != PlayerAction::CLIMB;
+
+	// 중 력
+	if (isFalling)
+	{
+		std::cout << gravityV << std::endl;
+		if (gravityV > 980.f) //최대 중력 조절
+		{
+			gravityV = 980.f;
+		}
+		gravityV += GRAVITY * dt;
+		position.y += gravityV * dt;
+
+		if (sprite.getPosition().y > 700)
+		{
+			position.y = 0;
+			gravityV = 0;
+		}
+		sprite.setPosition(position);
+		bodyHitbox.setPosition(position);
+	}
+	else
+	{
+		gravityV = 0.f;
+	}
+
+	//충돌 처리 업데이트
+	UpdateCrash(walls);
+
+	Move(dt);
+	if (isJump == true)
+	{
+		Jump(dt);
+	}
+
+	if (moveMent == PlayerAction::DASH)
+	{
+		Dash(dt);
+	}
+	if (moveMent == PlayerAction::CLIMB)
+	{
+		Climb(dt);
+	}
+
+	statusDT = dt;
+
+	animation.Update(dt);
+	UpdateAnimation(dt);
+
+
+	sprite.setPosition(position);
+	hair.setPosition(position.x, position.y - 23.f);
+	bodyHitbox.setPosition(position);
+	floorHitbox.setPosition(position);
+}
+
 /*========================================
 				충돌 처리
 ==========================================*/
@@ -70,11 +128,12 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 		c = false;
 	}
 	isFloor = false;
+	isSeizeWall = false;
 	for (auto v : walls)
 	{
 		// 플레이어의 origin를 이용
 		// x > y 일경우 (위/아래)으로 보냄, x < y일 경우 (오른쪽/왼쪽)으로 보냄
-		
+
 		if (bodyHitbox.getGlobalBounds().intersects(v->GetWallRect()))
 		{
 			float wallTop = v->GetWallRect().top;
@@ -82,15 +141,15 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			float wallLeft = v->GetWallRect().left;
 			float wallRight = v->GetWallRect().left + v->GetWallRect().width;
 
-			float playerTop = bodyHitbox.getPosition().y - bodyHitbox.getGlobalBounds().height;
-			float playerBottom = bodyHitbox.getPosition().y;
+
+			float playerTop = bodyHitbox.getGlobalBounds().top;
+			float playerBottom = bodyHitbox.getGlobalBounds().top + bodyHitbox.getGlobalBounds().height;
 			float playerLeft = bodyHitbox.getGlobalBounds().left;
-			float playerRight = bodyHitbox.getPosition().x + bodyHitbox.getGlobalBounds().width * 0.5;
+			float playerRight = bodyHitbox.getGlobalBounds().left + bodyHitbox.getGlobalBounds().width;
 
 			float playerX = bodyHitbox.getPosition().x;
-			float playerY = bodyHitbox.getPosition().y - bodyHitbox.getGlobalBounds().height;
+			float playerY = bodyHitbox.getPosition().y - bodyHitbox.getGlobalBounds().height * 0.5;
 			Vector2f posi = bodyHitbox.getPosition();
-			
 
 			//LT
 			if (wallLeft > playerX && wallTop > playerY)
@@ -99,31 +158,28 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 				//X가 큰 범위 인 경우 위로 보냄
 				if (abs(wallTop - playerBottom) < abs(wallLeft - playerRight))
 				{
-					std::cout << v->GetId() << "LTX충돌" << std::endl;
+					//posi.y = wallTop + 2.f;
 					posi.y = wallTop + 1.f;
 					//gravityV = 0.f;
 				}
 				//Y가 큰 범위 인 경우 옆으로 보냄
-				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerBottom))
+				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerRight))
 				{
-					std::cout << v->GetId() << "LTY충돌" << std::endl;
 					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5;
 				}
 				//X와 Y 값이 동일한 경우
-				else 
+				else
 				{
 					posi.y -= abs(wallTop - playerBottom);
 					posi.x -= abs(wallLeft - playerRight);
 					posi.y += 1.f;
 				}
 			}
-
 			//CT
 			if (wallLeft < playerX && wallRight > playerX && wallTop > playerY)
 			{
 				isCollision[2] = true;
 				isFloor = true;
-				std::cout << v->GetId() << "CT충돌" << std::endl;
 				posi.y = wallTop + 1.f;
 				//gravityV = 0.f;
 			}
@@ -132,44 +188,41 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 			{
 				isFloor = true;
 
-				std::cout << v->GetId() << "RT충돌" << std::endl;
 				//X
 				if (abs(wallTop - playerBottom) < abs(wallLeft - playerRight))
 				{
 					posi.y = wallTop + 1.f;
-					gravityV = 0.f;
+					//gravityV = 0.f;
 				}
 				//Y
 				else if (abs(wallTop - playerBottom) > abs(wallLeft - playerRight))
 				{
 					posi.x = wallLeft + bodyHitbox.getGlobalBounds().width * 0.5f;
-				}		
+				}
 				else
 				{
-					posi.x -= abs(wallLeft - wallRight);
+					posi.x += abs(wallLeft - wallRight);
 					posi.y -= abs(wallTop - wallBottom);
 					posi.y += 1.f;
 				}
 			}
-
 			//LC
 			if (wallLeft > playerX && wallTop < playerY && wallBottom > playerY)
 			{
-				isCollision[2] = true;
-				std::cout << v->GetId() << "LC충돌" << std::endl;
-				posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f;
+				isCollision[1] = true;
+				isSeizeWall = true;
+				posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f + 1.f;
 			}
 			//RC
 			if (wallRight < playerX && wallTop < playerY && wallBottom > playerY)
 			{
 				isCollision[0] = true;
-				std::cout << "RC충돌" << std::endl;
-				posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
+				isSeizeWall = true;
+				posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f - 1.f;
 			}
 			//LB
 			if (wallBottom < playerY && wallLeft > playerX)
 			{
-				std::cout << v->GetId() << "LB충돌" << std::endl;
 				//X
 				if (abs(wallBottom - playerTop) < abs(wallLeft - playerRight))
 				{
@@ -178,39 +231,37 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 				//Y
 				else if (abs(wallBottom - playerTop) > abs(wallLeft - playerRight))
 				{
-					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width*0.5f;
+					posi.x = wallLeft - bodyHitbox.getGlobalBounds().width * 0.5f;
 				}
 				else
 				{
 					posi.x -= abs(wallLeft = playerRight);
-					posi.y -= abs(wallBottom - playerTop);
+					posi.y += abs(wallBottom - playerTop);
 				}
 			}
 			//CB
 			if (wallLeft < playerX && wallRight > playerX && wallBottom < playerY)
 			{
 				isCollision[3] = true;
-				std::cout << v->GetId() << "CB충돌" << std::endl;
 				posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 			}
 			//RB
 			if (wallBottom < playerY && wallRight < playerX)
 			{
-				std::cout << v->GetId() << "RB충돌" << std::endl;
 				//X
-				if (abs(wallBottom = playerTop) < abs(wallLeft - playerRight))
+				if (abs(wallBottom - playerTop) < abs(wallLeft - playerRight))
 				{
 					posi.y = wallBottom + bodyHitbox.getGlobalBounds().height;
 				}
 				//Y
-				else if (abs(wallBottom = playerTop) > abs(wallLeft - playerRight))
+				else if (abs(wallBottom - playerTop) > abs(wallLeft - playerRight))
 				{
 					posi.x = wallRight + bodyHitbox.getGlobalBounds().width * 0.5f;
 				}
 				else
 				{
 					posi.x += abs(wallLeft - playerRight);
-					posi.y -= abs(wallBottom = playerTop);
+					posi.y += abs(wallBottom - playerTop);
 				}
 			}
 			bodyHitbox.setPosition(posi);
@@ -219,218 +270,244 @@ void Player::UpdateCrash(std::vector<Wall*> walls)
 	}
 }
 
-
 /*===========================
 		점프 액션 코드
 =============================*/
-void Player::Jump()
+void Player::Jump(float dt)
 {
-	/*isFalling = false;
-	if (!isJump) return;
-	float k = jumpPower * (3.f / 2.f);
-	jumpHeight += (jumpTime * jumpTime - jumpPower * jumpTime) / k * 0.03f;
-
-	jumpTime += 0.04f;
-
-	if (jumpTime > k)
-	{
-		jumpTime = 0;
-		jumpHeight = 0;
-		isJump = false;
-	}*/
-
-	//isFalling = true;
-	if (isJump == true)
-	{
-		if (statusDT < 1.f)
-		{
-			if (isRight == true)
-			{
-				position.y -= statusDT * speed * 2.f;
-			}
-			else if (isRight == false)
-			{
-				position.y -= statusDT * speed * 2.f;
-			}
-		}
-	}
-	else if (isJump == false)
-	{
-
-	}
-	if (isCollision[2] || isCollision[3])
-	{
-		if (isRight == true)
-		{
-			position.x *= -1.f;
-		}
-		else if (isRight == false)
-		{
-			position.x *= -1.f;
-		}
-	}
-
-	/*if (isJump == true)
-	{
-		jumpSpeed -= GRAVITY * statusDT;
-
-	}*/
-
+	//gravityV -= 230;
 }
+
 /*===========================
 	  움직이는 액션 코드
 =============================*/
-void Player::Move()
+void Player::Move(float dt)
 {
 	if (InputMgr::GetKey(Keyboard::Right))
 	{
-		position.x += statusDT * speed;
+		position.x += dt * speed;
 	}
 
 	if (InputMgr::GetKey(Keyboard::Left))
 	{
-		position.x -= statusDT * speed;
+		position.x -= dt * speed;
 	}
 }
 
 /*===========================
 	  움직이는 대쉬 코드
 =============================*/
-void Player::Dash()
+void Player::Dash(float dt)
 {
-	if (position.x < deshDir.x + 200)
+	if (isDash = true)
 	{
+		hair.setFillColor(Color{ 95, 205, 228, 225 });
 		if (isRight == true)
 		{
-			position.x += statusDT * speed * 3.f;
+			if (position.x < deshDir.x + 150.f)
+			{
+				position.x += dt * speed * 2.f;
+			}
+			else
+			{
+				isFalling = true;
+				isDash = false;
+			}
+
 		}
-	}
-	else if (position.x > deshDir.x - 200)
-	{
-		if (isRight == false)
+		else if (isRight == false)
 		{
-			position.x -= statusDT * speed * 3.f;
+			if (position.x > deshDir.x - 150.f)
+			{
+				position.x -= dt * speed * 2.f;
+			}
+			else
+			{
+				isFalling = true;
+				isDash = false;
+			}
 		}
-	}
-	else if (position.y < deshDir.y + 200)
-	{
-		if (isUp == true)
+		else if (isUp == true)
 		{
-			position.y -= statusDT * speed * 3.f;
+			if (InputMgr::GetKey(Keyboard::Up))
+			{
+				if (position.y > deshDir.y - 400.f)
+				{
+					position.y -= dt * speed * 3.f;
+				}
+			}			
 		}
-	}
-	else if (position.y > deshDir.y - 200)
-	{
-		if (isUp == false)
+		else if (isUp == false)
 		{
-			position.y += statusDT * speed * 3.f;
+			if (InputMgr::GetKey(Keyboard::Down))
+			{
+				if (position.y < deshDir.y + 400.f)
+				{
+					position.y += dt * speed * 3.f;
+				}
+			}			
 		}
+		if (position.x < deshDir.x + 150.f || position.x > deshDir.x - 150.f)
+		{
+
+			isDash = false;
+		}
+	}	
+	else if (isDash = false)
+	{
+		hair.setFillColor(Color{ 172,50,50,255 });
+		moveMent = PlayerAction::IDLE;
 	}
+
+	//	if (isRight == true)
+	//	{			
+	//		if (InputMgr::GetKey(Keyboard::Right))
+	//		{
+	//			if (position.x < deshDir.x + 100.f)
+	//			{
+	//				position.x += dt * speed * 2.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//		else if (InputMgr::GetKey(Keyboard::Up))
+	//		{
+	//			if (position.y > deshDir.y - 400.f)
+	//			{
+	//				position.y -= dt * speed * 3.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//		else if (InputMgr::GetKey(Keyboard::Down))
+	//		{
+	//			if (position.y < deshDir.y + 400.f)
+	//			{
+	//				position.y += dt * speed * 3.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//		else if (isCollision[2])
+	//		{
+	//			if (position.x < deshDir.x + 100.f)
+	//			{
+	//				position.x += dt * speed * 2.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+
+	//		/*if (InputMgr::GetKey(Keyboard::Right) && InputMgr::GetKey(Keyboard::Up))
+	//		{
+	//			if (position.x < deshDir.x + 100.f)
+	//			{
+	//				if (position.y < deshDir.y - 100.f)
+	//				{
+	//					position.x += dt * speed * 2.f;
+	//					position.y -= dt * speed * 2.f;
+	//					nowPosition = atan2f(position.y, position.x);
+	//				}					
+	//			}				
+	//		}*/
+	//	}
+	//	else if (isRight == false)
+	//	{
+	//		if (InputMgr::GetKey(Keyboard::Right))
+	//		{
+	//			if (position.x > deshDir.x - 100.f)
+	//			{
+	//				position.x -= dt * speed * 2.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}			
+	//		else if (InputMgr::GetKey(Keyboard::Up))
+	//		{
+	//			if (position.y > deshDir.y - 400.f)
+	//			{
+	//				position.y -= dt * speed * 5.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//		else if (InputMgr::GetKey(Keyboard::Down))
+	//		{
+	//			if (position.y < deshDir.y + 400.f)
+	//			{
+	//				position.y += dt * speed * 5.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//		else if (isCollision[2])
+	//		{
+	//			if (position.x > deshDir.x - 100.f)
+	//			{
+	//				position.x -= dt * speed * 2.f;
+	//			}
+	//			else
+	//			{
+	//				hair.setFillColor(Color{ 172,50,50,255 });
+	//				isFalling = true;
+	//				isDash = false;
+	//			}
+	//		}
+	//	}
+	//	if (position.x < deshDir.x + 100.f || position.x > deshDir.x - 100.f || position.y < deshDir.y - 190.f || position.y > deshDir.y + 190.f)
+	//	{
+	//		gravityV = 0.f;
+	//		isDash = false;			
+	//	}
+	//}
+	
 }
 
 /*===========================
 	  벽타는 액션 코드
 =============================*/
-void Player::Climb()
+void Player::Climb(float dt)
 {
-	if (isCollision[2] || isCollision[3])
+	if (isCollision[0] || isCollision[1])
 	{
 		if (InputMgr::GetKey(Keyboard::Up))
 		{
-			position.y -= statusDT * speed;
+			position.y -= dt * speed;
 		}
 		else if (InputMgr::GetKey(Keyboard::Down))
 		{
-			position.y += statusDT * speed;
-		}		
-	}	
-}
-
-
-/*============================================
-	키 입력에 따른 플레이어의 액션 업데이트
-==============================================*/
-void Player::Update(float dt, std::vector<Wall*> walls)
-{
-	statusDT = dt;
-	UpdateAnimation(dt);
-
-	isFalling = moveMent != PlayerAction::DASH && !isFloor;
-
-	// 중 력
-	if (isFalling)
-	{
-		gravityV += gravity * dt;
-		position.y += gravityV * dt;
+			position.y += dt * speed;
+		}
+		std::cout << "Climb: " << position.y << std::endl;
 	}
-	else
-	{
-		gravityV = 0.f;
-	}
-
-	if (gravityV > 980.f) //최대 중력 조절
-	{
-		gravityV = 980.f;
-	}
-	
-
-	//std::cout << (int)moveMent << std::endl;
-	switch (moveMent)
-	{
-	case PlayerAction::IDLE:
-		break;
-	case PlayerAction::MOVE:
-		Move();
-		break;
-	case PlayerAction::JUMP:
-		//isJump = true;
-		Jump();
-		break;
-	case PlayerAction::DASH:
-		Dash();
-		break;
-	case PlayerAction::LOOKUP:
-		break;
-	case PlayerAction::LOOKDOWN:
-		break;
-	case PlayerAction::CLIMB:
-		Climb();
-		break;
-	default:
-		break;
-	}
-
-	//충돌 처리 업데이트
-	UpdateCrash(walls);
-	sprite.setPosition(position);
-	bodyHitbox.setPosition(position);
-	floorHitbox.setPosition(position);
-	/*bodyPosition.x = position.x + 2.f;
-	bodyPosition.y = position.y - 15.f;
-	bodyHitbox.setPosition(bodyPosition);
-
-	floorPosition.x = position.x + 2.f;
-	floorPosition.y = position.y - 2.f;
-	floorHitbox.setPosition(floorPosition);*/
-
-	animation.Update(dt);
-
-	/*poscheck.setPosition(sprite.getPosition().x, sprite.getPosition().y);
-	std::string pos;
-	char buffer[15];
-
-	pos += "player floor [ ";
-	pos += itoa(floorPosition.x, buffer, 10);
-	pos += " , ";
-	pos += itoa(floorPosition.y, buffer, 10);
-	pos += " ]";
-	poscheck.setString(pos);
-
-	if (position.y > 1000)
-	{
-		position.y = 200;
-	}*/
-
 }
 
 /*============================================
@@ -446,60 +523,73 @@ void Player::UpdateAnimation(float dt)
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
+		if (InputMgr::GetKey(Keyboard::Up))
 		{
 			SetAnimation(PlayerAction::LOOKUP);
 		}
-		else if (InputMgr::GetKey(Keyboard::Down))
+		if (InputMgr::GetKey(Keyboard::Down))
 		{
 			SetAnimation(PlayerAction::LOOKDOWN);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		if (InputMgr::GetKey(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::X))
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
-		{
-			SetAnimation(PlayerAction::CLIMB);
-		}
+		//if (InputMgr::GetKey(Keyboard::Z))
+		//{
+		//	if (isCollision[2] || isCollision[3])
+		//	{
+		//		SetAnimation(PlayerAction::CLIMB);
+		//	}			
+		//}
 		break;
 	case PlayerAction::MOVE: //Right or Left
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		{
+			if (isCollision[0] || isCollision[1])
+			{
+				SetAnimation(PlayerAction::MOVE);
+			}			
+		}
 		if (InputMgr::GetKeyUp(Keyboard::Right) || InputMgr::GetKeyUp(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::IDLE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
+		if (InputMgr::GetKey(Keyboard::Up))
 		{
 			SetAnimation(PlayerAction::LOOKUP);
 		}
-		else if (InputMgr::GetKey(Keyboard::Down))
+		if (InputMgr::GetKey(Keyboard::Down))
 		{
 			SetAnimation(PlayerAction::LOOKDOWN);
 		}
-		else if (InputMgr::GetKey(Keyboard::C))
+		if (InputMgr::GetKeyDown(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::X))
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[0] || isCollision[1])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -509,30 +599,25 @@ void Player::UpdateAnimation(float dt)
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
-		{
-			SetAnimation(PlayerAction::LOOKUP);
-		}
-		else if (InputMgr::GetKey(Keyboard::Down))
-		{
-			SetAnimation(PlayerAction::LOOKDOWN);
-		}
-		else if (InputMgr::GetKeyDown(Keyboard::X))
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[0] || isCollision[1])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -542,67 +627,78 @@ void Player::UpdateAnimation(float dt)
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
+		if (InputMgr::GetKey(Keyboard::Up))
 		{
-			SetAnimation(PlayerAction::LOOKUP);
+			isUp = true;
+			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKey(Keyboard::Down))
+		if (InputMgr::GetKey(Keyboard::Down))
 		{
-			SetAnimation(PlayerAction::LOOKDOWN);
+			isUp = false;
+			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		if (InputMgr::GetKeyUp(Keyboard::X))
+		{
+			SetAnimation(PlayerAction::IDLE);
+		}
+		if (InputMgr::GetKeyDown(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[0] || isCollision[1])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
-
 	case PlayerAction::LOOKUP:
 		if (InputMgr::GetKeyDown(Keyboard::Right))
 		{
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyUp(Keyboard::Up))
+		if (InputMgr::GetKeyUp(Keyboard::Up))
 		{
 			SetAnimation(PlayerAction::IDLE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Down))
+		if (InputMgr::GetKey(Keyboard::Down))
 		{
 			SetAnimation(PlayerAction::LOOKDOWN);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		if (InputMgr::GetKeyDown(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::X))
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[0] || isCollision[1])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -612,35 +708,37 @@ void Player::UpdateAnimation(float dt)
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
+		if (InputMgr::GetKey(Keyboard::Up))
 		{
 			SetAnimation(PlayerAction::LOOKUP);
 		}
-		else if (InputMgr::GetKeyUp(Keyboard::Down))
+		if (InputMgr::GetKeyUp(Keyboard::Down))
 		{
-
 			SetAnimation(PlayerAction::IDLE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		if (InputMgr::GetKey(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::X))
+		if (InputMgr::GetKeyDown(Keyboard::X))
 		{
 			SetAnimation(PlayerAction::DASH);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Z))
+		if (InputMgr::GetKey(Keyboard::Z))
 		{
-			SetAnimation(PlayerAction::CLIMB);
+			if (isCollision[2] || isCollision[3])
+			{
+				SetAnimation(PlayerAction::CLIMB);
+			}
 		}
 		break;
 
@@ -650,32 +748,29 @@ void Player::UpdateAnimation(float dt)
 			isRight = true;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::Left))
+		if (InputMgr::GetKeyDown(Keyboard::Left))
 		{
 			isRight = false;
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
+		if (InputMgr::GetKey(Keyboard::Right) || InputMgr::GetKey(Keyboard::Left))
 		{
 			SetAnimation(PlayerAction::MOVE);
 		}
-		else if (InputMgr::GetKey(Keyboard::Up))
+		if (InputMgr::GetKey(Keyboard::Up))
 		{
 			SetAnimation(PlayerAction::CLIMB);
-			//isSeizeWall = true;
-			//SetAnimation(PlayerAction::LOOKUP);
 		}
-		else if (InputMgr::GetKey(Keyboard::Down))
+		if (InputMgr::GetKey(Keyboard::Down))
 		{
 			SetAnimation(PlayerAction::CLIMB);
-			//isSeizeWall = false;
 			//SetAnimation(PlayerAction::LOOKDOWN);
 		}
-		else if (InputMgr::GetKeyDown(Keyboard::C))
+		if (InputMgr::GetKey(Keyboard::C))
 		{
 			SetAnimation(PlayerAction::JUMP);
 		}
-		else if (InputMgr::GetKeyUp(Keyboard::Z))
+		if (InputMgr::GetKeyUp(Keyboard::Z))
 		{
 			SetAnimation(PlayerAction::IDLE);
 		}
@@ -692,7 +787,6 @@ void Player::SetAnimation(PlayerAction action)
 {
 	PlayerAction pastAction = moveMent;
 	moveMent = action;
-
 	switch (moveMent)
 	{
 	case PlayerAction::IDLE:
@@ -705,52 +799,78 @@ void Player::SetAnimation(PlayerAction action)
 		{
 			sprite.setScale(-CharacSize, CharacSize);
 			animation.Play("Idle");
-		}		
+		}
 		break;
 	case PlayerAction::MOVE:
-		if (isRight == true)
+
+		if (isCollision[0] || isCollision[1])
 		{
-			animation.Play("Move");
-			sprite.setScale(CharacSize, CharacSize);
+			if (isRight == true)
+			{
+				animation.PlayQueue("Push");
+				sprite.setScale(CharacSize, CharacSize);
+			}
+			else if (isRight == false)
+			{
+				animation.PlayQueue("Push");
+				sprite.setScale(-CharacSize, CharacSize);
+			}
 		}
-		else if (isRight == false)
+		else
 		{
-			animation.Play("Move");
-			sprite.setScale(-CharacSize, CharacSize);
-		}	
+			if (isRight == true)
+			{
+				animation.Play("Move");
+				sprite.setScale(CharacSize, CharacSize);
+			}
+			else if (isRight == false)
+			{
+				animation.Play("Move");
+				sprite.setScale(-CharacSize, CharacSize);
+			}
+		}				
 		break;
 	case PlayerAction::JUMP:
 		isJump = true;
+		isFloor = false;
+		gravityV -= 230;
+		if (isCollision[2])
+		{
+			isJump = false;
+		}
 		animation.Play("Jump");
 		animation.PlayQueue("Idle");
+		
 		break;
 	case PlayerAction::DASH:
 		isDash = true;
-		//animation.Play("");
+		deshDir = position;
+		animation.Play("Dash");
 		animation.PlayQueue("Idle");
 		break;
 	case PlayerAction::LOOKUP:
 		if (isSeizeWall == false)
 		{
 			animation.Play("Lookup");
-		}		
+		}
 		break;
 	case PlayerAction::LOOKDOWN:
-		if (isSeizeWall == false)
+		if (isRight == true)
 		{
-			if (isRight == true)
-			{
-				sprite.setScale(CharacSize, CharacSize - 0.5f);
-			}
-			else if (isRight == false)
-			{
-				sprite.setScale(-CharacSize, CharacSize - 0.5f);
-			}
-		}		
+			sprite.setScale(CharacSize, CharacSize - 0.5f);
+		}
+		else if (isRight == false)
+		{
+			sprite.setScale(-CharacSize, CharacSize - 0.5f);
+		}
 		break;
 	case PlayerAction::CLIMB:
-		isSeizeWall = true;
 		animation.Play("Climb");
+		if (isCollision[2] || isCollision[3])
+		{
+			isSeizeWall = true;
+		}
+		animation.PlayQueue("Climb");
 		break;
 	default:
 		break;
@@ -835,9 +955,11 @@ void Player::AnimationInit()
 ================================*/
 void Player::Draw(RenderWindow& window)
 {
-	window.draw(sprite);
+
 	window.draw(floorHitbox);
-	window.draw(bodyHitbox);	
+	window.draw(bodyHitbox);
+	window.draw(hair);
+	window.draw(sprite);	
 }
 /*===============================
 작 성 자 : 최 윤 화
@@ -848,3 +970,17 @@ void Player::Draw(RenderWindow& window)
  - 점프 키 구현
  - 대쉬 키 구현
 =================================*/
+
+	// add for obj //
+void Player::ResetPosition()
+{
+	sprite.setPosition(Vector2f(100.f, 420.f));
+	bodyHitbox.setPosition(Vector2f(100.f, 420.f));
+	floorHitbox.setPosition(Vector2f(100.f, 420.f));
+	position = Vector2f(100.f, 420.f);
+}
+
+Vector2f Player::GetPrePosition()
+{
+	return position;
+}
