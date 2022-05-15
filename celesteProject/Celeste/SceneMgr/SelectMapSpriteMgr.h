@@ -3,9 +3,10 @@
 #include "../Scene/Scene.h"
 #include "../Utils/TextureHolder.h"
 #include "../Utils/Singleton.h"
+
 using namespace sf;
 
-class SelectMapSpriteMgr : Singleton<SelectMapSpriteMgr>
+class SelectMapSpriteMgr : public Singleton<SelectMapSpriteMgr>
 {
 private:
 
@@ -47,8 +48,8 @@ public:
 
 	void InitTutirial();
 	void InitFirstMap();
-	void Update();
-	void Draw(RenderWindow& window);
+	void DrawTutorial(RenderWindow& window);
+	void DrawFirst(RenderWindow& window);
 
 
 

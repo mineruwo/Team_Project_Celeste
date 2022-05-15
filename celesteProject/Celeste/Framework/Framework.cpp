@@ -7,6 +7,9 @@ Framework::Framework()
 
 	window.create(VideoMode(resolution.x, resolution.y), "Celeste", Style::Default);
 	
+	//mainView = new RenderWindow(FloatRect(0, 0, resolution.x, resolution.y));
+	//window.setMouseCursorVisible(false);
+	window.setFramerateLimit(200);
 	icon.loadFromFile("Graphics/icon/icon.PNG");
 	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
@@ -45,7 +48,6 @@ void Framework::Draw()
 
 	SceneMgr::GetInstance().SceneDraw(window);
 
-	//UiMgr::GetInstance().Draw(window);
 
 	window.display();
 }

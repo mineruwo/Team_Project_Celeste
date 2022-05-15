@@ -37,7 +37,10 @@ public:
 	std::vector<float>getVectorTime();
 	std::vector<int>getVectorTutoClear();
 	std::vector<int>getVectorFirstClear();
+	
+	bool GetTutoclear();
 
+	void SetSaveDataIdx(int idx);
 
 };
 

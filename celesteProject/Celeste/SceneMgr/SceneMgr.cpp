@@ -14,7 +14,11 @@ SceneMgr::~SceneMgr()
 
 void SceneMgr::ChangeScene(SceneID Id)
 {
-	//delete scene;
+	/*if (nullptr != scene)
+	{
+		delete scene;
+		scene = nullptr;
+	}*/
 
 	switch (Id)
 	{
@@ -33,10 +37,11 @@ void SceneMgr::ChangeScene(SceneID Id)
 		currScene = SceneID::SaveCheck;
 		SceneMgr::SceneInit(resolution);
 		break;
-	/*case SceneID::ConfirmSelectedMapScene:
+	case SceneID::ConfirmSelectedMapScene:
 		scene = new ConfirmSelectedMapScene;
 		currScene = SceneID::ConfirmSelectedMapScene;
-		break;*/
+		SceneMgr::SceneInit(resolution);
+		break;
 	case SceneID::GamePlay:
 		scene = new GamePlay;
 		currScene = SceneID::GamePlay;

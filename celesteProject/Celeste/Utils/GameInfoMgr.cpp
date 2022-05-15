@@ -49,6 +49,23 @@ std::vector<int> GameInfoMgr::getVectorFirstClear()
 	return firstClear;
 }
 
+bool GameInfoMgr::GetTutoclear()
+{
+	switch (tutoClear[saveDataIdx])
+	{
+	case 1 :
+		return true;
+	default:
+		return false;
+		break;
+	}
+}
+
+void GameInfoMgr::SetSaveDataIdx(int idx)
+{
+	saveDataIdx = idx;
+}
+
 
 
 

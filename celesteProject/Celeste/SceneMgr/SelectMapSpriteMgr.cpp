@@ -51,8 +51,6 @@ void SelectMapSpriteMgr::InitTutirial()
 	cSprite.setPosition(1600, 900);
 	xSprite.setPosition(1700, 900);
 
-	
-
 }
 
 
@@ -69,20 +67,30 @@ void SelectMapSpriteMgr::InitFirstMap()
 	xSprite.setPosition(1700, 900);
 }
 
-void SelectMapSpriteMgr::Update()
+void SelectMapSpriteMgr::DrawTutorial(RenderWindow& window)
 {
-}
-
-void SelectMapSpriteMgr::Draw(RenderWindow& window)
-{
-	window.draw(firstMapBackGrnd);
-	window.draw(backPack);
+	window.draw(tutorialBackGrnd);
+//	window.draw(backPack);
 	window.draw(card);
 	window.draw(accent);
 	window.draw(cardTop);
 	window.draw(title);
 	window.draw(tab);
-	window.draw(cSprite);
-	window.draw(xSprite);
+//	window.draw(cSprite);
+//	window.draw(xSprite);
+
+}
+
+void SelectMapSpriteMgr::DrawFirst(RenderWindow& window)
+{
+	window.draw(firstMapBackGrnd);
+//	window.draw(backPack);
+	window.draw(card);
+	window.draw(accent);
+	window.draw(cardTop);
+	window.draw(title);
+	window.draw(tab);
+	//window.draw(cSprite);
+	//window.draw(xSprite);
 
 }

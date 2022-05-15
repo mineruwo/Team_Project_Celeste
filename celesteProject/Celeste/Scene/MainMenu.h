@@ -29,7 +29,7 @@ private:
 	Sprite exit;
 	Sprite cSprite;
 	Sprite xSprite;
-
+	int OptionNum = 0;
 	int menuNum = 0;
 	bool climbBounce ;
 	bool climbUp = true;
